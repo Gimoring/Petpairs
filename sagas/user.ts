@@ -1,30 +1,20 @@
 import axios from 'axios';
 import { all, fork, takeLatest, delay, put } from '@redux-saga/core/effects';
 
-import {
-	LOG_IN_REQUEST,
-	LOG_IN_SUCCESS,
-	LOG_IN_FAILURE,
-	LOG_OUT_FAILURE,
-	LOG_OUT_REQUEST,
-	LOG_OUT_SUCCESS,
-	SIGN_UP_FAILURE,
-	SIGN_UP_REQUEST,
-	SIGN_UP_SUCCESS,
-} from '../reducer/user';
+import { ILogInRequest, userActionTypes } from '../interface/iUserActType';
 
-function* logIn(action) {
+function* logIn(action: ILogInRequest) {
 	try {
-		// const result = yield call(logInAPI);
+		// const result = yield call(logInAPI, action.data);
 		yield delay(1000);
 		yield put({
-			type: LOG_IN_SUCCESS,
-			data: action.data,
+			type: userActionTypes.LOG_IN_SUCCESS,
+			// data: result.data
 		});
 	} catch (err) {
 		console.error(err);
 		yield put({
-			type: LOG_IN_FAILURE,
+			type: userActionTypes.LOG_IN_FAILURE,
 			error: err.response.data,
 		});
 	}
@@ -39,23 +29,23 @@ function* logOut() {
 		// const result = yield call(logOutAPI);
 		yield delay(1000);
 		yield put({
-			type: LOG_OUT_SUCCESS,
+			type: userActionTypes.LOG_OUT_SUCCESS,
 		});
 	} catch (err) {
 		console.error(err);
 		yield put({
-			type: LOG_OUT_FAILURE,
+			type: userActionTypes.LOG_OUT_FAILURE,
 			error: err.response.data,
 		});
 	}
 }
 
 function* watchLogIn() {
-	yield takeLatest(LOG_IN_REQUEST, logIn);
+	yield takeLatest(userActionTypes.LOG_IN_REQUEST, logIn);
 }
 
 function* watchLogOut() {
-	yield takeLatest(LOG_OUT_REQUEST, logOut);
+	yield takeLatest(userActionTypes.LOG_OUT_REQUEST, logOut);
 }
 
 export default function* userSaga() {

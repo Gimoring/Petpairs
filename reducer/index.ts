@@ -1,23 +1,14 @@
-import { HYDRATE } from 'next-redux-wrapper';
-import { AnyAction, combineReducers } from 'redux';
-import user, { IUserReducerState } from './user';
+import { RootStateInterface } from './../interface/iRootState';
+import { AnyAction, combineReducers, Reducer } from 'redux';
+import user from './user';
 
-export interface State {
-	user: IUserReducerState;
-}
+// export interface State {
+// 	user: IUserReducerState;
+// }
 
-const rootReducer = (state: State | undefined, action: AnyAction) => {
-	switch (action.type) {
-		case HYDRATE:
-			console.log('HYDRATE', action);
-			return action.payload;
-		default: {
-			const combinedReducer = combineReducers({
-				user,
-			});
-			return combinedReducer(state, action);
-		}
-	}
-};
-export type RootState = ReturnType<typeof rootReducer>;
+const rootReducer: Reducer<RootStateInterface, AnyAction> =
+	combineReducers<RootStateInterface>({
+		user,
+	});
+export type RootState = ReturnType<typeof rootReducer>; //컴포넌트에 useSelector 타입
 export default rootReducer;

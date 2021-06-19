@@ -1,15 +1,21 @@
+// 유저 인터페이스
 export interface IUser {
+	id: number;
+	name: string;
+	email: string;
+}
+
+// 유저 리듀서 인터페이스
+
+export interface IUserState {
 	logInLoading: boolean;
 	logInDone: boolean;
-	logInError: null | Error;
+	logInError: null | string;
 	logOutLoading: boolean;
 	logOutDone: boolean;
-	logOutError: null | Error;
+	logOutError: null | string;
 	signUpLoading: boolean;
 	signUpDone: boolean;
-	signUpError: null | Error;
-	me: null | {
-		nickname: string;
-		id: Number;
-	};
+	signUpError: null | string;
+	me: null | IUser;
 }

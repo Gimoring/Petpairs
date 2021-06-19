@@ -1,8 +1,7 @@
-import produce from 'immer';
-import { AnyAction } from 'redux';
-import { IUser } from '../interface/iUser';
-
-export const initialState = {
+import { userActionTypes, IUserActions } from '../interface/iUserActType';
+import { IUser, IUserState } from '../interface/iUser';
+import { HYDRATE } from 'next-redux-wrapper';
+export const initialState: IUserState = {
 	logInLoading: false,
 	logInDone: false,
 	logInError: null,
@@ -15,46 +14,49 @@ export const initialState = {
 	me: null,
 };
 
-export type IUserReducerState = typeof initialState;
-
-export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
-export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
-export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
-
-export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST';
-export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
-export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
-
-export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
-export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
-export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
-
-const dummyUser = (data: any) => ({
-	...data,
-	nickname: '성민호',
+const dummyUser = (data: any): IUser => ({
+	name: 'hello',
 	id: 1,
+	email: 'Hello@world.com',
 });
 
-const reducer = (state = initialState, action: AnyAction) =>
-	produce(state, (draft) => {
-		switch (action.type) {
-			case LOG_IN_REQUEST:
-				draft.logInLoading = true;
-				draft.logInDone = false;
-				draft.logInError = null;
-				break;
-			case LOG_IN_SUCCESS:
-				draft.logInLoading = false;
-				draft.logInDone = true;
-				draft.me = dummyUser(action.data);
-				break;
-			case LOG_IN_FAILURE:
-				draft.logInLoading = false;
-				draft.logInError = action.error;
-				break;
-			default:
-				break;
-		}
-	});
+interface HydratePayload {
+	user: IUserState;
+}
+
+const reducer = (
+	state = initialState,
+	action: IUserActions | { type: typeof HYDRATE; payload: HydratePayload },
+): IUserState => {
+	switch (action.type) {
+		case HYDRATE:
+			return { ...state, ...action.payload.user };
+
+		case userActionTypes.LOG_IN_REQUEST:
+			return {
+				...state,
+				logInLoading: true,
+				logInDone: false,
+				logInError: null,
+			};
+		case userActionTypes.LOG_IN_SUCCESS:
+			return {
+				...state,
+				logInLoading: false,
+				logInDone: true,
+				me: dummyUser(action.data),
+				// me : action.data
+			};
+
+		case userActionTypes.LOG_IN_FAILURE:
+			return {
+				...state,
+				logInLoading: false,
+				logInError: action.error,
+			};
+		default:
+			return state;
+	}
+};
 
 export default reducer;

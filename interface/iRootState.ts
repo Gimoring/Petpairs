@@ -1,4 +1,6 @@
-import { IUser } from './iUser';
+import { IUserState } from './iUser';
+
 export interface RootStateInterface {
-	user: IUser;
+	// 리듀서 인덱스파일에 줄 state
+	user: IUserState;
 }
