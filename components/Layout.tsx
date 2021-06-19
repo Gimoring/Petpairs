@@ -1,4 +1,5 @@
 import Head from 'next/head';
+
 interface LayoutProps {
 	children?: React.ReactNode;
 	title?: string;
