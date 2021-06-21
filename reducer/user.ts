@@ -12,12 +12,22 @@ export const initialState: IUserState = {
 	signUpDone: false,
 	signUpError: null,
 	me: null,
+	users: null,
 };
 
 const dummyUser = (data: any): IUser => ({
-	name: 'hello',
+	name: '사람이된성시츄',
 	id: 1,
 	email: 'Hello@world.com',
+	pet: {
+		id: 1,
+		petName: '강아지가된성민구',
+		age: 84,
+		breed: '시츄',
+		species: ['강아지'],
+		fileName: '시츄.png',
+		matchedId: [1],
+	},
 });
 
 interface HydratePayload {
