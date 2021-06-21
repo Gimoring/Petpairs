@@ -1,14 +1,13 @@
-import { createWrapper } from 'next-redux-wrapper';
+import { createWrapper, MakeStore } from 'next-redux-wrapper';
 import { applyMiddleware, compose, createStore, Store, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware, { Task } from 'redux-saga';
-import reducers, { State } from '../reducer';
-
+import rootReducer from '../reducer';
 import rootSaga from '../sagas';
 
-export interface SagaStore extends Store<State, AnyAction> {
-	sagaTask: Task;
-}
+// export interface SagaStore extends Store<State, AnyAction> {
+// 	sagaTask: Task;
+// }
 
 const configureStore = () => {
 	const sagaMiddleware = createSagaMiddleware();
@@ -17,8 +16,8 @@ const configureStore = () => {
 		process.env.NODE_ENV === 'production'
 			? compose(applyMiddleware(...middlewares)) //배포용 미들웨어
 			: composeWithDevTools(applyMiddleware(...middlewares)); // 개발용 미들웨어
-	const store = createStore(reducers, enhancer);
-	(store as SagaStore).sagaTask = sagaMiddleware.run(rootSaga);
+	const store = createStore(rootReducer, enhancer);
+	store.sagaTask = sagaMiddleware.run(rootSaga);
 	return store;
 };
 
