@@ -17,7 +17,7 @@ export const initialState: IUserState = {
 
 const dummyUser = (data: any): IUser => ({
 	name: '사람이된성시츄',
-	id: 1,
+	id: 4,
 	email: 'Hello@world.com',
 	pet: {
 		id: 1,
