@@ -1,6 +1,6 @@
 // 1. 액션타입 지정해주기
 
-import { IUser } from './iUser';
+import { IUser, IUserProfile } from './iUser';
 
 export enum userActionTypes {
 	LOG_IN_REQUEST = 'LOG_IN_REQUEST',
@@ -14,11 +14,31 @@ export enum userActionTypes {
 	SIGN_UP_REQUEST = 'SIGN_UP_REQUEST',
 	SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS',
 	SIGN_UP_FAILURE = 'SIGN_UP_FAILURE',
+  
+  LOAD_PROFILE_REQUEST = 'LOAD_PROFILE_REQUEST',
+  LOAD_PROFILE_SUCCESS = 'LOAD_PROFILE_SUCCESS',
+  LOAD_PROFILE_FAILURE = 'LOAD_PROFILE_FAILURE',
+
+  UPDATE_PROFILE_REQUEST = 'UPDATE_PROFILE_REQUEST',
+  UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS', 
+  UPDATE_PROFILE_FAILURE = 'UPDATE_PROFILE_FAILURE', 
 }
 
 export interface logInData {
 	email: string;
 	password: string;
+}
+
+export interface updateProfileData {
+  name?: string;
+  email?: string; 
+  pet?: {
+    petName?: null | string; 
+    breed?: null | string; 
+    age?: null | number; 
+    fileName?: null | string; 
+    introduce?: null | string; 
+  }
 }
 // 2. 액션 크리에이터의 인터페이스 만들어주기
 
@@ -37,6 +57,36 @@ export interface ILogInFailure {
 	error: string;
 }
 
+export interface ILoadProfileRequest {
+  type: userActionTypes.LOAD_PROFILE_REQUEST;
+  data: IUser["id"];
+}
+
+export interface ILoadProfileSuccess {
+  type: userActionTypes.LOAD_PROFILE_SUCCESS;
+  data: IUserProfile;
+}
+
+export interface ILoadProfileFailure {
+  type: userActionTypes.LOAD_PROFILE_FAILURE;
+  error: string; 
+}
+
+export interface IUpdateRequest {
+  type: userActionTypes.UPDATE_PROFILE_REQUEST;
+  data: updateProfileData;  
+}
+
+export interface IUpdateSuccess {
+  type: userActionTypes.UPDATE_PROFILE_SUCCESS;
+  data: IUserProfile; 
+}
+
+export interface IUpdateFailure {
+  type: userActionTypes.UPDATE_PROFILE_FAILURE; 
+  error: string; 
+}
+
 // 리듀서에서 리턴 값으로 쓰기위해 인터페이스 내보내기
 
-export type IUserActions = ILogInRequest | ILogInSuccess | ILogInFailure;
+export type IUserActions = ILogInRequest | ILogInSuccess | ILogInFailure | ILoadProfileRequest | ILoadProfileSuccess | ILoadProfileFailure | IUpdateRequest | IUpdateSuccess | IUpdateFailure;

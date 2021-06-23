@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { all, fork, takeLatest, delay, put } from '@redux-saga/core/effects';
+import { all, fork, takeLatest, takeEvery, delay, put } from '@redux-saga/core/effects';
 
-import { ILogInRequest, userActionTypes } from '../interface/iUserActType';
+import { ILoadProfileRequest, ILogInRequest, IUpdateRequest, userActionTypes } from '../interface/iUserActType';
 
 function* logIn(action: ILogInRequest) {
 	try {
@@ -40,6 +40,47 @@ function* logOut() {
 	}
 }
 
+function* loadUserProfile(action: ILoadProfileRequest) {
+  try {
+    // const result = yield call (loadUserAPI, action.data);
+    yield delay(1000);
+    yield put({
+      type: userActionTypes.LOAD_PROFILE_SUCCESS,
+      // data: result.data.user 
+    });
+  } catch (err) {
+    yield put({
+      type: userActionTypes.LOAD_PROFILE_FAILURE,
+      error: err.response.data
+    })
+  }
+}
+// async function updateUserAPI(userId: string, data: any, access_token: string) {
+//   return axios({
+//     method: 'PATCH',
+//     url:,
+//     data,
+//     headers: { access_token },
+//   })
+// }
+function* updateProfile(action: IUpdateRequest) {
+  try {
+    // const result = yield call(updateUserAPI, action.data);
+    yield delay(1000); 
+    yield put({ 
+      type: userActionTypes.UPDATE_PROFILE_SUCCESS,
+      // data: result.data.user,
+      data: action.data
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: userActionTypes.UPDATE_PROFILE_FAILURE,
+      error: err.response.data
+    })
+  }
+}
+
 function* watchLogIn() {
 	yield takeLatest(userActionTypes.LOG_IN_REQUEST, logIn);
 }
@@ -48,6 +89,12 @@ function* watchLogOut() {
 	yield takeLatest(userActionTypes.LOG_OUT_REQUEST, logOut);
 }
 
+function* watchLoadProfile() {
+  yield takeEvery(userActionTypes.LOAD_PROFILE_REQUEST, loadUserProfile);
+}
+function* watchProfileUpdate() {
+  yield takeEvery(userActionTypes.UPDATE_PROFILE_REQUEST, updateProfile);
+}
 export default function* userSaga() {
-	yield all([fork(watchLogIn), fork(watchLogOut)]);
+	yield all([fork(watchLogIn), fork(watchLogOut), fork(watchLoadProfile), fork(watchProfileUpdate)]);
 }
