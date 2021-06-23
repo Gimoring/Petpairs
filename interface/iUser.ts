@@ -8,6 +8,7 @@ export interface IPet {
 	age: null | number;
 	matchedId: null | number[]; //매칭된 상대 펫 ID
 	fileName: null | string;
+  introduce: null | string; 
 }
 
 // 유저 인터페이스
@@ -17,6 +18,28 @@ export interface IUser {
 	email: string;
 	pet: IPet;
 }
+
+// 유저정보 수정 인터페이스
+export interface IUserProfile {
+    name?: string;
+    email?: string; 
+    pet?: {
+      petName?: null | string; 
+      breed?: null | string; 
+      age?: null | number; 
+      fileName?: null | string; 
+      introduce?: null | string; 
+    }
+}
+ 
+
+// // 유저펫정보 수정 인터페이스 
+// export interface IEditPet {
+//   petName?: null | string;
+//   breed?: null | string; 
+//   age?: null | number; 
+//   fileName?: null | string; 
+// }
 
 // 유저 리듀서 인터페이스
 
@@ -30,7 +53,13 @@ export interface IUserState {
 	signUpLoading: boolean;
 	signUpDone: boolean;
 	signUpError: null | string;
-	me: null | IUser;
+  loadProfileLoading: boolean;
+  loadProfileDone: boolean;
+  loadProfileError: null | string;
+  updateProfileLoading: boolean;
+  updateProfileDone: boolean;
+  updateProfileError: null | string; 
+	me: null | IUser | IUserProfile;
 	users: null | IUser[];
 }
 
