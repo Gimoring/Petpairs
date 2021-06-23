@@ -12,7 +12,7 @@ export const initialState: IUserState = {
 	signUpDone: false,
 	signUpError: null,
 	me: null,
-	users: null,
+	users: null
 };
 
 const dummyUser = (data: any): IUser => ({
@@ -64,6 +64,52 @@ const reducer = (
 				logInLoading: false,
 				logInError: action.error,
 			};
+
+		case userActionTypes.LOG_OUT_REQUEST:
+			return {
+				...state,
+				logOutLoading: true,
+				logOutDone: false,
+				logInError: null,
+			};
+
+		case userActionTypes.LOG_OUT_SUCCESS:
+			return {
+				...state,
+				logOutLoading: false,
+				logOutDone: true,
+				me: null,
+			};	
+			
+		case userActionTypes.LOG_OUT_FAILURE:
+			return {
+				...state,
+				logOutLoading: false,
+				logOutError: action.error,
+			};	
+		
+		case userActionTypes.SIGN_UP_REQUEST:
+			return {
+				...state,
+				signUpLoading: true,
+				signUpDone: false,
+				signUpError: null,
+			};
+		
+		case userActionTypes.SIGN_UP_SUCCESS:
+			return {
+				...state,
+				signUpLoading: false,
+				signUpDone: true,
+			};
+		
+		case userActionTypes.SIGN_UP_FAILURE:
+			return {
+				...state,
+				signUpLoading: false,
+				signUpError: action.error,
+			};
+			
 		default:
 			return state;
 	}
