@@ -11,14 +11,17 @@ export const initialState: IUserState = {
 	signUpLoading: false,
 	signUpDone: false,
 	signUpError: null,
-  loadProfileLoading: false,
-  loadProfileDone: false,
-  loadProfileError: null, 
-  updateProfileLoading: false,
-  updateProfileDone: false,
-  updateProfileError: null, 
+	loadProfileLoading: false,
+	loadProfileDone: false,
+	loadProfileError: null,
+	updateProfileLoading: false,
+	updateProfileDone: false,
+	updateProfileError: null,
+	postLikeLoading: false,
+	postLikeDone: false,
+	postLikeError: null,
 	me: null,
-	users: null
+	users: null,
 };
 
 const dummyUser = (data: any): IUser => ({
@@ -32,33 +35,36 @@ const dummyUser = (data: any): IUser => ({
 		breed: '시츄',
 		species: ['강아지'],
 		fileName: '시츄.png',
-		matchedId: [1],
-    introduce: '멍멍', 
+		matchedId: [],
+		introduce: '멍멍',
+		like: [2], //initial  [2]
 	},
 });
 
 export const dummyMe = (data: any): IUserProfile => ({
 	name: '사람이된성시츄',
 	email: 'Hello@world.com',
-  pet: {
-    petName: '강아지가된성민구',
-    age: 84,
-    breed: '시츄',
-    fileName: '시츄.png',
-    introduce: '멍멍', 
-  }
+	pet: {
+		petName: '강아지가된성민구',
+		age: 84,
+		breed: '시츄',
+		fileName: '시츄.png',
+		introduce: '멍멍',
+		like: null,
+		matchedId: null,
+	},
 });
 
 export const dataSet = {
-  name: '사람이된성시츄',
+	name: '사람이된성시츄',
 	email: 'Hello@world.com',
-  pet: {
-    petName: '강아지가된성민구',
-    age: 84,
-    breed: '시츄',
-    fileName: '시츄.png',
-  }
-}
+	pet: {
+		petName: '강아지가된성민구',
+		age: 84,
+		breed: '시츄',
+		fileName: '시츄.png',
+	},
+};
 
 interface HydratePayload {
 	user: IUserState;
@@ -95,57 +101,83 @@ const reducer = (
 				logInError: action.error,
 			};
 
-    
-    case userActionTypes.LOAD_PROFILE_REQUEST:
-      return {
-        ...state,
-        loadProfileLoading: true,
-        loadProfileDone: false,
-        loadProfileError: null,
-      };
+		case userActionTypes.POST_LIKE_REQUEST:
+			return {
+				...state,
+				postLikeLoading: true,
+				postLikeDone: false,
+				postLikeError: null,
+			};
+		case userActionTypes.POST_LIKE_SUCCESS:
+			return {
+				...state,
+				postLikeLoading: false,
+				postLikeDone: true,
+				me: {
+					...state.me,
+					pet: {
+						...state.me?.pet,
+						like: [...state.me?.pet?.like, action.data], //그래서 일단 썪쎾쓰 되면  like에 들어가긴해요
+					},
+				},
+				// me : action.data
+			};
 
-    case userActionTypes.LOAD_PROFILE_SUCCESS:
-      return {
-        ...state,
-        loadProfileLoading: false, 
-        loadProfileDone: true, 
-        loadProfileError: null,
-        me: action.data, 
-      };
+		case userActionTypes.POST_LIKE_FAILURE:
+			return {
+				...state,
+				postLikeLoading: false,
+				postLikeError: action.error,
+			};
 
-    case userActionTypes.LOAD_PROFILE_FAILURE:
-      return {
-        ...state,
-        loadProfileLoading: false,
-        loadProfileError: action.error,
-      };
+		// case userActionTypes.LOAD_PROFILE_REQUEST:
+		// 	return {
+		// 		...state,
+		// 		loadProfileLoading: true,
+		// 		loadProfileDone: false,
+		// 		loadProfileError: null,
+		// 	};
 
-    case userActionTypes.UPDATE_PROFILE_REQUEST: 
-      return {
-        ...state,
-        updateProfileLoading: true, 
-        updateProfileDone: false, 
-        updateProfileError: null,
-        me: action.data, 
-      };
+		// case userActionTypes.LOAD_PROFILE_SUCCESS:
+		// 	return {
+		// 		...state,
+		// 		loadProfileLoading: false,
+		// 		loadProfileDone: true,
+		// 		loadProfileError: null,
+		// 		me: action.data,
+		// 	};
 
-    case userActionTypes.UPDATE_PROFILE_SUCCESS: 
-      return {
-        ...state,
-        updateProfileLoading: false, 
-        updateProfileDone: true, 
-        updateProfileError: null,
-        me: action.data, 
-      };
+		// case userActionTypes.LOAD_PROFILE_FAILURE:
+		// 	return {
+		// 		...state,
+		// 		loadProfileLoading: false,
+		// 		loadProfileError: action.error,
+		// 	};
 
-    case userActionTypes.UPDATE_PROFILE_FAILURE: 
-      return {
-        ...state,
-        updateProfileLoading: false, 
-        updateProfileError: action.error,
-      };
-      
+		// case userActionTypes.UPDATE_PROFILE_REQUEST:
+		// 	return {
+		// 		...state,
+		// 		updateProfileLoading: true,
+		// 		updateProfileDone: false,
+		// 		updateProfileError: null,
+		// 		me: action.data,
+		// 	};
 
+		// case userActionTypes.UPDATE_PROFILE_SUCCESS:
+		// 	return {
+		// 		...state,
+		// 		updateProfileLoading: false,
+		// 		updateProfileDone: true,
+		// 		updateProfileError: null,
+		// 		me: action.data,
+		// 	};
+
+		// case userActionTypes.UPDATE_PROFILE_FAILURE:
+		// 	return {
+		// 		...state,
+		// 		updateProfileLoading: false,
+		// 		updateProfileError: action.error,
+		// 	};
 
 		case userActionTypes.LOG_OUT_REQUEST:
 			return {
@@ -161,15 +193,15 @@ const reducer = (
 				logOutLoading: false,
 				logOutDone: true,
 				me: null,
-			};	
-			
+			};
+
 		case userActionTypes.LOG_OUT_FAILURE:
 			return {
 				...state,
 				logOutLoading: false,
 				logOutError: action.error,
-			};	
-		
+			};
+
 		case userActionTypes.SIGN_UP_REQUEST:
 			return {
 				...state,
@@ -177,14 +209,14 @@ const reducer = (
 				signUpDone: false,
 				signUpError: null,
 			};
-		
+
 		case userActionTypes.SIGN_UP_SUCCESS:
 			return {
 				...state,
 				signUpLoading: false,
 				signUpDone: true,
 			};
-		
+
 		case userActionTypes.SIGN_UP_FAILURE:
 			return {
 				...state,
