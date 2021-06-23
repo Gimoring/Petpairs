@@ -2,7 +2,7 @@ import Head from 'next/head';
 import PersonIcon from '@material-ui/icons/Person';
 import ChatIcon from '@material-ui/icons/Chat';
 import { IconButton } from '@material-ui/core';
-import styles from '../styles/mainLayout.module.scss';
+import styles from '../styles/main.module.scss';
 import Image from 'next/image';
 import mainLogo from '../images/unknown.png';
 
