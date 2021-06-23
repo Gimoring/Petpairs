@@ -8,6 +8,7 @@ export interface IPet {
 	age: null | number;
 	matchedId: null | number[]; //매칭된 상대 펫 ID
 	fileName: null | string;
+	like: number[]; // 좋아요한 상대 펫 ID
   introduce: null | string; 
 }
 

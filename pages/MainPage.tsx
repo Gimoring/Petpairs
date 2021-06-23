@@ -13,12 +13,11 @@ import { RootState } from '../reducer';
 const MainPage = () => {
 	const { me } = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
-
+	console.log(me);
 	useEffect(() => {
 		dispatch({
 			type: userActionTypes.LOG_IN_REQUEST,
 		});
-		console.log(me);
 	}, []);
 	return (
 		<div id={styles.mainContainer}>
@@ -43,7 +42,6 @@ const MainPage = () => {
 				</div>
 				<div className={styles.mainDivision}>
 					<PetCards />
-					<SwipeButtons />
 				</div>
 			</section>
 		</div>
