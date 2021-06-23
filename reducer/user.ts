@@ -17,23 +17,13 @@ export const initialState: IUserState = {
   updateProfileLoading: false,
   updateProfileDone: false,
   updateProfileError: null, 
-	me: {
-    name: '사람이된성시츄',
-    email: 'Hello@world.com',
-    pet: {
-      petName: '강아지가된성민구',
-      age: 84,
-      breed: '시츄',
-      fileName: '시츄.png',
-      introduce: '멍멍', 
-    }
-  },
-	users: null,
+	me: null,
+	users: null
 };
 
 const dummyUser = (data: any): IUser => ({
 	name: '사람이된성시츄',
-	id: 1,
+	id: 4,
 	email: 'Hello@world.com',
 	pet: {
 		id: 1,
@@ -104,6 +94,7 @@ const reducer = (
 				logInLoading: false,
 				logInError: action.error,
 			};
+
     
     case userActionTypes.LOAD_PROFILE_REQUEST:
       return {
@@ -154,6 +145,53 @@ const reducer = (
         updateProfileError: action.error,
       };
       
+
+
+		case userActionTypes.LOG_OUT_REQUEST:
+			return {
+				...state,
+				logOutLoading: true,
+				logOutDone: false,
+				logInError: null,
+			};
+
+		case userActionTypes.LOG_OUT_SUCCESS:
+			return {
+				...state,
+				logOutLoading: false,
+				logOutDone: true,
+				me: null,
+			};	
+			
+		case userActionTypes.LOG_OUT_FAILURE:
+			return {
+				...state,
+				logOutLoading: false,
+				logOutError: action.error,
+			};	
+		
+		case userActionTypes.SIGN_UP_REQUEST:
+			return {
+				...state,
+				signUpLoading: true,
+				signUpDone: false,
+				signUpError: null,
+			};
+		
+		case userActionTypes.SIGN_UP_SUCCESS:
+			return {
+				...state,
+				signUpLoading: false,
+				signUpDone: true,
+			};
+		
+		case userActionTypes.SIGN_UP_FAILURE:
+			return {
+				...state,
+				signUpLoading: false,
+				signUpError: action.error,
+			};
+
 		default:
 			return state;
 	}

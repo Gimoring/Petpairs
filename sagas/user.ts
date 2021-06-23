@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { all, fork, takeLatest, takeEvery, delay, put } from '@redux-saga/core/effects';
-
-import { ILoadProfileRequest, ILogInRequest, IUpdateRequest, userActionTypes } from '../interface/iUserActType';
+import { ISignUpRequest, ILogInRequest, ILoadProfileRequest, IUpdateRequest, userActionTypes } from '../interface/iUserActType';
 
 function* logIn(action: ILogInRequest) {
 	try {
@@ -15,6 +14,21 @@ function* logIn(action: ILogInRequest) {
 		console.error(err);
 		yield put({
 			type: userActionTypes.LOG_IN_FAILURE,
+			error: err.response.data,
+		});
+	}
+}
+
+function* signup(action: ISignUpRequest) {
+	try {
+		yield delay(1000);
+		yield put({
+			type: userActionTypes.SIGN_UP_SUCCESS,
+		});
+	} catch (err) {
+		console.log(err);
+		yield put({
+			type: userActionTypes.SIGN_UP_FAILURE,
 			error: err.response.data,
 		});
 	}
@@ -39,6 +53,7 @@ function* logOut() {
 		});
 	}
 }
+
 
 function* loadUserProfile(action: ILoadProfileRequest) {
   try {
@@ -79,6 +94,9 @@ function* updateProfile(action: IUpdateRequest) {
       error: err.response.data
     })
   }
+
+function* watchSignUp() {
+	yield takeLatest(userActionTypes.SIGN_UP_REQUEST, signup);
 }
 
 function* watchLogIn() {
@@ -92,9 +110,12 @@ function* watchLogOut() {
 function* watchLoadProfile() {
   yield takeEvery(userActionTypes.LOAD_PROFILE_REQUEST, loadUserProfile);
 }
+  
 function* watchProfileUpdate() {
   yield takeEvery(userActionTypes.UPDATE_PROFILE_REQUEST, updateProfile);
 }
+  
 export default function* userSaga() {
-	yield all([fork(watchLogIn), fork(watchLogOut), fork(watchLoadProfile), fork(watchProfileUpdate)]);
+	yield all([fork(watchLogIn), fork(watchLogOut), fork(watchLoadProfile), fork(watchProfileUpdate), fork(watchSignUp)]);
 }
+
