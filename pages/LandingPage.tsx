@@ -2,22 +2,20 @@ import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer/index';
+import wrapper from '../store/configure';
+import CommonHeader from '../components/CommonHeader';
+import Section1 from '../components/LandingSection1';
 const LandingPage = () => {
-	const userReducer = useSelector((state: RootState) => state.user);
+	const { me } = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
 
 	return (
-		<div>
-			Hello LandingPage{' '}
-			<button
-				onClick={() => {
-					dispatch({
-						type: userActionTypes.LOG_IN_REQUEST,
-					});
-				}}
-			></button>
+		<div className=''>
+			<CommonHeader />
+			<Section1 />
 		</div>
 	);
 };
 
 export default LandingPage;
+
