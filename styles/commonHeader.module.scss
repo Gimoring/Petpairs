@@ -1,0 +1,16 @@
+.header {
+	width: 100vw;
+	height: 10vh;
+	background-color: #ee514a;
+	flex-shrink: 0;
+	display: none;
+	justify-content: space-between;
+	border-bottom: 2px solid rgb(223, 218, 218);
+	align-items: center;
+}
+
+@media (max-width: 767px) {
+	.header {
+		display: flex;
+	}
+}
