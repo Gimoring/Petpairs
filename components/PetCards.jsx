@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import TinderCard from 'react-tinder-card';
+import { userActionTypes } from '../interface/iUserActType';
 import styles from '../styles/card.module.scss';
 import SwipeButtons from './SwipeButtons';
 const db = [
@@ -39,7 +41,8 @@ const alreadyRemoved = [];
 let petState = db;
 const PetCards = () => {
 	const [pets, setPets] = useState(db);
-
+	const dispatch = useDispatch();
+	const userReducer = useSelector((state) => state.user);
 	const childRefs = useMemo(
 		() =>
 			Array(db.length)
@@ -48,16 +51,21 @@ const PetCards = () => {
 		[],
 	);
 
-	const swiped = (dir, nameToDelete) => {
+	const swiped = (dir, nameToDelete, id) => {
 		if (dir === 'left') {
 			console.log(`you swiped to ${dir} and removed ${nameToDelete}`);
 			alreadyRemoved.push(nameToDelete);
 			console.log(alreadyRemoved);
 		}
 		if (dir === 'right') {
+			dispatch({
+				type: userActionTypes.POST_LIKE_REQUEST,
+				data: id,
+			});
 			console.log(`you swiped to ${dir} and removed ${nameToDelete}`);
 			alreadyRemoved.push(nameToDelete);
 			console.log(alreadyRemoved);
+			console.log(userReducer);
 		}
 		// 만약 dir이 left이면 => 아무것도 안한다
 		// dispatch({
@@ -97,7 +105,7 @@ const PetCards = () => {
 					className={styles.swipe}
 					key={pet.petName}
 					preventSwipe={['up', 'down']}
-					onSwipe={(dir) => swiped(dir, pet.petName)}
+					onSwipe={(dir) => swiped(dir, pet.petName, pet.id)}
 					onCardLeftScreen={() => outOfFrame(pet.petName)}
 				>
 					<div

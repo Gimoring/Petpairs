@@ -1,6 +1,6 @@
 import PetCards from '../components/PetCards';
 import styles from '../styles/main.module.scss';
-import MainHeader from '../components/MainHeader';
+import MainHeader from '../components/mainHeader';
 import SwipeButtons from '../components/SwipeButtons';
 import Image from 'next/image';
 import Link from 'next/link';
