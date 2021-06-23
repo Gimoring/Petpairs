@@ -3,10 +3,11 @@
 	height: 10vh;
 	background-color: #ee514a;
 	flex-shrink: 0;
-	display: none;
+	display: flex;
 	justify-content: space-between;
 	border-bottom: 2px solid rgb(223, 218, 218);
 	align-items: center;
+
 	.header__icon {
 		color: white;
 		margin: 0 1.5rem;
