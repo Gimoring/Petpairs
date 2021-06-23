@@ -1,7 +1,23 @@
 import axios from 'axios';
 import { all, fork, takeLatest, delay, put } from '@redux-saga/core/effects';
 
-import { ILogInRequest, userActionTypes } from '../interface/iUserActType';
+import { ISignUpRequest, ILogInRequest, userActionTypes } from '../interface/iUserActType';
+
+
+function* signup(action: ISignUpRequest) {
+	try {
+		yield delay(1000);
+		yield put({
+			type: userActionTypes.SIGN_UP_SUCCESS,
+		});
+	} catch (err) {
+		console.log(err);
+		yield put({
+			type: userActionTypes.SIGN_UP_FAILURE,
+			error: err.response.data,
+		});
+	}
+}
 
 function* logIn(action: ILogInRequest) {
 	try {
@@ -40,6 +56,10 @@ function* logOut() {
 	}
 }
 
+function* watchSignUp() {
+	yield takeLatest(userActionTypes.SIGN_UP_REQUEST, signup);
+}
+
 function* watchLogIn() {
 	yield takeLatest(userActionTypes.LOG_IN_REQUEST, logIn);
 }
@@ -49,5 +69,5 @@ function* watchLogOut() {
 }
 
 export default function* userSaga() {
-	yield all([fork(watchLogIn), fork(watchLogOut)]);
-}
+	yield all([fork(watchSignUp), fork(watchLogIn), fork(watchLogOut)]);
+};
