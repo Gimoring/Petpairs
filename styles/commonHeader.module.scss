@@ -3,10 +3,13 @@
 	height: 10vh;
 	background-color: #ee514a;
 	flex-shrink: 0;
-	display: none;
+	// display: none;
 	justify-content: space-between;
 	border-bottom: 2px solid rgb(223, 218, 218);
 	align-items: center;
+}
+.button{
+	background-color: yellow;
 }
 
 @media (max-width: 767px) {
