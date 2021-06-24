@@ -1,5 +1,5 @@
 import Head from 'next/head';
-
+import CommonHeader from '../components/CommonHeader';
 interface LayoutProps {
 	children?: React.ReactNode;
 	title?: string;
@@ -11,7 +11,8 @@ const Layout = ({ children, title = '' }: LayoutProps) => {
 			<Head>
 				<title>{title}</title>
 			</Head>
-			<header>헤더( 네비게이션 바 )</header>
+			<CommonHeader/>
+			{/* <header>헤더( 네비게이션 바 )</header> */}
 			{children}
 			<footer>푸터(발)</footer>
 		</div>
