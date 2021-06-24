@@ -14,6 +14,7 @@ import {
 	IUpdateRequest,
 	userActionTypes,
 	IPostLikeRequest,
+  IDeleteUserRequest,
 } from '../interface/iUserActType';
 
 function* logIn(action: ILogInRequest) {
@@ -138,6 +139,32 @@ function* postLike(action: IPostLikeRequest) {
 	}
 }
 
+interface IDeleteUser {
+  id: number;
+}
+
+function deleteUserApi(data: IDeleteUser) {
+  return axios.post('url', data)
+}
+
+function* deleteUser(action: IDeleteUserRequest) {
+  try {
+    // const result = yield call(deleteUserApi, action.data)
+    yield delay(1000);
+    yield put({
+      type: userActionTypes.DELETE_USER_SUCCESS,
+      data: action.data,
+      // data: result.data
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: userActionTypes.DELETE_USER_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchSignUp() {
 	yield takeLatest(userActionTypes.SIGN_UP_REQUEST, signup);
 }
@@ -162,6 +189,10 @@ function* watchPostLike() {
 	yield takeLatest(userActionTypes.POST_LIKE_REQUEST, postLike);
 }
 
+function* watchDeleteUser() {
+  yield takeEvery(userActionTypes.DELETE_USER_REQUEST, deleteUser);
+}
+
 export default function* userSaga(): Generator {
 	yield all([
 		fork(watchLogIn),
@@ -170,5 +201,6 @@ export default function* userSaga(): Generator {
 		fork(watchProfileUpdate),
 		fork(watchSignUp),
 		fork(watchPostLike),
+    fork(watchDeleteUser), 
 	]);
 }
