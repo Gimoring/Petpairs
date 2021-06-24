@@ -1,6 +1,20 @@
 import axios from 'axios';
-import { all, fork, takeLatest, takeEvery, delay, put } from '@redux-saga/core/effects';
-import { ISignUpRequest, ILogInRequest, ILoadProfileRequest, IUpdateRequest, userActionTypes } from '../interface/iUserActType';
+import {
+	all,
+	fork,
+	takeLatest,
+	takeEvery,
+	delay,
+	put,
+} from '@redux-saga/core/effects';
+import {
+	ISignUpRequest,
+	ILogInRequest,
+	ILoadProfileRequest,
+	IUpdateRequest,
+	userActionTypes,
+	IPostLikeRequest,
+} from '../interface/iUserActType';
 
 function* logIn(action: ILogInRequest) {
 	try {
@@ -54,20 +68,19 @@ function* logOut() {
 	}
 }
 
-
 function* loadUserProfile(action: ILoadProfileRequest) {
 	try {
 		// const result = yield call (loadUserAPI, action.data);
 		yield delay(1000);
 		yield put({
 			type: userActionTypes.LOAD_PROFILE_SUCCESS,
-			// data: result.data.user 
+			// data: result.data.user
 		});
 	} catch (err) {
 		yield put({
 			type: userActionTypes.LOAD_PROFILE_FAILURE,
-			error: err.response.data
-		})
+			error: err.response.data,
+		});
 	}
 }
 // async function updateUserAPI(userId: string, data: any, access_token: string) {
@@ -85,16 +98,46 @@ function* updateProfile(action: IUpdateRequest) {
 		yield put({
 			type: userActionTypes.UPDATE_PROFILE_SUCCESS,
 			// data: result.data.user,
-			data: action.data
+			data: action.data,
 		});
 	} catch (err) {
 		console.error(err);
 		yield put({
 			type: userActionTypes.UPDATE_PROFILE_FAILURE,
-			error: err.response.data
-		})
+			error: err.response.data,
+		});
 	}
 }
+
+interface IPostLike {
+	id: number;
+}
+
+// data will be  id : number
+
+function postLikeApi(data: IPostLike) {
+	return axios.post('url', data);
+}
+
+function* postLike(action: IPostLikeRequest) {
+	//action: IPostLikeRequest
+	try {
+		// const result = yield call(postLIkeApi, action.data)
+		yield delay(1000);
+		yield put({
+			type: userActionTypes.POST_LIKE_SUCCESS,
+			data: action.data,
+			//data: result.data
+		});
+	} catch (err) {
+		console.error(err);
+		yield put({
+			type: userActionTypes.POST_LIKE_FAILURE,
+			error: err.response.data,
+		});
+	}
+}
+
 function* watchSignUp() {
 	yield takeLatest(userActionTypes.SIGN_UP_REQUEST, signup);
 }
@@ -115,6 +158,17 @@ function* watchProfileUpdate() {
 	yield takeEvery(userActionTypes.UPDATE_PROFILE_REQUEST, updateProfile);
 }
 
-export default function* userSaga() {
-	yield all([fork(watchLogIn), fork(watchLogOut), fork(watchLoadProfile), fork(watchProfileUpdate), fork(watchSignUp)]);
-};
+function* watchPostLike() {
+	yield takeLatest(userActionTypes.POST_LIKE_REQUEST, postLike);
+}
+
+export default function* userSaga(): Generator {
+	yield all([
+		fork(watchLogIn),
+		fork(watchLogOut),
+		fork(watchLoadProfile),
+		fork(watchProfileUpdate),
+		fork(watchSignUp),
+		fork(watchPostLike),
+	]);
+}
