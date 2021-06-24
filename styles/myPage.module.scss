@@ -17,25 +17,33 @@
 			display: flex;
 			flex-direction: column;
 			border: 2rem, solid, blue;
-			.editPetName {
+			.userInfoEdit {
 				display: flex;
-				.name {
-					padding-left: 90px;
-					align-self: center;
-				}
+				flex-direction: column;
 			}
-			.editBreed {
+			.petInfoEdit {
 				display: flex;
-				.petBreed {
-					padding-left: 90px;
-					align-self: center;
+				flex-direction: column;
+				.editPetName {
+					display: flex;
+					.name {
+						padding-left: 90px;
+						align-self: center;
+					}
 				}
-			}
-			.editAge {
-				display: flex;
-				.petAge {
-					padding-left: 90px;
-					align-self: center;
+				.editBreed {
+					display: flex;
+					.petBreed {
+						padding-left: 90px;
+						align-self: center;
+					}
+				}
+				.editAge {
+					display: flex;
+					.petAge {
+						padding-left: 90px;
+						align-self: center;
+					}
 				}
 			}
 		}

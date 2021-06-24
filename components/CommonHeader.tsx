@@ -9,13 +9,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../reducer';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
-import { useModal } from './Modal';
+
 
 const CommonHeader = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const { me } = useSelector((state: RootState) => state.user);
-  const { isOpen: isAuthModalOpen, modalController, setIsOpen } = useModal();
+  // const { isOpen: isAuthModalOpen, modalController, setIsOpen } = useModal();
 
   const handleModal = useCallback(() => {
     setShowModal(!showModal);
