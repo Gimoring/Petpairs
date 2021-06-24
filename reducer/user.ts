@@ -34,7 +34,7 @@ const dummyUser = (data: any): IUser => ({
 		age: 84,
 		breed: '시츄',
 		species: ['강아지'],
-		fileName: '시츄.png',
+		fileName: ['시츄.png'],
 		matchedId: [],
 		introduce: '멍멍',
 		like: [2], //initial  [2]
@@ -48,7 +48,7 @@ export const dummyMe = (data: any): IUserProfile => ({
 		petName: '강아지가된성민구',
 		age: 84,
 		breed: '시츄',
-		fileName: '시츄.png',
+		fileName: ['시츄.png'],
 		introduce: '멍멍',
 		like: null,
 		matchedId: null,

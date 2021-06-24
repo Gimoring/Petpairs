@@ -1,204 +1,253 @@
-import { GetServerSideProps } from 'next';
-import React, { useCallback, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { IUserProfile } from '../interface/iUser';
-import { updateProfileData, userActionTypes } from '../interface/iUserActType';
-import { RootState } from '../reducer';
-import { dataSet } from '../reducer/user';
+import { GetServerSideProps } from "next";
+import React, { useCallback, useState, useEffect } from "react";
+import { useRouter } from 'next/router';
+import styles from '../styles/myPage.module.scss';
+import { useDispatch, useSelector } from "react-redux";
+import { IUserProfile } from "../interface/iUser";
+import { updateProfileData, userActionTypes } from "../interface/iUserActType";
+import { RootState } from "../reducer";
+import { dataSet } from "../reducer/user";
+import MyPetImgSlider from "../components/MyPetImgSlider";
 
 const MyPage = () => {
-	const { me, updateProfileDone, updateProfileError } = useSelector(
-		(state: RootState) => state.user,
-	);
+  const { me, updateProfileDone, updateProfileError } = useSelector((state: RootState) => 
+    state.user
+  );
+  const router = useRouter(); 
+  const dispatch = useDispatch(); 
+  const [modalOn, setModalOn] = useState(false); 
+  const [changeInfoBtnOn, setChangeInfoBtnOn] = useState(false); 
+  const [changeUserInfoOn, setChangeUserInfoOn] = useState(false);
+  const [editPetName, setEditPetName] = useState(false); 
+  const [editBreed, setEditBreed] = useState(false); 
+  const [editAge, setEditAge] = useState(false); 
+  const [editIntroduce, setEditIntroduce] = useState(false); 
+  const [inputs, setInputs] = useState({
+    name: '', 
+    email: '', 
+    petName: '', 
+    breed: '', 
+    age: undefined, 
+    introduce: '',
+  })
 
-	console.log(me);
+  const onModalClose = useCallback(() => {
+    setModalOn(false);
+  }, []);
 
-	// user.me.name = 'hi';
+  const isValidEmail = (str: string) => {
+    const regExp =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    return regExp.test(str);
+  };
 
-	// const { name, email, pet } = useSelector((me: IEditUser) => ({
-	//   name: me.name,
-	//   email: me.email,
-	//   pet: me.pet
-	// })
+  const changeInfoOn = useCallback(() => {
+    setChangeInfoBtnOn(true); 
+    console.log(changeInfoBtnOn)
+     
+  }, [changeInfoBtnOn, setChangeInfoBtnOn])
 
-	// const { petName, breed, age, }
-	// const { petName, breed, age, introduce } = pet;
+  const onSubmitUpdatedInfo = useCallback((e) => {
+    e.preventDefault(); 
+    console.log(me); 
 
-	// console.log(name);
-	const dispatch = useDispatch();
+    console.log(changeUserInfoOn)
+    
+    if((!me?.name && !inputs.name ) || (!me?.email && !inputs.email) || 
+      (!me?.pet?.petName && !inputs.petName) || (!me?.pet?.breed && !inputs.breed) || 
+      (!me?.pet?.age && !inputs.age) || (!me?.pet?.introduce && !inputs.introduce)) {
+      window.alert('모든 항목을 채워주세요!')
 
-	const [modalOn, setModalOn] = useState(false);
-	const [toggleOn, setToggleOn] = useState(false);
-	const [inputs, setInputs] = useState({
-		name: '',
-		email: '',
-		petName: '',
-		breed: '',
-		age: undefined,
-		introduce: '',
-	});
+    } else if(inputs.breed !== '냥이' && inputs.breed !== '멍멍이' && me?.pet?.breed !== '냥이' && me?.pet?.breed !== '멍멍이') {
+      window.alert('냥이 또는 멍멍이로 명시해주세요!')
 
-	const onModalClose = useCallback(() => {
-		setModalOn(false);
-	}, []);
+    } else if (!isValidEmail(inputs.email)) {
+      window.alert('올바른 이메일 형태가 아닙니다')
 
-	const onToggleOn = useCallback(() => {
-		setToggleOn(true);
-	}, [toggleOn]);
+    } else {
+    dispatch({
+      type: userActionTypes.UPDATE_PROFILE_REQUEST,
+      data: {   
+        name: inputs.name || me?.name, 
+        email: inputs.email || me?.email, 
+        pet: { 
+          petName: inputs.petName || me?.pet?.petName, 
+          breed: inputs.breed || me?.pet?.breed, 
+          age: inputs.age || me?.pet?.age, 
+          introduce: inputs.introduce || me?.pet?.introduce
+        },
+      } 
+      
+    })
+    console.log(changeUserInfoOn); 
+    console.log(updateProfileDone);
+   
+    window.alert('프로필이 수정 되었습니다!')
+    console.log(me); 
+    setChangeInfoBtnOn(false); 
+    setChangeUserInfoOn(false);
+    setEditPetName(false);
+    setEditBreed(false);
+    setEditAge(false);
+    setEditIntroduce(false); 
+    
+    }
 
-	const onSubmitUpdatedInfo = useCallback(
-		(e) => {
-			e.preventDefault();
-			console.log(me);
-			dispatch({
-				type: userActionTypes.UPDATE_PROFILE_REQUEST,
-				data: {
-					name: inputs.name,
-					email: inputs.email,
-					pet: {
-						petName: inputs.petName,
-						breed: inputs.breed,
-						age: inputs.age,
-						introduce: inputs.introduce,
-					},
-				},
-			});
-			console.log(me);
-			console.log(updateProfileDone);
 
-			window.alert('프로필이 수정 되었습니다!');
-			console.log(me);
-			setToggleOn(false);
+    if(updateProfileError) {
+      window.alert('에러 발생!');
+    }
+  }, [updateProfileDone, inputs.name, inputs.email, inputs.petName, inputs.breed, inputs.age, inputs.introduce, me?.name, me?.email, me?.pet?.petName, me?.pet?.age, me?.pet?.breed, me?.pet?.introduce])
 
-			if (updateProfileError) {
-				window.alert('에러 발생!');
-			}
-		},
-		[
-			inputs.name,
-			inputs.email,
-			inputs.petName,
-			inputs.breed,
-			inputs.age,
-			inputs.introduce,
-		],
-	);
+  const onEditInfo = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    })
+    
+    console.log(inputs); 
+  }
+ 
+  // if (!me) {
+  //   return <div>Loading...</div>
+  // }
 
-	const onEditInfo = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		setInputs({
-			...inputs,
-			[e.target.id]: e.target.value,
-		});
-		console.log(inputs);
-	};
-	// const onSubmitPetPhoto = () => {
-
-	// }
-	return (
-		<div>
-			{/* {console.log(user)} */}
-
-			{me ? (
-				<>
-					{/* <div className="petImgSlider">
-          <input></input>
-          <button className="addImg">사진 추가</button>
-          <button className="deleteImg">사진 삭제</button>
-        </div> */}
-					<div className="UserPetInfo">
-						{!toggleOn ? (
-							<>
-								<div className="UserPetInfo">
-									<div>{me?.name}</div>
-									<div>{me?.email}</div>
-									<div>{`펫 이름: ${me?.pet?.petName}`}</div>
-									<div>{`펫의 종: ${me?.pet?.breed}`}</div>
-									<div>{`펫 나이: ${me?.pet?.age}`}</div>
-								</div>
-								<div className="petDetails">
-									<div>{`펫 소개: ${me?.pet?.introduce}`}</div>
-								</div>
-								<button className="editInfoBtn" onClick={onToggleOn}>
-									정보 수정
-								</button>
-							</>
-						) : (
-							<>
-								<div className="UserPetInfo">
-									<input
-										id="name"
-										placeholder={`이름: ${me?.name}`}
-										value={inputs.name}
-										onChange={onEditInfo}
-									/>
-									<input
-										id="email"
-										type="text"
-										placeholder={`이메일: ${me?.email}`}
-										value={inputs.email}
-										onChange={onEditInfo}
-									/>
-									<input
-										id="petName"
-										type="text"
-										placeholder={
-											me?.pet?.petName
-												? `펫 이름: ${me?.pet?.petName}`
-												: '펫 이름을 입력해주세요'
-										}
-										value={inputs.petName}
-										onChange={onEditInfo}
-									/>
-									<input
-										id="breed"
-										type="text"
-										placeholder={
-											me?.pet?.breed
-												? `펫의 종: ${me?.pet?.breed}`
-												: '애완동물의 종을 입력해주세요'
-										}
-										value={inputs.breed}
-										onChange={onEditInfo}
-									/>
-									<input
-										id="age"
-										type="number"
-										placeholder={
-											me?.pet?.age?.toString()
-												? `펫 나이: ${me?.pet?.age.toString()}`
-												: '펫 나이을 입력해주세요'
-										}
-										value={inputs.age ? inputs.age : '나이를 입력해주세요'}
-										onChange={onEditInfo}
-									/>
-								</div>
-								<div className="petDetails">
-									<textarea
-										id="introduce"
-										placeholder={
-											me?.pet?.introduce
-												? `펫 소개: ${me?.pet?.introduce}`
-												: '펫을 소개해주세요'
-										}
-										value={inputs.introduce}
-										onChange={onEditInfo}
-									/>
-								</div>
-
-								<button className="submitBtn" onClick={onSubmitUpdatedInfo}>
-									프로필 수정
-								</button>
-							</>
-						)}
-					</div>
-				</>
-			) : (
-				<div>Loading...</div>
-			)}
-		</div>
-	);
+  return (
+    
+    <div className={styles.bodyContainer}>
+      {/* {console.log(user)} */}
+      <>
+        {!changeInfoBtnOn ?     //  프로필 수정 누르지 않은 상태 
+          <>
+        <div className={styles.upperBodyContainer}>
+          <div className={styles.slider}>
+          <MyPetImgSlider />
+          </div>
+          
+          <div className={styles.userPetInfo}>
+            <div>{me?.name}</div>
+            <div>{me?.email}</div>
+            {me?.pet?.petName ? <div>펫 이름: {me?.pet?.petName}</div> : <div style={{color: 'red'}}>펫 이름:</div>}
+            {me?.pet?.breed ? <div>펫의 종: {me?.pet?.breed}</div> : <div style={{color: 'red'}}>펫의 종: 냥이 or 멍멍이</div>}
+            {me?.pet?.age?.toString() ? <div>펫 나이: {me?.pet?.age.toString()}</div> : <div style={{color: 'red'}}>펫 나이: </div>}
+          </div>
+          
+        </div>
+        <div className={styles.lowerBodyContainer}>
+          {me?.pet?.introduce ? <div>펫 소개: {me?.pet?.introduce}</div> : <div style={{color: 'red'}}>펫 소개: </div>}
+          <button className={styles.editInfoBtn} onClick={changeInfoOn}>프로필 수정</button>
+        </div>
+       
+          </>
+           :    // 프로필 수정 누른 상태 
+          <>          
+          <div className={styles.upperBodyContainer}>
+            <div className={styles.slider}>
+              <MyPetImgSlider />
+            </div>
+            <div className={styles.userPetInfo}>
+            {
+              !changeUserInfoOn ?     // 유저 정보 수정 누르지 않은 상태 
+                <button 
+                  onClick={() => {setChangeUserInfoOn(true)}}
+                >
+                유저정보 수정
+                </button>
+              :                       // 유저 정보 누른 상태 
+              <>
+                <input 
+                  id={styles.name}
+                  name="name"
+                  placeholder={`이름: ${me?.name}`} 
+                  value={inputs.name}
+                  
+                  onChange={onEditInfo}
+                />
+                <input 
+                  id={styles.email}
+                  name="email"
+                  type="text"
+                  placeholder={`이메일: ${me?.email}`}
+                  value={inputs.email}
+                  onChange={onEditInfo}
+                />
+              </>
+              }  
+              {editPetName ?
+                <input 
+                  id={styles.petName}
+                  name="petName"
+                  type="text"
+                  placeholder={me?.pet?.petName ? `펫의 이름: ${me?.pet?.petName}` : '펫의 이름을 입력해주세요'}
+                  value={inputs.petName}
+                  onChange={onEditInfo}
+                />
+                :
+                <div className={styles.editPetName}>
+                  <button style={{width: '40px'}} onClick={() => {setEditPetName(true); console.log(editPetName)}}>펫 이름</button>
+                  {me?.pet?.petName ? <div className={styles.name}>{me?.pet?.petName}</div> : <div className={styles.name} style={{color: 'red'}}>펫 이름:</div>}
+                </div>
+              }
+              {editBreed ?
+                <input 
+                  id={styles.breed}
+                  name="breed"
+                  type="text"
+                  placeholder={me?.pet?.breed ? `펫의 종: ${me?.pet?.breed}` : '펫의 종을 입력해주세요'}
+                  value={inputs.breed}
+                  onChange={onEditInfo}
+                />
+                : 
+                <div className={styles.editBreed}>
+                  <button style={{width: '40px'}} onClick={() => {setEditBreed(true)}}>펫의 종</button>
+                  {me?.pet?.breed ? <div className={styles.petBreed}>{me?.pet?.breed}</div> : <div className={styles.petBreed} style={{color: 'red'}}>펫의 종: 냥이 or 멍멍이</div>}
+                </div>
+              } 
+              {editAge ?
+                <input 
+                  id={styles.age}
+                  name="age"
+                  type="number"
+                  placeholder={me?.pet?.age?.toString() ? `펫 나이: ${me?.pet?.age.toString()}` : '펫의 나이을 입력해주세요'}
+                  value={inputs.age}
+                  onChange={onEditInfo}
+                />
+                :
+                <div className={styles.editAge}>
+                  <button style={{width: '40px'}} onClick={() => {setEditAge(true)}}>펫의 나이</button>
+                  {me?.pet?.age ? <div className={styles.petAge}>{me?.pet?.age}</div> : <div className={styles.petAge} style={{color: 'red'}}>펫 나이:</div>}
+                </div>
+              }
+              
+            </div>
+          </div>
+         
+          <div className={styles.lowerBodyContainer}>
+          {editIntroduce ? 
+            <textarea 
+              id={styles.introduce}
+              name="introduce"
+              placeholder={me?.pet?.introduce ? `펫 소개: ${me?.pet?.introduce}` : '펫을 소개해주세요'}
+              value={inputs.introduce}
+              onChange={onEditInfo}
+            />
+            :
+            <div className={styles.editIntroduce}>
+              <button style={{width: '40px'}} onClick={() => {setEditIntroduce(true)}}>펫 소개</button>
+              {me?.pet?.introduce ? <div className={styles.petIntroduce}>{me?.pet?.introduce}</div> : <div className={styles.petIntroduce} style={{color: 'red'}}>펫 소개:</div>}
+            </div>
+          } 
+            <div className={styles.onEditBtns}>
+              <button className="submitBtn" onClick={onSubmitUpdatedInfo}>프로필 수정</button>
+              <button className={styles.cancelEditProfile} type="button" onClick={() => router.reload()}>취소</button>
+            </div>
+          </div>
+        </>
+          }
+        
+      </>
+    </div>
+  )
 };
 
 // export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
