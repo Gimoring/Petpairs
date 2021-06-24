@@ -34,9 +34,9 @@ cursive;
 				0 9px 0 transparent,
 				0 10px 0 rgb(0, 0, 0, 0.4);
 
-			@for $i from 2 through 8 {
+			@for $i from 1 through 8 {
 				&:nth-child(#{$i}) {
-					animation-delay: $i * 1000ms;
+					animation-delay: $i + 1s;
 				}
 
 				@keyframes bounce {

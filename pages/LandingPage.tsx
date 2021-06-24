@@ -4,15 +4,19 @@ import { userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer/index';
 import wrapper from '../store/configure';
 import CommonHeader from '../components/CommonHeader';
+import styles from '../styles/layout.module.scss';
 import Section1 from '../components/LandingSection1';
+import Link from 'next/link';
+import Image from 'next/image';
+
 const LandingPage = () => {
 	const { me } = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
 
 	return (
-		<div className=''>
-			<CommonHeader />
-			<Section1 />
+		<div className="container">
+			<Section1/>
+			
 		</div>
 	);
 };
