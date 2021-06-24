@@ -26,6 +26,10 @@ export enum userActionTypes {
 	SIGN_UP_REQUEST = 'SIGN_UP_REQUEST',
 	SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS',
 	SIGN_UP_FAILURE = 'SIGN_UP_FAILURE',
+
+  DELETE_USER_REQUEST = 'DELETE_USER_REQUEST',
+  DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS',
+  DELETE_USER_FAILURE = 'DELETE_USER_FAILURE', 
 }
 
 export interface signupData {
@@ -139,6 +143,20 @@ export interface ILogOutFailure {
 	error: string;
 }
 
+export interface IDeleteUserRequest {
+  type: userActionTypes.DELETE_USER_REQUEST;
+  data: IUser['id'];
+}
+
+export interface IDeleteUserSuccess {
+  type: userActionTypes.DELETE_USER_SUCCESS; 
+  data: string; 
+}
+
+export interface IDeleteUserFailure {
+  type: userActionTypes.DELETE_USER_FAILURE; 
+  error: string; 
+}
 // 리듀서에서 리턴 값으로 쓰기위해 인터페이스 내보내기
 
 export type IUserActions =
@@ -159,4 +177,7 @@ export type IUserActions =
 	| IUpdateFailure
 	| IPostLikeRequest
 	| IPostLikeSuccess
-	| IPostLikeFailure;
+	| IPostLikeFailure
+  | IDeleteUserRequest
+  | IDeleteUserSuccess
+  | IDeleteUserFailure;

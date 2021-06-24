@@ -8,6 +8,7 @@ import { updateProfileData, userActionTypes } from "../interface/iUserActType";
 import { RootState } from "../reducer";
 import { dataSet } from "../reducer/user";
 import MyPetImgSlider from "../components/MyPetImgSlider";
+import DeleteUserModal from "../components/deleteUserModal";
 
 const MyPage = () => {
   const { me, updateProfileDone, updateProfileError } = useSelector((state: RootState) => 
@@ -22,6 +23,7 @@ const MyPage = () => {
   const [editBreed, setEditBreed] = useState(false); 
   const [editAge, setEditAge] = useState(false); 
   const [editIntroduce, setEditIntroduce] = useState(false); 
+  const [deleteUserOn, setDeleteUserOn] = useState(false); 
   const [inputs, setInputs] = useState({
     name: '', 
     email: '', 
@@ -31,9 +33,9 @@ const MyPage = () => {
     introduce: '',
   })
 
-  const onModalClose = useCallback(() => {
-    setModalOn(false);
-  }, []);
+  const handleModal = useCallback(() => {
+    setModalOn(!modalOn);
+  }, [modalOn]);
 
   const isValidEmail = (str: string) => {
     const regExp =
@@ -107,7 +109,9 @@ const MyPage = () => {
     
     console.log(inputs); 
   }
- 
+  const deleteUser = () => {
+    setDeleteUserOn(true); 
+  }
   // if (!me) {
   //   return <div>Loading...</div>
   // }
@@ -119,25 +123,48 @@ const MyPage = () => {
       <>
         {!changeInfoBtnOn ?     //  프로필 수정 누르지 않은 상태 
           <>
-        <div className={styles.upperBodyContainer}>
-          <div className={styles.slider}>
-          <MyPetImgSlider />
-          </div>
-          
-          <div className={styles.userPetInfo}>
-            <div>{me?.name}</div>
-            <div>{me?.email}</div>
-            {me?.pet?.petName ? <div>펫 이름: {me?.pet?.petName}</div> : <div style={{color: 'red'}}>펫 이름:</div>}
-            {me?.pet?.breed ? <div>펫의 종: {me?.pet?.breed}</div> : <div style={{color: 'red'}}>펫의 종: 냥이 or 멍멍이</div>}
-            {me?.pet?.age?.toString() ? <div>펫 나이: {me?.pet?.age.toString()}</div> : <div style={{color: 'red'}}>펫 나이: </div>}
-          </div>
-          
-        </div>
-        <div className={styles.lowerBodyContainer}>
-          {me?.pet?.introduce ? <div>펫 소개: {me?.pet?.introduce}</div> : <div style={{color: 'red'}}>펫 소개: </div>}
-          <button className={styles.editInfoBtn} onClick={changeInfoOn}>프로필 수정</button>
-        </div>
-       
+           
+            {modalOn && <DeleteUserModal handleModal={handleModal}/>} 
+            
+              <div className={styles.upperBodyContainer}>
+                <div className={styles.slider}>
+                <MyPetImgSlider />
+                </div>
+                
+                <div className={styles.userPetInfo}>
+                  <div>{me?.name}</div>
+                  <div>{me?.email}</div>
+                  {me?.pet?.petName ? 
+                    <div>펫 이름: {me?.pet?.petName}</div> 
+                    : 
+                    <div style={{color: 'red'}}>펫 이름:</div>
+                  }
+                  {me?.pet?.breed ? 
+                    <div>펫의 종: {me?.pet?.breed}</div> 
+                    : 
+                    <div style={{color: 'red'}}>펫의 종: 냥이 or 멍멍이</div>
+                  }
+                  {me?.pet?.age?.toString() ? 
+                    <div>펫 나이: {me?.pet?.age.toString()}</div> 
+                    : 
+                    <div style={{color: 'red'}}>펫 나이: </div>
+                  }
+                </div>
+                
+              </div>
+            
+              <div className={styles.lowerBodyContainer}>
+                {me?.pet?.introduce ? 
+                  <div>펫 소개: {me?.pet?.introduce}</div> 
+                  : 
+                  <div style={{color: 'red'}}>펫 소개: </div>
+                }
+                <button className={styles.editInfoBtn} onClick={changeInfoOn}>프로필 수정</button>
+              </div>
+              
+              <button className={styles.deleteUserBtn} onClick={handleModal}>회원 탈퇴</button> // onClick: 모달 띄우고 이메일 비번 확인 후 탈퇴
+         
+            
           </>
            :    // 프로필 수정 누른 상태 
           <>          
@@ -146,15 +173,14 @@ const MyPage = () => {
               <MyPetImgSlider />
             </div>
             <div className={styles.userPetInfo}>
-            {
-              !changeUserInfoOn ?     // 유저 정보 수정 누르지 않은 상태 
+              {!changeUserInfoOn ?     // 유저 정보 수정 누르지 않은 상태 
                 <button 
                   onClick={() => {setChangeUserInfoOn(true)}}
                 >
                 유저정보 수정
                 </button>
-              :                       // 유저 정보 누른 상태 
-              <>
+                :                       // 유저 정보 누른 상태 
+              <div className={styles.userInfoEdit}>
                 <input 
                   id={styles.name}
                   name="name"
@@ -171,8 +197,9 @@ const MyPage = () => {
                   value={inputs.email}
                   onChange={onEditInfo}
                 />
-              </>
+              </div>
               }  
+              <div className={styles.petInfoEdit}>
               {editPetName ?
                 <input 
                   id={styles.petName}
@@ -218,12 +245,12 @@ const MyPage = () => {
                   {me?.pet?.age ? <div className={styles.petAge}>{me?.pet?.age}</div> : <div className={styles.petAge} style={{color: 'red'}}>펫 나이:</div>}
                 </div>
               }
-              
+              </div>
             </div>
           </div>
          
           <div className={styles.lowerBodyContainer}>
-          {editIntroduce ? 
+            {editIntroduce ? 
             <textarea 
               id={styles.introduce}
               name="introduce"
@@ -236,14 +263,14 @@ const MyPage = () => {
               <button style={{width: '40px'}} onClick={() => {setEditIntroduce(true)}}>펫 소개</button>
               {me?.pet?.introduce ? <div className={styles.petIntroduce}>{me?.pet?.introduce}</div> : <div className={styles.petIntroduce} style={{color: 'red'}}>펫 소개:</div>}
             </div>
-          } 
+            } 
             <div className={styles.onEditBtns}>
               <button className="submitBtn" onClick={onSubmitUpdatedInfo}>프로필 수정</button>
               <button className={styles.cancelEditProfile} type="button" onClick={() => router.reload()}>취소</button>
             </div>
           </div>
         </>
-          }
+        }
         
       </>
     </div>

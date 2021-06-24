@@ -64,6 +64,9 @@ export interface IUserState {
 	postLikeLoading: boolean;
 	postLikeDone: boolean;
 	postLikeError: null | string;
+  deleteUserLoading: boolean;
+  deleteUserDone: boolean;
+  deleteUserError: null | string; 
 	me: null | IUser | IUserProfile;
 	users: null | IUser[];
 }
