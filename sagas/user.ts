@@ -94,6 +94,7 @@ function* updateProfile(action: IUpdateRequest) {
       error: err.response.data
     })
   }
+}
 
 function* watchSignUp() {
 	yield takeLatest(userActionTypes.SIGN_UP_REQUEST, signup);
@@ -118,4 +119,3 @@ function* watchProfileUpdate() {
 export default function* userSaga() {
 	yield all([fork(watchLogIn), fork(watchLogOut), fork(watchLoadProfile), fork(watchProfileUpdate), fork(watchSignUp)]);
 }
-

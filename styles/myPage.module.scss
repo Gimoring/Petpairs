@@ -1,0 +1,63 @@
+.bodyContainer {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	align-items: center;
+	.upperBodyContainer {
+		display: flex;
+		flex-direction: column;
+		width: 30%;
+		padding-top: 30px;
+		border: 2rem, solid, blue;
+		.slider {
+			display: flex;
+			border: 1px, solid, green;
+		}
+		.userPetInfo {
+			display: flex;
+			flex-direction: column;
+			border: 2rem, solid, blue;
+			.editPetName {
+				display: flex;
+				.name {
+					padding-left: 90px;
+					align-self: center;
+				}
+			}
+			.editBreed {
+				display: flex;
+				.petBreed {
+					padding-left: 90px;
+					align-self: center;
+				}
+			}
+			.editAge {
+				display: flex;
+				.petAge {
+					padding-left: 90px;
+					align-self: center;
+				}
+			}
+		}
+		.editInfoBtn {
+			display: flex;
+		}
+	}
+	.lowerBodyContainer {
+		display: flex;
+		width: 30%;
+		flex-direction: column;
+		.editIntroduce {
+			display: flex;
+			.petIntroduce {
+				padding-left: 90px;
+				align-self: center;
+			}
+		}
+		.onEditBtns {
+			display: flex;
+			justify-content: flex-end;
+			padding-top: 20px;
+		}
+	}
+}

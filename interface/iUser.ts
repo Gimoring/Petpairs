@@ -7,7 +7,7 @@ export interface IPet {
 	species: null | string[];
 	age: null | number;
 	matchedId: null | number[]; //매칭된 상대 펫 ID
-	fileName: null | string;
+	fileName: null | string[];
   introduce: null | string; 
 }
 
@@ -27,7 +27,7 @@ export interface IUserProfile {
       petName?: null | string; 
       breed?: null | string; 
       age?: null | number; 
-      fileName?: null | string; 
+      fileName?: null | string[]; 
       introduce?: null | string; 
     }
 }

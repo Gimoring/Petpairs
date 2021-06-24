@@ -45,7 +45,7 @@ export interface updateProfileData {
     petName?: null | string; 
     breed?: null | string; 
     age?: null | number; 
-    fileName?: null | string; 
+    fileName?: null | string[]; 
     introduce?: null | string; 
   }
 }
