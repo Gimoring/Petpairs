@@ -56,19 +56,19 @@ function* logOut() {
 
 
 function* loadUserProfile(action: ILoadProfileRequest) {
-  try {
-    // const result = yield call (loadUserAPI, action.data);
-    yield delay(1000);
-    yield put({
-      type: userActionTypes.LOAD_PROFILE_SUCCESS,
-      // data: result.data.user 
-    });
-  } catch (err) {
-    yield put({
-      type: userActionTypes.LOAD_PROFILE_FAILURE,
-      error: err.response.data
-    })
-  }
+	try {
+		// const result = yield call (loadUserAPI, action.data);
+		yield delay(1000);
+		yield put({
+			type: userActionTypes.LOAD_PROFILE_SUCCESS,
+			// data: result.data.user 
+		});
+	} catch (err) {
+		yield put({
+			type: userActionTypes.LOAD_PROFILE_FAILURE,
+			error: err.response.data
+		})
+	}
 }
 // async function updateUserAPI(userId: string, data: any, access_token: string) {
 //   return axios({
@@ -79,22 +79,22 @@ function* loadUserProfile(action: ILoadProfileRequest) {
 //   })
 // }
 function* updateProfile(action: IUpdateRequest) {
-  try {
-    // const result = yield call(updateUserAPI, action.data);
-    yield delay(1000); 
-    yield put({ 
-      type: userActionTypes.UPDATE_PROFILE_SUCCESS,
-      // data: result.data.user,
-      data: action.data
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: userActionTypes.UPDATE_PROFILE_FAILURE,
-      error: err.response.data
-    })
-  }
-
+	try {
+		// const result = yield call(updateUserAPI, action.data);
+		yield delay(1000);
+		yield put({
+			type: userActionTypes.UPDATE_PROFILE_SUCCESS,
+			// data: result.data.user,
+			data: action.data
+		});
+	} catch (err) {
+		console.error(err);
+		yield put({
+			type: userActionTypes.UPDATE_PROFILE_FAILURE,
+			error: err.response.data
+		})
+	}
+}
 function* watchSignUp() {
 	yield takeLatest(userActionTypes.SIGN_UP_REQUEST, signup);
 }
@@ -108,14 +108,13 @@ function* watchLogOut() {
 }
 
 function* watchLoadProfile() {
-  yield takeEvery(userActionTypes.LOAD_PROFILE_REQUEST, loadUserProfile);
-}
-  
-function* watchProfileUpdate() {
-  yield takeEvery(userActionTypes.UPDATE_PROFILE_REQUEST, updateProfile);
-}
-  
-export default function* userSaga() {
-	yield all([fork(watchLogIn), fork(watchLogOut), fork(watchLoadProfile), fork(watchProfileUpdate), fork(watchSignUp)]);
+	yield takeEvery(userActionTypes.LOAD_PROFILE_REQUEST, loadUserProfile);
 }
 
+function* watchProfileUpdate() {
+	yield takeEvery(userActionTypes.UPDATE_PROFILE_REQUEST, updateProfile);
+}
+
+export default function* userSaga() {
+	yield all([fork(watchLogIn), fork(watchLogOut), fork(watchLoadProfile), fork(watchProfileUpdate), fork(watchSignUp)]);
+};
