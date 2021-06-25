@@ -10,8 +10,10 @@ const Layout = ({ children, title = '' }: LayoutProps) => {
 		<div className="container">
 			<Head>
 				<title>{title}</title>
+				<meta charSet="utf-8" />
+            	<meta name="viewport" content="initial-scale=1.0, width=device-width" />
 			</Head>
-			<CommonHeader/>
+			{/* <CommonHeader/> */}
 			{/* <header>헤더( 네비게이션 바 )</header> */}
 			{children}
 			<footer>푸터(발)</footer>
