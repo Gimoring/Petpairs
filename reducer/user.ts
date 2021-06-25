@@ -1,5 +1,5 @@
 import { userActionTypes, IUserActions } from '../interface/iUserActType';
-import { IUser, IUserState, IUserProfile } from '../interface/iUser';
+import { IUser, IUserState } from '../interface/iUser';
 import { HYDRATE } from 'next-redux-wrapper';
 export const initialState: IUserState = {
 	logInLoading: false,
@@ -44,7 +44,7 @@ const dummyUser = (data: any): IUser => ({
 	},
 });
 
-export const dummyMe = (data: any): IUserProfile => ({
+export const dummyMe = (data: any): IUser => ({
 	name: '사람이된성시츄',
 	email: 'Hello@world.com',
 	pet: {
@@ -148,7 +148,7 @@ const reducer = (
           deleteUserDone: true,
           me: null, 
         };
-        
+
     case userActionTypes.DELETE_USER_FAILURE:
         return {
           ...state,

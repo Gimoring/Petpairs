@@ -1,6 +1,6 @@
 // 1. 액션타입 지정해주기
 
-import { IPet, IUser, IUserProfile } from './iUser';
+import { IPet, IUser } from './iUser';
 
 export enum userActionTypes {
 	LOG_IN_REQUEST = 'LOG_IN_REQUEST',
@@ -14,10 +14,6 @@ export enum userActionTypes {
 	POST_LIKE_REQUEST = 'POST_LIKE_REQUEST',
 	POST_LIKE_SUCCESS = 'POST_LIKE_SUCCESS',
 	POST_LIKE_FAILURE = 'POST_LIKE_FAILURE',
-
-	LOAD_PROFILE_REQUEST = 'LOAD_PROFILE_REQUEST',
-	LOAD_PROFILE_SUCCESS = 'LOAD_PROFILE_SUCCESS',
-	LOAD_PROFILE_FAILURE = 'LOAD_PROFILE_FAILURE',
 
 	UPDATE_PROFILE_REQUEST = 'UPDATE_PROFILE_REQUEST',
 	UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS',
@@ -104,20 +100,20 @@ export interface IPostLikeFailure {
 	error: string;
 }
 
-export interface ILoadProfileRequest {
-	type: userActionTypes.LOAD_PROFILE_REQUEST;
-	data: IUser['id'];
-}
+// export interface ILoadProfileRequest {
+// 	type: userActionTypes.LOAD_PROFILE_REQUEST;
+// 	data: IUser['id'];
+// }
 
-export interface ILoadProfileSuccess {
-	type: userActionTypes.LOAD_PROFILE_SUCCESS;
-	data: IUserProfile;
-}
+// export interface ILoadProfileSuccess {
+// 	type: userActionTypes.LOAD_PROFILE_SUCCESS;
+// 	data: IUser;
+// }
 
-export interface ILoadProfileFailure {
-	type: userActionTypes.LOAD_PROFILE_FAILURE;
-	error: string;
-}
+// export interface ILoadProfileFailure {
+// 	type: userActionTypes.LOAD_PROFILE_FAILURE;
+// 	error: string;
+// }
 
 export interface IUpdateRequest {
 	type: userActionTypes.UPDATE_PROFILE_REQUEST;
@@ -126,7 +122,7 @@ export interface IUpdateRequest {
 
 export interface IUpdateSuccess {
 	type: userActionTypes.UPDATE_PROFILE_SUCCESS;
-	data: IUserProfile;
+	data: IUser;
 }
 
 export interface IUpdateFailure {
@@ -169,9 +165,6 @@ export type IUserActions =
 	| ILogOutRequest
 	| ILogOutSuccess
 	| ILogOutFailure
-	| ILoadProfileRequest
-	| ILoadProfileSuccess
-	| ILoadProfileFailure
 	| IUpdateRequest
 	| IUpdateSuccess
 	| IUpdateFailure
