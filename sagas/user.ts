@@ -10,10 +10,10 @@ import {
 import {
 	ISignUpRequest,
 	ILogInRequest,
-	ILoadProfileRequest,
 	IUpdateRequest,
 	userActionTypes,
 	IPostLikeRequest,
+  IDeleteUserRequest,
 } from '../interface/iUserActType';
 
 function* logIn(action: ILogInRequest) {
@@ -68,22 +68,10 @@ function* logOut() {
 	}
 }
 
-function* loadUserProfile(action: ILoadProfileRequest) {
-	try {
-		// const result = yield call (loadUserAPI, action.data);
-		yield delay(1000);
-		yield put({
-			type: userActionTypes.LOAD_PROFILE_SUCCESS,
-			// data: result.data.user
-		});
-	} catch (err) {
-		yield put({
-			type: userActionTypes.LOAD_PROFILE_FAILURE,
-			error: err.response.data,
-		});
-	}
+interface IUpdateUser {
+  id: number; 
 }
-// async function updateUserAPI(userId: string, data: any, access_token: string) {
+// async function updateUserAPI(data: IUpdateUser, access_token: string) {
 //   return axios({
 //     method: 'PATCH',
 //     url:,
@@ -138,6 +126,32 @@ function* postLike(action: IPostLikeRequest) {
 	}
 }
 
+interface IDeleteUser {
+  id: number;
+}
+
+function deleteUserApi(data: IDeleteUser) {
+  return axios.post('url', data)
+}
+
+function* deleteUser(action: IDeleteUserRequest) {
+  try {
+    // const result = yield call(deleteUserApi, action.data)
+    yield delay(1000);
+    yield put({
+      type: userActionTypes.DELETE_USER_SUCCESS,
+      data: action.data,
+      // data: result.data
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: userActionTypes.DELETE_USER_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchSignUp() {
 	yield takeLatest(userActionTypes.SIGN_UP_REQUEST, signup);
 }
@@ -150,10 +164,6 @@ function* watchLogOut() {
 	yield takeLatest(userActionTypes.LOG_OUT_REQUEST, logOut);
 }
 
-function* watchLoadProfile() {
-	yield takeEvery(userActionTypes.LOAD_PROFILE_REQUEST, loadUserProfile);
-}
-
 function* watchProfileUpdate() {
 	yield takeEvery(userActionTypes.UPDATE_PROFILE_REQUEST, updateProfile);
 }
@@ -162,13 +172,17 @@ function* watchPostLike() {
 	yield takeLatest(userActionTypes.POST_LIKE_REQUEST, postLike);
 }
 
+function* watchDeleteUser() {
+  yield takeEvery(userActionTypes.DELETE_USER_REQUEST, deleteUser);
+}
+
 export default function* userSaga(): Generator {
 	yield all([
 		fork(watchLogIn),
 		fork(watchLogOut),
-		fork(watchLoadProfile),
 		fork(watchProfileUpdate),
 		fork(watchSignUp),
 		fork(watchPostLike),
+    fork(watchDeleteUser), 
 	]);
 }

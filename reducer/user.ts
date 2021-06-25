@@ -1,5 +1,5 @@
 import { userActionTypes, IUserActions } from '../interface/iUserActType';
-import { IUser, IUserState, IUserProfile } from '../interface/iUser';
+import { IUser, IUserState } from '../interface/iUser';
 import { HYDRATE } from 'next-redux-wrapper';
 export const initialState: IUserState = {
 	logInLoading: false,
@@ -20,6 +20,9 @@ export const initialState: IUserState = {
 	postLikeLoading: false,
 	postLikeDone: false,
 	postLikeError: null,
+  deleteUserLoading: false,
+  deleteUserDone: false,
+  deleteUserError: null, 
 	me: null,
 	users: null,
 };
@@ -41,7 +44,7 @@ const dummyUser = (data: any): IUser => ({
 	},
 });
 
-export const dummyMe = (data: any): IUserProfile => ({
+export const dummyMe = (data: any): IUser => ({
 	name: '사람이된성시츄',
 	email: 'Hello@world.com',
 	pet: {
@@ -130,6 +133,31 @@ const reducer = (
 				postLikeError: action.error,
 			};
 
+    case userActionTypes.DELETE_USER_REQUEST:
+        return {
+          ...state,
+          deleteUserLoading: true,
+          deleteUserDone: false,
+          deleteUserError: null,
+        };
+    
+    case userActionTypes.DELETE_USER_SUCCESS:
+        return {
+          ...state,
+          deleteUserLoading: false,
+          deleteUserDone: true,
+          me: null, 
+        };
+
+    case userActionTypes.DELETE_USER_FAILURE:
+        return {
+          ...state,
+          deleteUserLoading: false,
+          deleteUserDone: true,
+          deleteUserError: action.error
+        };
+    
+    
 		// case userActionTypes.LOAD_PROFILE_REQUEST:
 		// 	return {
 		// 		...state,

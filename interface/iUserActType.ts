@@ -1,6 +1,6 @@
 // 1. 액션타입 지정해주기
 
-import { IPet, IUser, IUserProfile } from './iUser';
+import { IPet, IUser } from './iUser';
 
 export enum userActionTypes {
 	LOG_IN_REQUEST = 'LOG_IN_REQUEST',
@@ -15,10 +15,6 @@ export enum userActionTypes {
 	POST_LIKE_SUCCESS = 'POST_LIKE_SUCCESS',
 	POST_LIKE_FAILURE = 'POST_LIKE_FAILURE',
 
-	LOAD_PROFILE_REQUEST = 'LOAD_PROFILE_REQUEST',
-	LOAD_PROFILE_SUCCESS = 'LOAD_PROFILE_SUCCESS',
-	LOAD_PROFILE_FAILURE = 'LOAD_PROFILE_FAILURE',
-
 	UPDATE_PROFILE_REQUEST = 'UPDATE_PROFILE_REQUEST',
 	UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS',
 	UPDATE_PROFILE_FAILURE = 'UPDATE_PROFILE_FAILURE',
@@ -26,6 +22,10 @@ export enum userActionTypes {
 	SIGN_UP_REQUEST = 'SIGN_UP_REQUEST',
 	SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS',
 	SIGN_UP_FAILURE = 'SIGN_UP_FAILURE',
+
+  DELETE_USER_REQUEST = 'DELETE_USER_REQUEST',
+  DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS',
+  DELETE_USER_FAILURE = 'DELETE_USER_FAILURE', 
 }
 
 export interface signupData {
@@ -100,20 +100,20 @@ export interface IPostLikeFailure {
 	error: string;
 }
 
-export interface ILoadProfileRequest {
-	type: userActionTypes.LOAD_PROFILE_REQUEST;
-	data: IUser['id'];
-}
+// export interface ILoadProfileRequest {
+// 	type: userActionTypes.LOAD_PROFILE_REQUEST;
+// 	data: IUser['id'];
+// }
 
-export interface ILoadProfileSuccess {
-	type: userActionTypes.LOAD_PROFILE_SUCCESS;
-	data: IUserProfile;
-}
+// export interface ILoadProfileSuccess {
+// 	type: userActionTypes.LOAD_PROFILE_SUCCESS;
+// 	data: IUser;
+// }
 
-export interface ILoadProfileFailure {
-	type: userActionTypes.LOAD_PROFILE_FAILURE;
-	error: string;
-}
+// export interface ILoadProfileFailure {
+// 	type: userActionTypes.LOAD_PROFILE_FAILURE;
+// 	error: string;
+// }
 
 export interface IUpdateRequest {
 	type: userActionTypes.UPDATE_PROFILE_REQUEST;
@@ -122,7 +122,7 @@ export interface IUpdateRequest {
 
 export interface IUpdateSuccess {
 	type: userActionTypes.UPDATE_PROFILE_SUCCESS;
-	data: IUserProfile;
+	data: IUser;
 }
 
 export interface IUpdateFailure {
@@ -139,6 +139,20 @@ export interface ILogOutFailure {
 	error: string;
 }
 
+export interface IDeleteUserRequest {
+  type: userActionTypes.DELETE_USER_REQUEST;
+  data: IUser['id'];
+}
+
+export interface IDeleteUserSuccess {
+  type: userActionTypes.DELETE_USER_SUCCESS; 
+  data: string; 
+}
+
+export interface IDeleteUserFailure {
+  type: userActionTypes.DELETE_USER_FAILURE; 
+  error: string; 
+}
 // 리듀서에서 리턴 값으로 쓰기위해 인터페이스 내보내기
 
 export type IUserActions =
@@ -151,12 +165,12 @@ export type IUserActions =
 	| ILogOutRequest
 	| ILogOutSuccess
 	| ILogOutFailure
-	| ILoadProfileRequest
-	| ILoadProfileSuccess
-	| ILoadProfileFailure
 	| IUpdateRequest
 	| IUpdateSuccess
 	| IUpdateFailure
 	| IPostLikeRequest
 	| IPostLikeSuccess
-	| IPostLikeFailure;
+	| IPostLikeFailure
+  | IDeleteUserRequest
+  | IDeleteUserSuccess
+  | IDeleteUserFailure;
