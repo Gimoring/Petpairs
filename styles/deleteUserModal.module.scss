@@ -24,7 +24,7 @@
 
 		.delUserModalContents {
 			margin: 0 auto;
-			width: 100%;
+			width: 90%;
 			height: 100%;
 			position: relative;
 			padding: 0 20px 32px;
@@ -32,11 +32,12 @@
 			display: flex;
 			// justify-content: center;
 			flex-direction: column;
-			.logoIcon {
+			.logoImage {
 				display: flex;
-				width: 50px;
+				width: 100px;
+				height: 100px;
 				margin: 0 auto;
-				flex-grow: 1;
+				// flex-grow: 1;
 			}
 
 			.alertMessage {
