@@ -9,10 +9,6 @@ import styles from '../styles/signUpModal.module.scss';
 
 interface ChildProps {
 	handleShowModal: () => void;
-	handleLoginModal: () => void;
-}
-interface LoginProps {
-	handleLoginModal: () => void;
 }
 
 const SignupModal: React.FC<ChildProps> = (props) => {
@@ -55,83 +51,77 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 	return (
 		<>
 			<div className={styles.modal} onClick={props.handleShowModal}>
-				<div
-					onClick={(e) => {
-						e.stopPropagation();
-					}}
-				>
-					<div className={styles.signupModal}>
-						<span className={styles.close} onClick={props.handleShowModal}>
-							&times;
-						</span>
-						<div
-							className={styles.modalContents}
-							onClick={props.handleShowModal}
-						>
-							<Image
-								className={styles.signinIcon}
-								src={mainLogo}
-								alt="headerIMG"
-								width={80}
-								height={100}
-							/>
-							<input
-								name="name"
-								className={styles.signupName}
-								type="text"
-								placeholder="이름"
-								onChange={inputChangeHandler}
-							/>
-							<input
-								name="email"
-								className={styles.signupId}
-								type="text"
-								placeholder="아이디"
-								onChange={inputChangeHandler}
-							/>
-							<input
-								name="password"
-								className={styles.signupPw}
-								type="password"
-								placeholder="비밀번호"
-								onChange={inputChangeHandler}
-							/>
-							<div className={styles.signupMid}>
-								<button className={styles.signupBtn} onClick={submitHandler}>
-									{' '}
-									회원가입{' '}
-								</button>
-								<div className={styles.socialBox}>
-									<div className={styles.kakao}>
-										{/* <image
+				{/* <div onClick={e => {e.stopPropagation()}}> */}
+				<div className={styles.signupModal}>
+					<span className={styles.close} onClick={props.handleShowModal}>
+						&times;
+					</span>
+					<div className={styles.modalContents} onClick={props.handleShowModal}>
+						<Image
+							className={styles.signinIcon}
+							src={mainLogo}
+							alt="headerIMG"
+							width={80}
+							height={80}
+							objectFit="none"
+						/>
+						<input
+							name="name"
+							className={styles.signupName}
+							type="text"
+							placeholder="이름"
+							onChange={inputChangeHandler}
+						/>
+						<input
+							name="email"
+							className={styles.signupId}
+							type="text"
+							placeholder="아이디"
+							onChange={inputChangeHandler}
+						/>
+						<input
+							name="password"
+							className={styles.signupPw}
+							type="password"
+							placeholder="비밀번호"
+							onChange={inputChangeHandler}
+						/>
+						<div className={styles.signupMid}>
+							<button className={styles.signupBtn} onClick={submitHandler}>
+								{' '}
+								회원가입{' '}
+							</button>
+							<div className={styles.socialBox}>
+								<div className={styles.kakao}>
+									{/* <image
                         className={styles.kakaoLogo}
                         src="/Images/SignIn/kakao.png"
                       /> */}
-										<div className={styles.kakaoText}>
-											카카오 계정으로 신규가입
-										</div>
+									<div className={styles.kakaoText}>
+										카카오 계정으로 신규가입
 									</div>
-									<div className={styles.google}>
-										{/* <Image
+								</div>
+								<div className={styles.google}>
+									{/* <Image
                         className={styles.googleLogo}
                         src="/Images/SignIn/facebook.png"
                       /> */}
-										<div className={styles.googleText}>
-											구글 계정으로 신규가입
-										</div>
+									<div className={styles.googleText}>
+										구글 계정으로 신규가입
 									</div>
 								</div>
-								<div className={styles.signupEnd}>
-									<div className={styles.signupLine}>
-										새로운 친구들을 찾아볼까요?
-										<Link href="/login">로그인</Link>
-									</div>
+							</div>
+							<div className={styles.signupEnd}>
+								<div className={styles.signupLine}>
+									새로운 친구들을 찾아볼까요?
+									<Link href="/login">로그인</Link>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			{/* </div> */}
 		</>
 	);
 };
