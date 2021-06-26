@@ -73,12 +73,14 @@ const MyPage = () => {
 				window.alert('냥이 또는 멍멍이로 명시해주세요!');
 			} else if (!isValidEmail(inputs.email)) {
 				window.alert('올바른 이메일 형태가 아닙니다');
-			} else if (!me?.pet?.fileName) {
-				window.alert('펫 사진이 필요해요!');
+
+				// else if (!me?.pet?.fileName) {
+				// 	window.alert('펫 사진이 필요해요!');
 			} else {
 				dispatch({
 					type: userActionTypes.UPDATE_PROFILE_REQUEST,
 					data: {
+						id: me?.id,
 						name: inputs.name || me?.name,
 						email: inputs.email || me?.email,
 						pet: {
@@ -145,58 +147,75 @@ const MyPage = () => {
 			{/* {console.log(user)} */}
 			<>
 				{!changeInfoBtnOn ? ( //  프로필 수정 누르지 않은 상태
-					<>
+					<section className={styles.bodyWhole}>
 						{modalOn && <DeleteUserModal handleModal={handleModal} />}
 
 						<div className={styles.upperBodyContainer}>
 							<div className={styles.slider}>
 								<MyPetImgSlider />
 							</div>
-
-							<div className={styles.userPetInfo}>
-								<div>{me?.name}</div>
-								<div>{me?.email}</div>
-								{me?.pet?.petName ? (
-									<div>펫 이름: {me?.pet?.petName}</div>
-								) : (
-									<div style={{ color: 'red' }}>펫 이름:</div>
-								)}
-								{me?.pet?.breed ? (
-									<div>펫의 종: {me?.pet?.breed}</div>
-								) : (
-									<div style={{ color: 'red' }}>펫의 종: 냥이 or 멍멍이</div>
-								)}
-								{me?.pet?.age?.toString() ? (
-									<div>펫 나이: {me?.pet?.age.toString()}</div>
-								) : (
-									<div style={{ color: 'red' }}>펫 나이: </div>
-								)}
-							</div>
 						</div>
 
 						<div className={styles.lowerBodyContainer}>
-							{me?.pet?.introduce ? (
-								<div>펫 소개: {me?.pet?.introduce}</div>
-							) : (
-								<div style={{ color: 'red' }}>펫 소개: </div>
-							)}
-							<button className={styles.editInfoBtn} onClick={changeInfoOn}>
-								프로필 수정
-							</button>
+							<div
+								className={styles.userPetInfo}
+								style={{ paddingRight: '50px' }}
+							>
+								<div className={styles.userInfo}>
+									<div>{me?.name}</div>
+									<div>{me?.email}</div>
+								</div>
+								<div className={styles.petInfo}>
+									{me?.pet?.petName ? (
+										<div>펫 이름: {me?.pet?.petName}</div>
+									) : (
+										<div style={{ color: 'red' }}>펫 이름:</div>
+									)}
+									{me?.pet?.breed ? (
+										<div>펫의 종: {me?.pet?.breed}</div>
+									) : (
+										<div style={{ color: 'red' }}>펫의 종: 냥이 or 멍멍이</div>
+									)}
+									{me?.pet?.age?.toString() ? (
+										<div>펫 나이: {me?.pet?.age.toString()}</div>
+									) : (
+										<div style={{ color: 'red' }}>펫 나이: </div>
+									)}
+									<div className={styles.introduceBox}>
+										{me?.pet?.introduce ? (
+											<div className={styles.introduce}>
+												펫 소개: {me?.pet?.introduce}
+											</div>
+										) : (
+											<div
+												className={styles.introduce}
+												style={{ color: 'red' }}
+											>
+												펫 소개: ffdsadaffdsfffdsadaffdsfssffdsa
+											</div>
+										)}
+									</div>
+								</div>
+								<button className={styles.editInfoBtn} onClick={changeInfoOn}>
+									프로필 수정
+								</button>
+								<button className={styles.deleteUserBtn} onClick={handleModal}>
+									회원 탈퇴
+								</button>
+							</div>
 						</div>
-
-						<button className={styles.deleteUserBtn} onClick={handleModal}>
-							회원 탈퇴
-						</button>
-					</>
+					</section>
 				) : (
 					// 프로필 수정 누른 상태
-					<>
+					<section className={styles.bodyWhole}>
 						<div className={styles.upperBodyContainer}>
 							<div className={styles.slider}>
 								<MyPetImgSlider />
 							</div>
-							<div className={styles.userPetInfo}>
+						</div>
+
+						<div className={styles.lowerBodyContainer}>
+							<div className={styles.editUserPetInfo}>
 								{!changeUserInfoOn ? ( // 유저 정보 수정 누르지 않은 상태
 									<button
 										onClick={() => {
@@ -327,46 +346,44 @@ const MyPage = () => {
 										</div>
 									)}
 								</div>
-							</div>
-						</div>
 
-						<div className={styles.lowerBodyContainer}>
-							{editIntroduce ? (
-								<textarea
-									id={styles.introduce}
-									name="introduce"
-									placeholder={
-										me?.pet?.introduce
-											? `펫 소개: ${me?.pet?.introduce}`
-											: '펫을 소개해주세요'
-									}
-									value={inputs.introduce}
-									onChange={onEditInfo}
-								/>
-							) : (
-								<div className={styles.editIntroduce}>
-									<button
-										style={{ width: '40px' }}
-										onClick={() => {
-											setEditIntroduce(true);
-										}}
-									>
-										펫 소개
-									</button>
-									{me?.pet?.introduce ? (
-										<div className={styles.petIntroduce}>
-											{me?.pet?.introduce}
-										</div>
-									) : (
-										<div
-											className={styles.petIntroduce}
-											style={{ color: 'red' }}
+								{editIntroduce ? (
+									<textarea
+										id={styles.introduce}
+										name="introduce"
+										placeholder={
+											me?.pet?.introduce
+												? `펫 소개: ${me?.pet?.introduce}`
+												: '펫을 소개해주세요'
+										}
+										value={inputs.introduce}
+										onChange={onEditInfo}
+									/>
+								) : (
+									<div className={styles.editIntroduce}>
+										<button
+											style={{ width: '40px' }}
+											onClick={() => {
+												setEditIntroduce(true);
+											}}
 										>
-											펫 소개:
-										</div>
-									)}
-								</div>
-							)}
+											펫 소개
+										</button>
+										{me?.pet?.introduce ? (
+											<div className={styles.petIntroduce}>
+												{me?.pet?.introduce}
+											</div>
+										) : (
+											<div
+												className={styles.petIntroduce}
+												style={{ color: 'red' }}
+											>
+												펫 소개:
+											</div>
+										)}
+									</div>
+								)}
+							</div>
 							<div className={styles.onEditBtns}>
 								<button className="submitBtn" onClick={onSubmitUpdatedInfo}>
 									프로필 수정
@@ -380,7 +397,7 @@ const MyPage = () => {
 								</button>
 							</div>
 						</div>
-					</>
+					</section>
 				)}
 			</>
 		</div>

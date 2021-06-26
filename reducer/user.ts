@@ -11,18 +11,18 @@ export const initialState: IUserState = {
 	signUpLoading: false,
 	signUpDone: false,
 	signUpError: null,
-	loadProfileLoading: false,
-	loadProfileDone: false,
-	loadProfileError: null,
 	updateProfileLoading: false,
 	updateProfileDone: false,
 	updateProfileError: null,
+	updatePetImageLoading: false,
+	updatePetImageDone: false,
+	updatePetImageError: null,
 	postLikeLoading: false,
 	postLikeDone: false,
 	postLikeError: null,
-  deleteUserLoading: false,
-  deleteUserDone: false,
-  deleteUserError: null, 
+	deleteUserLoading: false,
+	deleteUserDone: false,
+	deleteUserError: null,
 	me: null,
 	users: null,
 };
@@ -133,80 +133,79 @@ const reducer = (
 				postLikeError: action.error,
 			};
 
-    case userActionTypes.DELETE_USER_REQUEST:
-        return {
-          ...state,
-          deleteUserLoading: true,
-          deleteUserDone: false,
-          deleteUserError: null,
-        };
-    
-    case userActionTypes.DELETE_USER_SUCCESS:
-        return {
-          ...state,
-          deleteUserLoading: false,
-          deleteUserDone: true,
-          me: null, 
-        };
+		case userActionTypes.DELETE_USER_REQUEST:
+			return {
+				...state,
+				deleteUserLoading: true,
+				deleteUserDone: false,
+				deleteUserError: null,
+			};
 
-    case userActionTypes.DELETE_USER_FAILURE:
-        return {
-          ...state,
-          deleteUserLoading: false,
-          deleteUserDone: true,
-          deleteUserError: action.error
-        };
-    
-    
-		// case userActionTypes.LOAD_PROFILE_REQUEST:
-		// 	return {
-		// 		...state,
-		// 		loadProfileLoading: true,
-		// 		loadProfileDone: false,
-		// 		loadProfileError: null,
-		// 	};
+		case userActionTypes.DELETE_USER_SUCCESS:
+			return {
+				...state,
+				deleteUserLoading: false,
+				deleteUserDone: true,
+				me: null,
+			};
 
-		// case userActionTypes.LOAD_PROFILE_SUCCESS:
-		// 	return {
-		// 		...state,
-		// 		loadProfileLoading: false,
-		// 		loadProfileDone: true,
-		// 		loadProfileError: null,
-		// 		me: action.data,
-		// 	};
+		case userActionTypes.DELETE_USER_FAILURE:
+			return {
+				...state,
+				deleteUserLoading: false,
+				deleteUserDone: true,
+				deleteUserError: action.error,
+			};
 
-		// case userActionTypes.LOAD_PROFILE_FAILURE:
-		// 	return {
-		// 		...state,
-		// 		loadProfileLoading: false,
-		// 		loadProfileError: action.error,
-		// 	};
+		case userActionTypes.UPDATE_PROFILE_REQUEST:
+			return {
+				...state,
+				updateProfileLoading: true,
+				updateProfileDone: false,
+				updateProfileError: null,
+			};
 
-		// case userActionTypes.UPDATE_PROFILE_REQUEST:
-		// 	return {
-		// 		...state,
-		// 		updateProfileLoading: true,
-		// 		updateProfileDone: false,
-		// 		updateProfileError: null,
-		// 		me: action.data,
-		// 	};
+		case userActionTypes.UPDATE_PROFILE_SUCCESS:
+			return {
+				...state,
+				updateProfileLoading: false,
+				updateProfileDone: true,
+				me: action.data,
+			};
 
-		// case userActionTypes.UPDATE_PROFILE_SUCCESS:
-		// 	return {
-		// 		...state,
-		// 		updateProfileLoading: false,
-		// 		updateProfileDone: true,
-		// 		updateProfileError: null,
-		// 		me: action.data,
-		// 	};
+		case userActionTypes.UPDATE_PROFILE_FAILURE:
+			return {
+				...state,
+				updateProfileLoading: false,
+				updateProfileError: action.error,
+			};
 
-		// case userActionTypes.UPDATE_PROFILE_FAILURE:
-		// 	return {
-		// 		...state,
-		// 		updateProfileLoading: false,
-		// 		updateProfileError: action.error,
-		// 	};
-
+		case userActionTypes.UPDATE_PETIMAGE_REQUEST:
+			return {
+				...state,
+				updatePetImageLoading: true,
+				updatePetImageDone: false,
+				updatePetImageError: null,
+			};
+		case userActionTypes.UPDATE_PETIMAGE_SUCCESS:
+			return {
+				...state,
+				updatePetImageLoading: false,
+				updatePetImageDone: true,
+				me: {
+					...state.me,
+					pet: {
+						...state.me?.pet,
+						fileName: state.me?.pet?.fileName?.concat(action.data),
+					},
+				},
+			};
+		case userActionTypes.UPDATE_PETIMAGE_FAILURE:
+			return {
+				...state,
+				updatePetImageLoading: false,
+				updatePetImageError: action.error,
+			};
 		case userActionTypes.LOG_OUT_REQUEST:
 			return {
 				...state,

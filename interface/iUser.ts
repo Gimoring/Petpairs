@@ -32,18 +32,18 @@ export interface IUserState {
 	signUpLoading: boolean;
 	signUpDone: boolean;
 	signUpError: null | string;
-	loadProfileLoading: boolean;
-	loadProfileDone: boolean;
-	loadProfileError: null | string;
 	updateProfileLoading: boolean;
 	updateProfileDone: boolean;
 	updateProfileError: null | string;
+	updatePetImageLoading: boolean;
+	updatePetImageDone: boolean;
+	updatePetImageError: null | string;
 	postLikeLoading: boolean;
 	postLikeDone: boolean;
 	postLikeError: null | string;
-  deleteUserLoading: boolean;
-  deleteUserDone: boolean;
-  deleteUserError: null | string; 
+	deleteUserLoading: boolean;
+	deleteUserDone: boolean;
+	deleteUserError: null | string;
 	me: null | IUser;
 	users: null | IUser[];
 }

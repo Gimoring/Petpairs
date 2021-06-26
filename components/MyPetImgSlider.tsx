@@ -1,24 +1,109 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, {
+	useCallback,
+	useState,
+	useEffect,
+	ReactHTMLElement,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer';
 import styles from '../styles/myPetSlider.module.scss';
 
+// interface FormDataValue {
+//   uri: string;
+//   name: string;
+//   type: string;
+// }
+
+// interface FormData {
+//   append(name: string, value: FormDataValue, fileName?: string): void;
+//   set(name: string, value: FormDataValue, fileName?: string): void;
+// }
+
 const MyPetImgSlider = () => {
 	const { me } = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
 	const [current, setCurrent] = useState(0);
-	// const length = me?.pet?.fileName?.length;
+	const [imgName, setImgName] = useState('');
+	const [imgFileList, setImgFileList] = useState<File[]>([]);
+	// const [selectedFiles, setSelectedFiles] = useState<File["name"][]>(['']);
+	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+	const [currentSelected, setCurrentSelected] = useState(0);
 
-	// const [petImgs, setPetImgs] = useState(['']);
+	const handleChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			e.preventDefault();
+			if (e.target.files && e.target.files.length === 1) {
+				const filesArray = [];
 
-	// useEffect(() => {
-	//   if(me?.pet?.fileName) {
-	//     setPetImgs(me?.pet?.fileName)
-	//   }
-	// }, [me?.pet?.fileName])
+				// filesArray = ...e.target.files
+				for (let i = 0; i < e.target.files.length; i++) {
+					let imageFile = e.target.files[i];
+					console.log(e.target.files[0]);
 
-	const handleSubmit = useCallback((e) => {}, []);
+					filesArray.push(e.target.files[i]);
+					console.log(e.target.files[i]);
+					console.log(imageFile);
+				}
+				console.log(filesArray);
+				setImgFileList([...imgFileList, ...filesArray]); // 각 이미지 파일 담은 배열
+				console.log(imgFileList);
+			}
+			if (e.target.files && e.target.files.length > 1) {
+				const multipleFilesArray: any[] = [];
+				const newFilesArray = multipleFilesArray.concat(e.target.files);
+				console.log(newFilesArray);
+				setImgFileList([...newFilesArray]);
+				// setImgFileList((existing) => existing.concat(newFilesArray))
+				console.log(imgFileList);
+			}
+
+			if (
+				(e.target.files && e.target.files.length > 4) ||
+				imgFileList.length > 4
+			) {
+				window.alert('사진은 4장까지 올릴 수 있습니다! 다시 올려주세요');
+				setImgFileList([]);
+			}
+			console.log(imgFileList);
+		},
+		[imgFileList, setImgFileList],
+	);
+
+	useEffect(() => {
+		// if (imgFileList.length < 5) {
+		handleChange;
+
+		console.log(imgFileList);
+		// }
+	}, [imgFileList, setImgFileList]);
+
+	const handleSubmit = useCallback(() => {
+		if (imgFileList) {
+			const formData = new FormData();
+			for (var i = 0; i < imgFileList.length + 1; i++) {
+				// 배열로 보내짐
+				formData.append('imageFile', imgFileList[i]); //
+			}
+			console.log(formData);
+			dispatch({
+				type: userActionTypes.UPDATE_PETIMAGE_REQUEST,
+				data: {
+					id: me?.id,
+					formData: formData,
+				},
+			});
+			// dispatch()
+			// 보낼때 imgFile들 담은 배열 (formData) 를 보낸다
+			// 받을때 : fileName, 즉 파일의 이름들 담은 배열을 받는다
+			// 받은걸 디스플레이 하는건 다음 로딩 시에도 뜨게 하기 위함
+			// 코드:
+			// 사진 추가시 프리뷰 뜨게 하기
+			// 코드:
+		} else {
+			window.alert('사진을 추가해주세요!');
+		}
+	}, [imgFileList]);
 
 	const petImgs = [
 		{
@@ -102,12 +187,14 @@ const MyPetImgSlider = () => {
 											className={styles.card}
 											style={{ backgroundImage: `url(${petImg.fileName})` }}
 										>
-											<p className={styles.leftArrow} onClick={prevSlide}>
-												&#8592;
-											</p>
-											<p className={styles.rightArrow} onClick={nextSlide}>
-												&#8594;
-											</p>
+											<div className={styles.arrows}>
+												<div className={styles.leftArrow} onClick={prevSlide}>
+													&#8592;
+												</div>
+												<div className={styles.rightArrow} onClick={nextSlide}>
+													&#8594;
+												</div>
+											</div>
 										</div>
 									)}
 								</div>
@@ -116,23 +203,84 @@ const MyPetImgSlider = () => {
 					</>
 				) : (
 					// <div>Loading...</div>
-					<div className={styles.card}>
-						<p className={styles.leftArrow} onClick={prevSlide}>
-							&#8592;
-						</p>
-						<p className={styles.rightArrow} onClick={nextSlide}>
-							&#8594;
-						</p>
+					<div>
+						{/* {imgFileList.map((imgFile) => {
+							<div
+								className={styles.card}
+								style={{ backgroundImage: `url(${imgFile.name})` }}
+							>
+								<p className={styles.leftArrow} onClick={prevSlide}>
+									&#8592;
+								</p>
+								<p className={styles.rightArrow} onClick={nextSlide}>
+									&#8594;
+								</p>
+							</div>;
+						})}
+						<input type="file" onChange={handleChange} /> */}
+						{imgFileList &&
+							imgFileList.map(
+								(imgFile: any, index: React.Key | null | undefined) => {
+									return (
+										<>
+											{console.log(imgFile.name)}
+											<div
+												className={index === current ? 'active slide' : 'slide'}
+												key={index}
+											>
+												{index === current && (
+													<div
+														className={styles.card}
+														style={{
+															backgroundImage: `url(${imgFile.name})`,
+														}}
+													>
+														<div className={styles.arrows}>
+															<div
+																className={styles.leftArrow}
+																onClick={prevSlide}
+															>
+																&#8592;
+															</div>
+															<div
+																className={styles.rightArrow}
+																onClick={nextSlide}
+															>
+																&#8594;
+															</div>
+														</div>
+													</div>
+												)}
+											</div>
+										</>
+									);
+								},
+							)}
 					</div>
 				)}
 			</div>
+
 			<div className={styles.buttons}>
-				<button type="submit" onClick={handleSubmit} className={styles.addImg}>
+				{/* <button type="submit" className={styles.addImg}>
 					사진 추가
-				</button>
+				</button> */}
+				<input
+					className={styles.addImg}
+					type="file"
+					onChange={handleChange}
+					multiple
+				/>
+				<div>
+					<button type="submit" onClick={handleSubmit}>
+						사진 업로드
+					</button>
+				</div>
 				<button className={styles.deleteImg}>사진 삭제</button>
 			</div>
 		</div>
 	);
 };
 export default MyPetImgSlider;
+function e(e: any) {
+	throw new Error('Function not implemented.');
+}
