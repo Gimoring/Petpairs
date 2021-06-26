@@ -1,38 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Titan+One&display=swap');
-$layout-text: 'Titan One',
-cursive;
+$layout-text: 'Titan One', cursive;
 
 .section1 {
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	background-color: #ee514a;
 	-webkit-font-smothing: antialised;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
 	h1 {
-		height: 100%;
-
+		height: 50%;
+		width: 100%;
+		justify-content: center;
+		text-align: center;
+		flex-direction: column;
+		// border: oldlace solid;
 		.text {
+			text-align: center;
+			align-items: center;
 			position: relative;
 			top: 20px;
 			display: inline-block;
-			animation: bounce .3s ease infinite alternate;
+			animation: bounce 0.3s ease infinite alternate;
 			font-family: $layout-text;
-			font-size: 80px;
+			font-size: 130px;
 			color: #fff;
-			text-shadow:
-				0 1px 0 #ccc,
-				0 2px 0 #ccc,
-				0 3px 0 #ccc,
-				0 4px 0 #ccc,
-				0 5px 0 #ccc,
-				0 6px 0 transparent,
-				0 7px 0 transparent,
-				0 8px 0 transparent,
-				0 9px 0 transparent,
-				0 10px 0 rgb(0, 0, 0, 0.4);
+			text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
+				0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent,
+				0 8px 0 transparent, 0 9px 0 transparent, 0 10px 0 rgb(0, 0, 0, 0.4);
 
 			@for $i from 1 through 8 {
 				&:nth-child(#{$i}) {
@@ -42,17 +38,9 @@ cursive;
 				@keyframes bounce {
 					100% {
 						top: -20px;
-						text-shadow:
-							0 1px 0 #ccc,
-							0 2px 0 #ccc,
-							0 3px 0 #ccc,
-							0 4px 0 #ccc,
-							0 5px 0 #ccc,
-							0 6px 0 #ccc,
-							0 7px 0 #ccc,
-							0 8px 0 #ccc,
-							0 9px 0 #ccc,
-							0 50px 25px rgb(0, 0, 0, 0.2);
+						text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
+							0 5px 0 #ccc, 0 6px 0 #ccc, 0 7px 0 #ccc, 0 8px 0 #ccc,
+							0 9px 0 #ccc, 0 50px 25px rgb(0, 0, 0, 0.2);
 					}
 				}
 			}
@@ -64,6 +52,4 @@ cursive;
 	.swipeButtonContainer {
 		bottom: 4vh;
 	}
-}
-
-;
+} ;
