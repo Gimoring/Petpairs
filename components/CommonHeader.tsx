@@ -26,10 +26,10 @@ const CommonHeader = () => {
 		console.log('가입해라');
 	}, [showSignupModal]);
 
-	const onCloseModal = useCallback(() => {
-		setShowModal(false);
-		console.log('꺼저');
-	}, []);
+	// const onCloseModal = useCallback(() => {
+	// 	setShowModal(false);
+	// 	console.log('꺼저');
+	// }, []);
 
 	const Logout = useCallback(() => {
 		Router.replace('/LandingPage');
