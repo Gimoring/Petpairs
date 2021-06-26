@@ -10,6 +10,7 @@
 	border: 2rem, solid, red;
 
 	.card {
+		z-index: 1000;
 		display: flex;
 		width: 25vw;
 		height: 30vh;
@@ -18,24 +19,38 @@
 		background-size: cover;
 		background-position: center;
 		box-shadow: 10px 10px 30px 0px rgba(0, 0, 0, 0.3);
-		.leftArrow {
-			position: absolute;
-			top: 30%;
-			left: 20px;
-			font-size: 3rem;
-			color: hotpink;
-			z-index: 10;
-			cursor: pointer;
+		.arrows {
+			width: 25vw;
+			display: flex;
+
+			.leftArrow {
+				position: relative;
+				display: flex;
+				// top: 30%;
+				left: 20px;
+				font-size: 3rem;
+				color: hotpink;
+				z-index: 10;
+				cursor: pointer;
+				flex-grow: 1;
+				justify-content: flex-start;
+				align-self: center;
+			}
+			.rightArrow {
+				position: relative;
+				display: flex;
+				// top: 30%;
+				right: 20px;
+				font-size: 3rem;
+				color: hotpink;
+				z-index: 10;
+				cursor: pointer;
+				flex-grow: 1;
+				justify-content: flex-end;
+				align-self: center;
+			}
 		}
-		.rightArrow {
-			position: absolute;
-			top: 30%;
-			right: 30px;
-			font-size: 3rem;
-			color: hotpink;
-			z-index: 10;
-			cursor: pointer;
-		}
+
 		h2 {
 			margin-left: 10px;
 			color: white;
@@ -51,6 +66,7 @@
 	}
 	.buttons {
 		display: flex;
+		padding-top: 20px;
 	}
 }
 

@@ -13,7 +13,9 @@ import {
 	IUpdateRequest,
 	userActionTypes,
 	IPostLikeRequest,
-  IDeleteUserRequest,
+	IDeleteUserRequest,
+	IUpdatePetImageRequest,
+	updateProfileData,
 } from '../interface/iUserActType';
 
 function* logIn(action: ILogInRequest) {
@@ -68,10 +70,10 @@ function* logOut() {
 	}
 }
 
-interface IUpdateUser {
-  id: number; 
-}
-// async function updateUserAPI(data: IUpdateUser, access_token: string) {
+// interface IUpdateUser {
+// 	id: number;
+// }
+// async function updateUserAPI(data: updateProfileData, access_token: string) {
 //   return axios({
 //     method: 'PATCH',
 //     url:,
@@ -92,6 +94,30 @@ function* updateProfile(action: IUpdateRequest) {
 		console.error(err);
 		yield put({
 			type: userActionTypes.UPDATE_PROFILE_FAILURE,
+			error: err.response.data,
+		});
+	}
+}
+
+interface IUpdatePetImage {
+	id: number;
+	formData: File[];
+}
+
+function updatePetImageApi(data: IUpdatePetImage) {
+	return axios.post('url', data);
+}
+function* updatePetImage(action: IUpdatePetImageRequest) {
+	try {
+		yield delay(1000);
+		yield put({
+			type: userActionTypes.UPDATE_PETIMAGE_SUCCESS,
+			data: action.data,
+		});
+	} catch (err) {
+		console.error(err);
+		yield put({
+			type: userActionTypes.UPDATE_PETIMAGE_FAILURE,
 			error: err.response.data,
 		});
 	}
@@ -127,29 +153,29 @@ function* postLike(action: IPostLikeRequest) {
 }
 
 interface IDeleteUser {
-  id: number;
+	id: number;
 }
 
 function deleteUserApi(data: IDeleteUser) {
-  return axios.post('url', data)
+	return axios.post('url', data);
 }
 
 function* deleteUser(action: IDeleteUserRequest) {
-  try {
-    // const result = yield call(deleteUserApi, action.data)
-    yield delay(1000);
-    yield put({
-      type: userActionTypes.DELETE_USER_SUCCESS,
-      data: action.data,
-      // data: result.data
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: userActionTypes.DELETE_USER_FAILURE,
-      error: err.response.data,
-    });
-  }
+	try {
+		// const result = yield call(deleteUserApi, action.data)
+		yield delay(1000);
+		yield put({
+			type: userActionTypes.DELETE_USER_SUCCESS,
+			data: action.data,
+			// data: result.data
+		});
+	} catch (err) {
+		console.error(err);
+		yield put({
+			type: userActionTypes.DELETE_USER_FAILURE,
+			error: err.response.data,
+		});
+	}
 }
 
 function* watchSignUp() {
@@ -168,12 +194,16 @@ function* watchProfileUpdate() {
 	yield takeEvery(userActionTypes.UPDATE_PROFILE_REQUEST, updateProfile);
 }
 
+function* watchPetImageUpdate() {
+	yield takeEvery(userActionTypes.UPDATE_PETIMAGE_REQUEST, updatePetImage);
+}
+
 function* watchPostLike() {
 	yield takeLatest(userActionTypes.POST_LIKE_REQUEST, postLike);
 }
 
 function* watchDeleteUser() {
-  yield takeEvery(userActionTypes.DELETE_USER_REQUEST, deleteUser);
+	yield takeEvery(userActionTypes.DELETE_USER_REQUEST, deleteUser);
 }
 
 export default function* userSaga(): Generator {
@@ -183,6 +213,6 @@ export default function* userSaga(): Generator {
 		fork(watchProfileUpdate),
 		fork(watchSignUp),
 		fork(watchPostLike),
-    fork(watchDeleteUser), 
+		fork(watchDeleteUser),
 	]);
 }
