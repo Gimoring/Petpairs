@@ -36,7 +36,7 @@ const dummyUser = (data: any): IUser => ({
 		petName: '강아지가된성민구',
 		age: 84,
 		breed: '시츄',
-		species: ['강아지'],
+		species: '강아지',
 		fileName: ['시츄.png'],
 		matchedId: [],
 		introduce: '멍멍',

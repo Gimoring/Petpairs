@@ -8,7 +8,7 @@ import { updateProfileData, userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer';
 import { dataSet } from '../reducer/user';
 import MyPetImgSlider from '../components/MyPetImgSlider';
-import DeleteUserModal from '../components/deleteUserModal';
+import DeleteUserModal from '../components/DeleteUserModal';
 
 const MyPage = () => {
 	const { me, updateProfileDone, updateProfileError } = useSelector(
@@ -20,6 +20,7 @@ const MyPage = () => {
 	const [changeInfoBtnOn, setChangeInfoBtnOn] = useState(false);
 	const [changeUserInfoOn, setChangeUserInfoOn] = useState(false);
 	const [editPetName, setEditPetName] = useState(false);
+	const [editSpecies, setEditSpecies] = useState(false);
 	const [editBreed, setEditBreed] = useState(false);
 	const [editAge, setEditAge] = useState(false);
 	const [editIntroduce, setEditIntroduce] = useState(false);
@@ -28,6 +29,7 @@ const MyPage = () => {
 		name: '',
 		email: '',
 		petName: '',
+		species: '',
 		breed: '',
 		age: undefined,
 		introduce: '',
@@ -59,19 +61,20 @@ const MyPage = () => {
 				(!me?.name && !inputs.name) ||
 				(!me?.email && !inputs.email) ||
 				(!me?.pet?.petName && !inputs.petName) ||
+				(!me?.pet?.species && !inputs.species) ||
 				(!me?.pet?.breed && !inputs.breed) ||
 				(!me?.pet?.age && !inputs.age) ||
 				(!me?.pet?.introduce && !inputs.introduce)
 			) {
-				window.alert('모든 항목을 채워주세요!');
+				window.alert('누락된 정보가 있어요!');
 			} else if (
-				inputs.breed !== '냥이' &&
-				inputs.breed !== '멍멍이' &&
-				me?.pet?.breed !== '냥이' &&
-				me?.pet?.breed !== '멍멍이'
+				inputs.species !== '냥이' &&
+				inputs.species !== '멍멍이' &&
+				me?.pet?.species !== '냥이' &&
+				me?.pet?.species !== '멍멍이'
 			) {
 				window.alert('냥이 또는 멍멍이로 명시해주세요!');
-			} else if (!isValidEmail(inputs.email)) {
+			} else if (inputs.email && !isValidEmail(inputs.email)) {
 				window.alert('올바른 이메일 형태가 아닙니다');
 
 				// else if (!me?.pet?.fileName) {
@@ -85,10 +88,11 @@ const MyPage = () => {
 						email: inputs.email || me?.email,
 						pet: {
 							petName: inputs.petName || me?.pet?.petName,
+							species: inputs.species || me?.pet?.species,
 							breed: inputs.breed || me?.pet?.breed,
 							age: inputs.age || me?.pet?.age,
 							introduce: inputs.introduce || me?.pet?.introduce,
-							fileName: me?.pet?.fileName,
+							// fileName: me?.pet?.fileName,
 						},
 					},
 				});
@@ -100,6 +104,7 @@ const MyPage = () => {
 				setChangeInfoBtnOn(false);
 				setChangeUserInfoOn(false);
 				setEditPetName(false);
+				setEditSpecies(false);
 				setEditBreed(false);
 				setEditAge(false);
 				setEditIntroduce(false);
@@ -114,16 +119,17 @@ const MyPage = () => {
 			inputs.name,
 			inputs.email,
 			inputs.petName,
+			inputs.species,
 			inputs.breed,
 			inputs.age,
 			inputs.introduce,
-			me?.name,
-			me?.email,
-			me?.pet?.petName,
-			me?.pet?.age,
-			me?.pet?.breed,
-			me?.pet?.introduce,
-			me?.pet?.fileName,
+			// me?.name,
+			// me?.email,
+			// me?.pet?.petName,
+			// me?.pet?.age,
+			// me?.pet?.breed,
+			// me?.pet?.introduce,
+			// me?.pet?.fileName,
 		],
 	);
 
@@ -171,10 +177,17 @@ const MyPage = () => {
 									) : (
 										<div style={{ color: 'red' }}>펫 이름:</div>
 									)}
-									{me?.pet?.breed ? (
-										<div>펫의 종: {me?.pet?.breed}</div>
+									{me?.pet?.species ? (
+										<div>펫의 종: {me?.pet?.species}</div>
 									) : (
 										<div style={{ color: 'red' }}>펫의 종: 냥이 or 멍멍이</div>
+									)}
+									{me?.pet?.breed ? (
+										<div>펫의 품종: {me?.pet?.breed}</div>
+									) : (
+										<div style={{ color: 'red' }}>
+											펫의 품종: 보스턴 테리어, 페르시안 등
+										</div>
 									)}
 									{me?.pet?.age?.toString() ? (
 										<div>펫 나이: {me?.pet?.age.toString()}</div>
@@ -278,6 +291,43 @@ const MyPage = () => {
 											)}
 										</div>
 									)}
+									{editSpecies ? (
+										<input
+											id={styles.species}
+											name="species"
+											type="text"
+											placeholder={
+												me?.pet?.species
+													? `펫의 종: ${me?.pet?.species}`
+													: '펫의 종을 입력해주세요'
+											}
+											value={inputs.species}
+											onChange={onEditInfo}
+										/>
+									) : (
+										<div className={styles.editSpecies}>
+											<button
+												style={{ width: '40px' }}
+												onClick={() => {
+													setEditSpecies(true);
+												}}
+											>
+												펫의 종
+											</button>
+											{me?.pet?.species ? (
+												<div className={styles.petSpecies}>
+													{me?.pet?.species}
+												</div>
+											) : (
+												<div
+													className={styles.petSpecies}
+													style={{ color: 'red' }}
+												>
+													펫의 종: 냥이 or 멍멍이
+												</div>
+											)}
+										</div>
+									)}
 									{editBreed ? (
 										<input
 											id={styles.breed}
@@ -285,8 +335,8 @@ const MyPage = () => {
 											type="text"
 											placeholder={
 												me?.pet?.breed
-													? `펫의 종: ${me?.pet?.breed}`
-													: '펫의 종을 입력해주세요'
+													? `펫의 품종: ${me?.pet?.breed}`
+													: '펫의 품종을 입력해주세요'
 											}
 											value={inputs.breed}
 											onChange={onEditInfo}
@@ -299,7 +349,7 @@ const MyPage = () => {
 													setEditBreed(true);
 												}}
 											>
-												펫의 종
+												펫의 품종
 											</button>
 											{me?.pet?.breed ? (
 												<div className={styles.petBreed}>{me?.pet?.breed}</div>
@@ -308,7 +358,7 @@ const MyPage = () => {
 													className={styles.petBreed}
 													style={{ color: 'red' }}
 												>
-													펫의 종: 냥이 or 멍멍이
+													펫의 품종: 보스턴 테리어, 페르시안 등
 												</div>
 											)}
 										</div>

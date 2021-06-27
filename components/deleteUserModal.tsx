@@ -36,11 +36,11 @@ const DeleteUserModal: React.FC<ChildProps> = (props) => {
 					type: userActionTypes.DELETE_USER_REQUEST,
 					data: me?.id,
 				});
-				if (deleteUserDone) {
+				if (deleteUserDone === true) {
 					window.alert('정상적으로 탈퇴되었습니다');
 					router.push('/LandingPage');
 				}
-				if (deleteUserError) {
+				if (deleteUserError !== null) {
 					window.alert('오류로 인해 탈퇴처리가 안됬습니다');
 					router.reload();
 				}
