@@ -108,11 +108,20 @@ function updatePetImageApi(data: IUpdatePetImage) {
 	return axios.post('url', data);
 }
 function* updatePetImage(action: IUpdatePetImageRequest) {
+	/* 
+  const token = yield select(access_token)
+  const headerParams = {
+    'Authorization': `JWT ${access_token}`,
+    'Content-Type': 'multipart/form-data',
+  }
+  */
 	try {
+		// const result = yield call(updatePetImageApi, action.data, {headers: headerParams})
 		yield delay(1000);
 		yield put({
 			type: userActionTypes.UPDATE_PETIMAGE_SUCCESS,
 			data: action.data,
+			// data: result.data,
 		});
 	} catch (err) {
 		console.error(err);
@@ -211,6 +220,7 @@ export default function* userSaga(): Generator {
 		fork(watchLogIn),
 		fork(watchLogOut),
 		fork(watchProfileUpdate),
+		fork(watchPetImageUpdate),
 		fork(watchSignUp),
 		fork(watchPostLike),
 		fork(watchDeleteUser),

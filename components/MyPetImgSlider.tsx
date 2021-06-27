@@ -9,19 +9,10 @@ import { userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer';
 import styles from '../styles/myPetSlider.module.scss';
 
-// interface FormDataValue {
-//   uri: string;
-//   name: string;
-//   type: string;
-// }
-
-// interface FormData {
-//   append(name: string, value: FormDataValue, fileName?: string): void;
-//   set(name: string, value: FormDataValue, fileName?: string): void;
-// }
-
 const MyPetImgSlider = () => {
-	const { me } = useSelector((state: RootState) => state.user);
+	const { me, updatePetImageDone } = useSelector(
+		(state: RootState) => state.user,
+	);
 	const dispatch = useDispatch();
 	const [current, setCurrent] = useState(0);
 	const [imgName, setImgName] = useState('');
@@ -71,7 +62,6 @@ const MyPetImgSlider = () => {
 	);
 
 	useEffect(() => {
-		// if (imgFileList.length < 5) {
 		handleChange;
 
 		console.log(imgFileList);
@@ -93,6 +83,9 @@ const MyPetImgSlider = () => {
 					formData: formData,
 				},
 			});
+			if (updatePetImageDone === true) {
+				window.alert('사진이 추가되었습니다!');
+			}
 			// dispatch()
 			// 보낼때 imgFile들 담은 배열 (formData) 를 보낸다
 			// 받을때 : fileName, 즉 파일의 이름들 담은 배열을 받는다
@@ -137,7 +130,7 @@ const MyPetImgSlider = () => {
 			matchedId: [1],
 		},
 	];
-	const length = petImgs.length;
+	const length = petImgs.length || imgFileList.length;
 	// if (!me?.pet?.fileName) {
 	// 	return null;
 	// }
@@ -158,11 +151,13 @@ const MyPetImgSlider = () => {
 		},
 		[length, current],
 	);
-
+	if (!petImgs && imgFileList.length === 0) {
+		console.log(imgFileList);
+		return <div>Loading...</div>;
+	}
 	return (
 		<div className={styles.petImgSlider}>
 			{/* <div className={styles.arrows}> */}
-
 			{/* </div> */}
 			<div>
 				{/* {me?.pet?.fileName ? (
@@ -173,33 +168,38 @@ const MyPetImgSlider = () => {
 									className={index === current ? 'active slide' : 'slide'}
 									key={index}
 								> */}
-				{petImgs ? (
+				{imgFileList.length !== 0 ? (
 					<>
-						{petImgs.map((petImg: any, index: React.Key | null | undefined) => {
-							return (
-								<div
-									className={index === current ? 'active slide' : 'slide'}
-									key={index}
-								>
-									{index === current && (
-										<div
-											// key={index}
-											className={styles.card}
-											style={{ backgroundImage: `url(${petImg.fileName})` }}
-										>
-											<div className={styles.arrows}>
-												<div className={styles.leftArrow} onClick={prevSlide}>
-													&#8592;
-												</div>
-												<div className={styles.rightArrow} onClick={nextSlide}>
-													&#8594;
+						{imgFileList.map(
+							(imgFile: any, index: React.Key | null | undefined) => {
+								return (
+									<div
+										className={index === current ? 'active slide' : 'slide'}
+										key={index}
+									>
+										{index === current && (
+											<div
+												// key={index}
+												className={styles.card}
+												style={{ backgroundImage: `url(${imgFile.name})` }}
+											>
+												<div className={styles.arrows}>
+													<div className={styles.leftArrow} onClick={prevSlide}>
+														&#8592;
+													</div>
+													<div
+														className={styles.rightArrow}
+														onClick={nextSlide}
+													>
+														&#8594;
+													</div>
 												</div>
 											</div>
-										</div>
-									)}
-								</div>
-							);
-						})}
+										)}
+									</div>
+								);
+							},
+						)}
 					</>
 				) : (
 					// <div>Loading...</div>
@@ -218,12 +218,12 @@ const MyPetImgSlider = () => {
 							</div>;
 						})}
 						<input type="file" onChange={handleChange} /> */}
-						{imgFileList &&
-							imgFileList.map(
-								(imgFile: any, index: React.Key | null | undefined) => {
+						{petImgs &&
+							petImgs.map(
+								(petImg: any, index: React.Key | null | undefined) => {
 									return (
 										<>
-											{console.log(imgFile.name)}
+											{console.log(me?.pet?.fileName)}
 											<div
 												className={index === current ? 'active slide' : 'slide'}
 												key={index}
@@ -232,7 +232,7 @@ const MyPetImgSlider = () => {
 													<div
 														className={styles.card}
 														style={{
-															backgroundImage: `url(${imgFile.name})`,
+															backgroundImage: `url(${petImg.fileName})`,
 														}}
 													>
 														<div className={styles.arrows}>

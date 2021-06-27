@@ -4,7 +4,7 @@ export interface IPet {
 	id?: null | number;
 	petName?: null | string;
 	breed?: null | string;
-	species?: null | string[];
+	species?: null | string;
 	age?: null | number;
 	matchedId?: null | number[]; //매칭된 상대 펫 ID
 	fileName?: null | string[];
