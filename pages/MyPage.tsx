@@ -165,7 +165,7 @@ const MyPage = () => {
 						<div className={styles.lowerBodyContainer}>
 							<div
 								className={styles.userPetInfo}
-								style={{ paddingRight: '50px' }}
+								// style={{ paddingRight: '50px' }}
 							>
 								<div className={styles.userInfo}>
 									<div>{me?.name}</div>
@@ -229,10 +229,12 @@ const MyPage = () => {
 
 						<div className={styles.lowerBodyContainer}>
 							<div className={styles.editUserPetInfo}>
-								{!changeUserInfoOn ? ( // 유저 정보 수정 누르지 않은 상태
+								{changeUserInfoOn === false ? ( // 유저 정보 수정 누르지 않은 상태
 									<button
+										// style={{ width: '40px' }}
 										onClick={() => {
 											setChangeUserInfoOn(true);
+											console.log('머선129');
 										}}
 									>
 										유저정보 수정
@@ -274,7 +276,7 @@ const MyPage = () => {
 									) : (
 										<div className={styles.editPetName}>
 											<button
-												style={{ width: '40px' }}
+												style={{ width: '60px' }}
 												onClick={() => {
 													setEditPetName(true);
 													console.log(editPetName);
@@ -307,7 +309,7 @@ const MyPage = () => {
 									) : (
 										<div className={styles.editSpecies}>
 											<button
-												style={{ width: '40px' }}
+												style={{ width: '60px' }}
 												onClick={() => {
 													setEditSpecies(true);
 												}}
@@ -344,7 +346,7 @@ const MyPage = () => {
 									) : (
 										<div className={styles.editBreed}>
 											<button
-												style={{ width: '40px' }}
+												style={{ width: '60px' }}
 												onClick={() => {
 													setEditBreed(true);
 												}}
@@ -379,7 +381,7 @@ const MyPage = () => {
 									) : (
 										<div className={styles.editAge}>
 											<button
-												style={{ width: '40px' }}
+												style={{ width: '60px' }}
 												onClick={() => {
 													setEditAge(true);
 												}}
@@ -412,7 +414,7 @@ const MyPage = () => {
 								) : (
 									<div className={styles.editIntroduce}>
 										<button
-											style={{ width: '40px' }}
+											style={{ width: '60px' }}
 											onClick={() => {
 												setEditIntroduce(true);
 											}}
@@ -436,7 +438,7 @@ const MyPage = () => {
 							</div>
 							<div className={styles.onEditBtns}>
 								<button className="submitBtn" onClick={onSubmitUpdatedInfo}>
-									프로필 수정
+									수정 완료
 								</button>
 								<button
 									className={styles.cancelEditProfile}

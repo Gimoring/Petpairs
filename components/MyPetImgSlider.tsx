@@ -18,32 +18,34 @@ const MyPetImgSlider = () => {
 	const [imgName, setImgName] = useState('');
 	const [imgFileList, setImgFileList] = useState<File[]>([]);
 	// const [selectedFiles, setSelectedFiles] = useState<File["name"][]>(['']);
-	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+	const [imgPreviewUrls, setImgPreviewUrls] = useState<string[]>([]);
 	const [currentSelected, setCurrentSelected] = useState(0);
+
+	useEffect(() => {
+		handleChange;
+		// setImgPreviewUrls([]);
+
+		console.log(imgFileList);
+		// }
+	}, [imgFileList, setImgFileList, imgPreviewUrls, setImgPreviewUrls]);
 
 	const handleChange = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
 			e.preventDefault();
-			if (e.target.files && e.target.files.length === 1) {
-				const filesArray = [];
-
-				// filesArray = ...e.target.files
-				for (let i = 0; i < e.target.files.length; i++) {
-					let imageFile = e.target.files[i];
-					console.log(e.target.files[0]);
-
-					filesArray.push(e.target.files[i]);
-					console.log(e.target.files[i]);
-					console.log(imageFile);
-				}
-				console.log(filesArray);
-				setImgFileList([...imgFileList, ...filesArray]); // 각 이미지 파일 담은 배열
-				console.log(imgFileList);
-			}
-			if (e.target.files && e.target.files.length > 1) {
+			console.log(imgPreviewUrls);
+			console.log(imgPreviewUrls.length);
+			if (e.target.files && e.target.files.length >= 1) {
 				const multipleFilesArray: any[] = [];
 				const newFilesArray = multipleFilesArray.concat(e.target.files);
 				console.log(newFilesArray);
+				const urlArray = [];
+				for (let i = 0; i < e.target.files.length; i++) {
+					let previewFile = e.target.files[i];
+					const previewURL = URL.createObjectURL(previewFile);
+					urlArray.push(previewURL);
+				}
+				setImgPreviewUrls(urlArray);
+
 				setImgFileList([...newFilesArray]);
 				// setImgFileList((existing) => existing.concat(newFilesArray))
 				console.log(imgFileList);
@@ -55,18 +57,12 @@ const MyPetImgSlider = () => {
 			) {
 				window.alert('사진은 4장까지 올릴 수 있습니다! 다시 올려주세요');
 				setImgFileList([]);
+				setImgPreviewUrls([]);
 			}
 			console.log(imgFileList);
 		},
-		[imgFileList, setImgFileList],
+		[imgFileList, setImgFileList, imgPreviewUrls, setImgPreviewUrls],
 	);
-
-	useEffect(() => {
-		handleChange;
-
-		console.log(imgFileList);
-		// }
-	}, [imgFileList, setImgFileList]);
 
 	const handleSubmit = useCallback(() => {
 		if (imgFileList) {
@@ -130,10 +126,9 @@ const MyPetImgSlider = () => {
 			matchedId: [1],
 		},
 	];
-	const length = petImgs.length || imgFileList.length;
-	// if (!me?.pet?.fileName) {
-	// 	return null;
-	// }
+
+	const length = imgPreviewUrls ? imgPreviewUrls.length : petImgs.length;
+	console.log(length);
 	const prevSlide = useCallback(
 		(e) => {
 			if (length !== undefined) {
@@ -151,14 +146,13 @@ const MyPetImgSlider = () => {
 		},
 		[length, current],
 	);
+
 	if (!petImgs && imgFileList.length === 0) {
 		console.log(imgFileList);
 		return <div>Loading...</div>;
 	}
 	return (
 		<div className={styles.petImgSlider}>
-			{/* <div className={styles.arrows}> */}
-			{/* </div> */}
 			<div>
 				{/* {me?.pet?.fileName ? (
 					<>
@@ -168,10 +162,11 @@ const MyPetImgSlider = () => {
 									className={index === current ? 'active slide' : 'slide'}
 									key={index}
 								> */}
-				{imgFileList.length !== 0 ? (
+
+				{imgPreviewUrls && imgPreviewUrls.length !== 0 ? (
 					<>
-						{imgFileList.map(
-							(imgFile: any, index: React.Key | null | undefined) => {
+						{imgPreviewUrls.map(
+							(imgUrl: any, index: React.Key | null | undefined) => {
 								return (
 									<div
 										className={index === current ? 'active slide' : 'slide'}
@@ -181,8 +176,14 @@ const MyPetImgSlider = () => {
 											<div
 												// key={index}
 												className={styles.card}
-												style={{ backgroundImage: `url(${imgFile.name})` }}
+												style={{
+													backgroundImage: `url(${imgUrl})`,
+												}}
 											>
+												{/* <img
+													src={URL.createObjectURL(imgFile)}
+													style={{ width: '100%' }}
+												/> */}
 												<div className={styles.arrows}>
 													<div className={styles.leftArrow} onClick={prevSlide}>
 														&#8592;
@@ -204,20 +205,6 @@ const MyPetImgSlider = () => {
 				) : (
 					// <div>Loading...</div>
 					<div>
-						{/* {imgFileList.map((imgFile) => {
-							<div
-								className={styles.card}
-								style={{ backgroundImage: `url(${imgFile.name})` }}
-							>
-								<p className={styles.leftArrow} onClick={prevSlide}>
-									&#8592;
-								</p>
-								<p className={styles.rightArrow} onClick={nextSlide}>
-									&#8594;
-								</p>
-							</div>;
-						})}
-						<input type="file" onChange={handleChange} /> */}
 						{petImgs &&
 							petImgs.map(
 								(petImg: any, index: React.Key | null | undefined) => {
@@ -261,9 +248,6 @@ const MyPetImgSlider = () => {
 			</div>
 
 			<div className={styles.buttons}>
-				{/* <button type="submit" className={styles.addImg}>
-					사진 추가
-				</button> */}
 				<input
 					className={styles.addImg}
 					type="file"
