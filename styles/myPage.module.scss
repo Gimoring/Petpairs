@@ -1,71 +1,123 @@
 .bodyContainer {
 	display: flex;
-	flex-direction: column;
+
 	height: 100vh;
+	width: 100vw;
+	// align-items: flex-start;
 	align-items: center;
-	.upperBodyContainer {
+	.bodyWhole {
+		background-color: rgb(250, 244, 244);
+		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
-		width: 30%;
-		padding-top: 30px;
 		border: 2rem, solid, blue;
-		.slider {
-			display: flex;
-			border: 1px, solid, green;
-		}
-		.userPetInfo {
+		width: 100vw;
+		height: 70vh;
+		align-items: center;
+		justify-self: center;
+
+		// align-items: center;
+		.upperBodyContainer {
 			display: flex;
 			flex-direction: column;
+			width: 50vw;
+			height: 40vh;
+			padding-top: 30px;
 			border: 2rem, solid, blue;
-			.userInfoEdit {
+			align-content: center;
+			background-color: rgb(250, 244, 244);
+			.slider {
 				display: flex;
-				flex-direction: column;
+				border: 1px, solid, green;
 			}
-			.petInfoEdit {
+		}
+		.lowerBodyContainer {
+			display: flex;
+			width: 50vw;
+			height: 30vh;
+			flex-direction: column;
+			align-content: center;
+			background-color: rgb(250, 244, 244);
+			align-items: center;
+			overflow-y: scroll;
+			.userPetInfo,
+			.editUserPetInfo {
 				display: flex;
+				// position: relative;
 				flex-direction: column;
-				.editPetName {
+				border: 2rem, solid, blue;
+				width: 25vw;
+				border: 1rem, solid, white;
+				// overflow-y: scroll;
+
+				.userInfoEdit,
+				.userInfo {
 					display: flex;
-					.name {
-						padding-left: 90px;
-						align-self: center;
+					flex-direction: column;
+					border: 3rem, solid, white;
+					width: 500px;
+				}
+				.petInfo {
+					display: flex;
+					align-items: left;
+					flex-direction: column;
+					width: 25vw;
+					border: 3rem, solid, black;
+					// max-width: 200px;
+					.introduce {
+						border: 1px solid tan;
+						width: 400px;
 					}
 				}
-				.editBreed {
+				.petInfoEdit {
 					display: flex;
-					.petBreed {
-						padding-left: 90px;
-						align-self: center;
+					flex-direction: column;
+					.editPetName {
+						display: flex;
+						.name {
+							padding-left: 40px;
+							align-self: center;
+						}
 					}
-				}
-				.editAge {
-					display: flex;
-					.petAge {
-						padding-left: 90px;
-						align-self: center;
+					.editSpecies {
+						display: flex;
+						.petSpecies {
+							padding-left: 40px;
+							align-self: center;
+						}
+					}
+					.editBreed {
+						display: flex;
+						.petBreed {
+							padding-left: 40px;
+							align-self: center;
+						}
+					}
+					.editAge {
+						display: flex;
+						.petAge {
+							padding-left: 40px;
+							align-self: center;
+						}
+					}
+					.editInfoBtn {
+						display: flex;
 					}
 				}
 			}
-		}
-		.editInfoBtn {
-			display: flex;
-		}
-	}
-	.lowerBodyContainer {
-		display: flex;
-		width: 30%;
-		flex-direction: column;
-		.editIntroduce {
-			display: flex;
-			.petIntroduce {
-				padding-left: 90px;
-				align-self: center;
+			.editIntroduce {
+				display: flex;
+				.petIntroduce {
+					padding-left: 40px;
+					align-self: center;
+				}
 			}
-		}
-		.onEditBtns {
-			display: flex;
-			justify-content: flex-end;
-			padding-top: 20px;
+			.onEditBtns {
+				display: flex;
+				justify-content: center;
+				padding-top: 20px;
+				width: 100%;
+			}
 		}
 	}
 }

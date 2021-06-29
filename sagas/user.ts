@@ -14,6 +14,8 @@ import {
 	userActionTypes,
 	IPostLikeRequest,
 	IDeleteUserRequest,
+	IUpdatePetImageRequest,
+	updateProfileData,
 } from '../interface/iUserActType';
 
 function* logIn(action: ILogInRequest) {
@@ -68,10 +70,10 @@ function* logOut() {
 	}
 }
 
-interface IUpdateUser {
-	id: number;
-}
-// async function updateUserAPI(data: IUpdateUser, access_token: string) {
+// interface IUpdateUser {
+// 	id: number;
+// }
+// async function updateUserAPI(data: updateProfileData, access_token: string) {
 //   return axios({
 //     method: 'PATCH',
 //     url:,
@@ -92,6 +94,39 @@ function* updateProfile(action: IUpdateRequest) {
 		console.error(err);
 		yield put({
 			type: userActionTypes.UPDATE_PROFILE_FAILURE,
+			error: err.response.data,
+		});
+	}
+}
+
+interface IUpdatePetImage {
+	id: number;
+	formData: File[];
+}
+
+function updatePetImageApi(data: IUpdatePetImage) {
+	return axios.post('url', data);
+}
+function* updatePetImage(action: IUpdatePetImageRequest) {
+	/* 
+  const token = yield select(access_token)
+  const headerParams = {
+    'Authorization': `JWT ${access_token}`,
+    'Content-Type': 'multipart/form-data',
+  }
+  */
+	try {
+		// const result = yield call(updatePetImageApi, action.data, {headers: headerParams})
+		yield delay(1000);
+		yield put({
+			type: userActionTypes.UPDATE_PETIMAGE_SUCCESS,
+			data: action.data,
+			// data: result.data,
+		});
+	} catch (err) {
+		console.error(err);
+		yield put({
+			type: userActionTypes.UPDATE_PETIMAGE_FAILURE,
 			error: err.response.data,
 		});
 	}
@@ -169,6 +204,10 @@ function* watchProfileUpdate() {
 	yield takeEvery(userActionTypes.UPDATE_PROFILE_REQUEST, updateProfile);
 }
 
+function* watchPetImageUpdate() {
+	yield takeEvery(userActionTypes.UPDATE_PETIMAGE_REQUEST, updatePetImage);
+}
+
 function* watchPostLike() {
 	yield takeLatest(userActionTypes.POST_LIKE_REQUEST, postLike);
 }
@@ -182,6 +221,7 @@ export default function* userSaga(): Generator {
 		fork(watchLogIn),
 		fork(watchLogOut),
 		fork(watchProfileUpdate),
+		fork(watchPetImageUpdate),
 		fork(watchSignUp),
 		fork(watchPostLike),
 		fork(watchDeleteUser),

@@ -19,13 +19,17 @@ export enum userActionTypes {
 	UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS',
 	UPDATE_PROFILE_FAILURE = 'UPDATE_PROFILE_FAILURE',
 
+	UPDATE_PETIMAGE_REQUEST = 'UPDATE_PETIMAGE_REQUEST',
+	UPDATE_PETIMAGE_SUCCESS = 'UPDATE_PETIMAGE_SUCCESS',
+	UPDATE_PETIMAGE_FAILURE = 'UPDATE_PETIMAGE_FAILURE',
+
 	SIGN_UP_REQUEST = 'SIGN_UP_REQUEST',
 	SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS',
 	SIGN_UP_FAILURE = 'SIGN_UP_FAILURE',
 
-  DELETE_USER_REQUEST = 'DELETE_USER_REQUEST',
-  DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS',
-  DELETE_USER_FAILURE = 'DELETE_USER_FAILURE', 
+	DELETE_USER_REQUEST = 'DELETE_USER_REQUEST',
+	DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS',
+	DELETE_USER_FAILURE = 'DELETE_USER_FAILURE',
 }
 
 export interface signupData {
@@ -40,6 +44,7 @@ export interface logInData {
 }
 
 export interface updateProfileData {
+	id: number;
 	name?: string;
 	email?: string;
 	pet?: {
@@ -49,6 +54,11 @@ export interface updateProfileData {
 		fileName?: null | string[];
 		introduce?: null | string;
 	};
+}
+
+export interface updatePetImageData {
+	id: number;
+	formData?: File[];
 }
 // 2. 액션 크리에이터의 인터페이스 만들어주기
 
@@ -130,6 +140,21 @@ export interface IUpdateFailure {
 	error: string;
 }
 
+export interface IUpdatePetImageRequest {
+	type: userActionTypes.UPDATE_PETIMAGE_REQUEST;
+	data: updatePetImageData;
+}
+
+export interface IUpdatePetImageSuccess {
+	type: userActionTypes.UPDATE_PETIMAGE_SUCCESS;
+	data: string[];
+}
+
+export interface IUpdatePetImageFailure {
+	type: userActionTypes.UPDATE_PETIMAGE_FAILURE;
+	error: string;
+}
+
 export interface ILogOutSuccess {
 	type: userActionTypes.LOG_OUT_SUCCESS;
 }
@@ -140,18 +165,19 @@ export interface ILogOutFailure {
 }
 
 export interface IDeleteUserRequest {
-  type: userActionTypes.DELETE_USER_REQUEST;
-  data: IUser['id'];
+	type: userActionTypes.DELETE_USER_REQUEST;
+	data: number;
+	// data: IUser['id'];
 }
 
 export interface IDeleteUserSuccess {
-  type: userActionTypes.DELETE_USER_SUCCESS; 
-  data: string; 
+	type: userActionTypes.DELETE_USER_SUCCESS;
+	data: string;
 }
 
 export interface IDeleteUserFailure {
-  type: userActionTypes.DELETE_USER_FAILURE; 
-  error: string; 
+	type: userActionTypes.DELETE_USER_FAILURE;
+	error: string;
 }
 // 리듀서에서 리턴 값으로 쓰기위해 인터페이스 내보내기
 
@@ -168,9 +194,12 @@ export type IUserActions =
 	| IUpdateRequest
 	| IUpdateSuccess
 	| IUpdateFailure
+	| IUpdatePetImageRequest
+	| IUpdatePetImageSuccess
+	| IUpdatePetImageFailure
 	| IPostLikeRequest
 	| IPostLikeSuccess
 	| IPostLikeFailure
-  | IDeleteUserRequest
-  | IDeleteUserSuccess
-  | IDeleteUserFailure;
+	| IDeleteUserRequest
+	| IDeleteUserSuccess
+	| IDeleteUserFailure;
