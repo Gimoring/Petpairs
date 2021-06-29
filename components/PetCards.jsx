@@ -43,6 +43,8 @@ const PetCards = () => {
 	const [pets, setPets] = useState(db);
 	const dispatch = useDispatch();
 	const userReducer = useSelector((state) => state.user);
+	const myId = userReducer.me.id;
+
 	const childRefs = useMemo(
 		() =>
 			Array(db.length)
@@ -60,7 +62,10 @@ const PetCards = () => {
 		if (dir === 'right') {
 			dispatch({
 				type: userActionTypes.POST_LIKE_REQUEST,
-				data: id,
+				data: {
+					myId: myId, //유저 id
+					otherPetId: id, // 펫 id
+				},
 			});
 			console.log(`you swiped to ${dir} and removed ${nameToDelete}`);
 			alreadyRemoved.push(nameToDelete);

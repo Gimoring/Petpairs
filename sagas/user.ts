@@ -134,6 +134,7 @@ function* updatePetImage(action: IUpdatePetImageRequest) {
 
 interface IPostLike {
 	id: number;
+	petId: number;
 }
 
 // data will be  id : number
