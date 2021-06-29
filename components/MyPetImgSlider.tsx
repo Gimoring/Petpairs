@@ -15,16 +15,16 @@ const MyPetImgSlider = () => {
 	);
 	const dispatch = useDispatch();
 	const [current, setCurrent] = useState(0);
-	const [imgName, setImgName] = useState('');
 	const [imgFileList, setImgFileList] = useState<File[]>([]);
-	// const [selectedFiles, setSelectedFiles] = useState<File["name"][]>(['']);
 	const [imgPreviewUrls, setImgPreviewUrls] = useState<string[]>([]);
-	const [currentSelected, setCurrentSelected] = useState(0);
 
 	useEffect(() => {
+		console.log(imgPreviewUrls.length);
 		handleChange;
 		// setImgPreviewUrls([]);
-
+		// if (imgPreviewUrls || imgFileList) {
+		// 	setImgPreviewUrls([]);
+		// }
 		console.log(imgFileList);
 		// }
 	}, [imgFileList, setImgFileList, imgPreviewUrls, setImgPreviewUrls]);
@@ -44,7 +44,7 @@ const MyPetImgSlider = () => {
 					const previewURL = URL.createObjectURL(previewFile);
 					urlArray.push(previewURL);
 				}
-				setImgPreviewUrls(urlArray);
+				setImgPreviewUrls([...urlArray]);
 
 				setImgFileList([...newFilesArray]);
 				// setImgFileList((existing) => existing.concat(newFilesArray))
@@ -70,7 +70,14 @@ const MyPetImgSlider = () => {
 			for (var i = 0; i < imgFileList.length + 1; i++) {
 				// 배열로 보내짐
 				formData.append('imageFile', imgFileList[i]); //
+				console.log(imgFileList[i]);
 			}
+			for (let value of formData.values().toString()) {
+				console.log(value);
+			}
+			// for (let key of formData.keys()) {
+			// 	console.log(key);
+			// }
 			console.log(formData);
 			dispatch({
 				type: userActionTypes.UPDATE_PETIMAGE_REQUEST,
@@ -94,44 +101,55 @@ const MyPetImgSlider = () => {
 		}
 	}, [imgFileList]);
 
+	// const petImgs = [
+	// 	{
+	// 		id: 2,
+	// 		petName: '사슴이된성민G',
+	// 		age: 88,
+	// 		breed: '시츄',
+	// 		species: ['강아지'],
+	// 		fileName:
+	// 			'https://images.pexels.com/photos/7853223/pexels-photo-7853223.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+	// 		matchedId: [5],
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		petName: '혼란을틈탄여자',
+	// 		age: 82,
+	// 		breed: '고양이',
+	// 		species: ['고양이'],
+	// 		fileName:
+	// 			'https://images.pexels.com/photos/5428550/pexels-photo-5428550.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+	// 		matchedId: [1],
+	// 	},
+	// 	{
+	// 		id: 4,
+	// 		petName: '강아지가된엄호태',
+	// 		age: 818,
+	// 		breed: '시츄',
+	// 		species: ['강아지'],
+	// 		fileName:
+	// 			'https://images.pexels.com/photos/7098011/pexels-photo-7098011.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
+	// 		matchedId: [1],
+	// 	},
+	// ];
 	const petImgs = [
-		{
-			id: 2,
-			petName: '사슴이된성민G',
-			age: 88,
-			breed: '시츄',
-			species: ['강아지'],
-			fileName:
-				'https://images.pexels.com/photos/7853223/pexels-photo-7853223.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-			matchedId: [5],
-		},
-		{
-			id: 3,
-			petName: '혼란을틈탄여자',
-			age: 82,
-			breed: '고양이',
-			species: ['고양이'],
-			fileName:
-				'https://images.pexels.com/photos/5428550/pexels-photo-5428550.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-			matchedId: [1],
-		},
-		{
-			id: 4,
-			petName: '강아지가된엄호태',
-			age: 818,
-			breed: '시츄',
-			species: ['강아지'],
-			fileName:
-				'https://images.pexels.com/photos/7098011/pexels-photo-7098011.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
-			matchedId: [1],
-		},
+		'https://images.pexels.com/photos/7853223/pexels-photo-7853223.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+		'https://images.pexels.com/photos/5428550/pexels-photo-5428550.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+		'https://images.pexels.com/photos/7098011/pexels-photo-7098011.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
 	];
+	let length =
+		imgPreviewUrls.length > 0 ? imgPreviewUrls.length : petImgs.length;
+	// let length = petImgs.length || imgPreviewUrls.length;
+	console.log(petImgs.length);
+	if (!imgPreviewUrls && !petImgs) {
+		length = 0;
+	}
 
-	const length = imgPreviewUrls ? imgPreviewUrls.length : petImgs.length;
 	console.log(length);
 	const prevSlide = useCallback(
 		(e) => {
-			if (length !== undefined) {
+			if (length !== 0) {
 				setCurrent(current === 0 ? length - 1 : current - 1);
 			}
 		},
@@ -140,7 +158,7 @@ const MyPetImgSlider = () => {
 
 	const nextSlide = useCallback(
 		(e) => {
-			if (length !== undefined) {
+			if (length !== 0) {
 				setCurrent(current === length - 1 ? 0 : current + 1);
 			}
 		},
@@ -210,7 +228,7 @@ const MyPetImgSlider = () => {
 								(petImg: any, index: React.Key | null | undefined) => {
 									return (
 										<>
-											{console.log(me?.pet?.fileName)}
+											{/* {console.log(me?.pet?.fileName)} */}
 											<div
 												className={index === current ? 'active slide' : 'slide'}
 												key={index}
@@ -219,7 +237,7 @@ const MyPetImgSlider = () => {
 													<div
 														className={styles.card}
 														style={{
-															backgroundImage: `url(${petImg.fileName})`,
+															backgroundImage: `url(${petImg})`,
 														}}
 													>
 														<div className={styles.arrows}>
