@@ -13,7 +13,7 @@ import {
 	IUpdateRequest,
 	userActionTypes,
 	IPostLikeRequest,
-  IDeleteUserRequest,
+	IDeleteUserRequest,
 } from '../interface/iUserActType';
 
 function* logIn(action: ILogInRequest) {
@@ -69,7 +69,7 @@ function* logOut() {
 }
 
 interface IUpdateUser {
-  id: number; 
+	id: number;
 }
 // async function updateUserAPI(data: IUpdateUser, access_token: string) {
 //   return axios({
@@ -99,6 +99,7 @@ function* updateProfile(action: IUpdateRequest) {
 
 interface IPostLike {
 	id: number;
+	petId: number;
 }
 
 // data will be  id : number
@@ -127,29 +128,29 @@ function* postLike(action: IPostLikeRequest) {
 }
 
 interface IDeleteUser {
-  id: number;
+	id: number;
 }
 
 function deleteUserApi(data: IDeleteUser) {
-  return axios.post('url', data)
+	return axios.post('url', data);
 }
 
 function* deleteUser(action: IDeleteUserRequest) {
-  try {
-    // const result = yield call(deleteUserApi, action.data)
-    yield delay(1000);
-    yield put({
-      type: userActionTypes.DELETE_USER_SUCCESS,
-      data: action.data,
-      // data: result.data
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: userActionTypes.DELETE_USER_FAILURE,
-      error: err.response.data,
-    });
-  }
+	try {
+		// const result = yield call(deleteUserApi, action.data)
+		yield delay(1000);
+		yield put({
+			type: userActionTypes.DELETE_USER_SUCCESS,
+			data: action.data,
+			// data: result.data
+		});
+	} catch (err) {
+		console.error(err);
+		yield put({
+			type: userActionTypes.DELETE_USER_FAILURE,
+			error: err.response.data,
+		});
+	}
 }
 
 function* watchSignUp() {
@@ -173,7 +174,7 @@ function* watchPostLike() {
 }
 
 function* watchDeleteUser() {
-  yield takeEvery(userActionTypes.DELETE_USER_REQUEST, deleteUser);
+	yield takeEvery(userActionTypes.DELETE_USER_REQUEST, deleteUser);
 }
 
 export default function* userSaga(): Generator {
@@ -183,6 +184,6 @@ export default function* userSaga(): Generator {
 		fork(watchProfileUpdate),
 		fork(watchSignUp),
 		fork(watchPostLike),
-    fork(watchDeleteUser), 
+		fork(watchDeleteUser),
 	]);
 }
