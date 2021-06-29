@@ -113,7 +113,7 @@ const LoginModal: React.FC<ChildProps> = (props) => {
                         src="/Images/SignIn/facebook.png"
                       /> */}
 										<div className={styles.googleText}>
-											구글 계정으로 신규가입
+											페이스북 계정으로 신규가입
 										</div>
 									</div>
 								</div>
@@ -132,7 +132,9 @@ const LoginModal: React.FC<ChildProps> = (props) => {
 											</button>
 										</>
 									</div>
-									<div className={styles.noUse}>회원 가입 없이 체험</div>
+									<Link href='/MainPage' passHref>
+										<div className={styles.noUse}>회원 가입 없이 체험</div>
+									</Link>
 								</div>
 							</div>
 						</div>
