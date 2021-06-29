@@ -42,13 +42,15 @@ const CommonHeader = () => {
 	return (
 		<div className={styles.header}>
 			<div className={styles.section1}>
-				<Image
-					className={styles.image}
-					src={mainLogo}
-					alt="headerImg"
-					width={100}
-					height={85}
-				/>
+				<Link href="/LandingPage" passHref>
+					<Image
+						className={styles.image}
+						src={mainLogo}
+						alt="headerImg"
+						width={100}
+						height={85}
+					/>
+				</Link>
 			</div>
 			<div className={styles.section2}>
 				{!isLogin ? (
