@@ -15,25 +15,20 @@ $layout-text: 'Titan One', cursive;
 	.phone {
 		width: 320px;
 		height: 560px;
-		background: black;
+		background: #dfdfdf;
 		margin: 0 auto;
 		border-radius: 25px;
 		position: relative;
 		top: 40px;
-		box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px,
-			rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
-		// 0 1px 1px 1px #d5d5d5, 0 2px 2px 2px #d5d5d5,
-		// 	0 3px 3px 3px #d5d5d5, 0 4px 4px 4px #d5d5d5, 0 5px 5px 5px #d5d5d5,
-		// 	0 6px 6px #d5d5d5, 0 7px 7px #d5d5d5;
-		// 0 50px 25px 0px rgb(0, 0, 0, 0.2);
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 		&:before,
 		&:after {
 			content: '';
 			display: block;
 			position: absolute;
 			background: #d3d3d3;
-			box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px,
-				rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05),
+				0 1px 1px rgba(255, 255, 255, 0.25);
 		}
 		&:after {
 			left: calc(50% - 20px);
@@ -170,7 +165,7 @@ $layout-text: 'Titan One', cursive;
 }
 
 @media (max-width: 767px) {
-	.section2 {
+	.swipeButtonContainer {
 		bottom: 4vh;
 	}
 } ;
