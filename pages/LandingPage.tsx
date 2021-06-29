@@ -18,9 +18,11 @@ const LandingPage = () => {
 
 	return (
 		<div className="container">
+			<CommonHeader />
 			<Section1 />
 			<Section2 />
 			<Section3 />
+			<CommonFooter />
 		</div>
 	);
 };
