@@ -1,60 +1,55 @@
 .footer {
+	float: left;
 	width: 100%;
-	height: 10vh;
-	background-color: burlywood;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	padding-left: 25px;
+	padding-right: 25px;
 	margin: 0 auto;
-	flex-direction: column;
-	// float: left;
+	text-align: center;
+	background-color: #ee514a;
+	bottom: 0;
 	.about {
-		// flex: 1;
+		padding-bottom: 0%;
 		margin: 0 auto;
-		text-align: center;
 		p {
-			font-size: 13px;
-			// justify-content: space-between;
+		
 		}
 	}
 	.memList {
-		flex: 1;
-		width: 100%;
-		height: 100%;
-		margin: 0 auto;
-		display: flex;
-		padding-right: 20px;
-		justify-content: center;
-		align-items: center;
-		// justify-content: space-between;
 		list-style: none;
-		// flex-direction: column;
+		display: inline;
+		padding-bottom: 3px;
+		display: flex;
+		justify-content: center;
 		.section {
-			display: inline;
-			margin-left: 20px;
-			// width: 100%;
-			// height: 100%;
-			align-items: center;
-			float: left;
-			justify-content: center;
+
 			p {
-				font-size: 10px;
-				// justify-content: space-between;
+
 			}
 			.contactList {
 				list-style: none;
-				align-items: center;
-				justify-content: center;
+				padding-bottom: 3px;
+				padding-right: 35px;
+				padding-left: 35px;
+				justify-content: space-between;
 				.gihub {
-					display: inline;
+					background-color: #ffffff;
+					border-radius: 50%;
+					box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+					cursor: pointer;
+					transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 				}
 				.mail {
-					display: inline;
+
 				}
 				.num {
-					display: inline;
+
 				}
 			}
 		}
+	}
+}
+@media (max-width: 767px) {
+	.footer {
+		display: flex;
 	}
 }

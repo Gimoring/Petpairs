@@ -9,10 +9,10 @@
 	align-items: center;
 }
 .section1 {
-	// text-align: center;
-	// justify-content: center;
-	// align-items: center;
-	// cursor: pointer;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
 	.image{
 		text-align: center;
 		justify-content: center;
@@ -32,14 +32,14 @@
 		// margin-top: 4vh;
 		font-size: 20px;
 		font-weight: 600;
-		color: #34314c;
+		color: rgb(250, 244, 244);
 		text-decoration: none;
 		background-color:transparent;
 		transition: all 0.5s ease-in-out;
 		border-color: transparent;
 		&:hover {
 		  // background:
-		  color: #fff;
+		  color: #ee514a;
 		  cursor: pointer;
 		}
 	}
