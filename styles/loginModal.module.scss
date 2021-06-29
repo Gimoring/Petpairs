@@ -15,7 +15,8 @@
 		box-sizing: border-box;
 		margin: 50px auto;
 		padding: 20px;
-		background: #fff; //로그인 배경이다
+		background: #ee514a; //로그인 배경이다
+		border-radius: 15px;
 
 		.close {
 			float: right;
@@ -78,8 +79,8 @@
 				font-size: 15px;
 				padding: 13px 30px;
 				cursor: pointer;
-				background-color: #ee514a;
-				color: white;
+				background-color: rgb(250, 244, 244);
+				color: #ee514a;
 				line-height: 1px;
 				margin-top: 20px;
 				margin-bottom: 12px;

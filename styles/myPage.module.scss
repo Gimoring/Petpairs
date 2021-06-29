@@ -1,9 +1,10 @@
 .bodyContainer {
 	display: flex;
 
-	height: 100vh;
+	height: 75vh;
 	width: 100vw;
 	// align-items: flex-start;
+	justify-self: flex-end;
 	align-items: center;
 	.bodyWhole {
 		background-color: rgb(250, 244, 244);
@@ -12,9 +13,9 @@
 		flex-direction: column;
 		border: 2rem, solid, blue;
 		width: 100vw;
-		height: 70vh;
+		height: 75vh;
 		align-items: center;
-		justify-self: center;
+		justify-items: flex-end;
 
 		// align-items: center;
 		.upperBodyContainer {

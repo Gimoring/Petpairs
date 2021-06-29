@@ -2,6 +2,7 @@ import React, { ChangeEvent, useCallback, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import mainLogo from '../images/unknown.png';
+import LoginModal from './LoginModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducer';
 import { userActionTypes } from '../interface/iUserActType';
@@ -16,12 +17,19 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 	const { me, signUpDone, signUpLoading } = useSelector(
 		(state: RootState) => state.user,
 	);
+	const [isOpen, setIsOpen] = useState(false);
 	const [error, setError] = useState('');
 	const [input, setInput] = useState({
 		name: '',
 		email: '',
 		password: '',
 	});
+
+	const handleModal = useCallback(() => {
+		setIsOpen(!isOpen);
+		console.log('나와라제바알~~~');
+	}, [isOpen]);
+
 
 	const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const {
@@ -107,14 +115,20 @@ const SignupModal: React.FC<ChildProps> = (props) => {
                         src="/Images/SignIn/facebook.png"
                       /> */}
 									<div className={styles.googleText}>
-										구글 계정으로 신규가입
+										페이스북 계정으로 신규가입
 									</div>
 								</div>
 							</div>
 							<div className={styles.signupEnd}>
 								<div className={styles.signupLine}>
 									새로운 친구들을 찾아볼까요?
-									<Link href="/login">로그인</Link>
+									<>
+									{isOpen && (<LoginModal handleModal={handleModal}/>
+									)}
+									<button className={styles.loginButton} onClick={handleModal}>
+										로그인
+									</button>
+									</>
 								</div>
 							</div>
 						</div>
