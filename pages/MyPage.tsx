@@ -8,7 +8,7 @@ import { updateProfileData, userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer';
 import { dataSet } from '../reducer/user';
 import MyPetImgSlider from '../components/MyPetImgSlider';
-import DeleteUserModal from '../components/DeleteUserModal';
+import DeleteUserModal from '../components/deleteUserModal';
 import CommonHeader from '../components/CommonHeader';
 import CommonFooter from '../components/CommonFooter';
 
