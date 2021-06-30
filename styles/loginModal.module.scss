@@ -79,8 +79,8 @@
 				font-size: 15px;
 				padding: 13px 30px;
 				cursor: pointer;
-				background-color: rgb(250, 244, 244);
-				color: #ee514a;
+				background-color: #61BFAD;
+				color: #fff;
 				line-height: 1px;
 				margin-top: 20px;
 				margin-bottom: 12px;
@@ -120,7 +120,7 @@
 					}
 				}
 
-				.google {
+				.facebook {
 					background-color: #21538a;
 					border-color: #21538a;
 					height: 40px;
@@ -130,7 +130,7 @@
 					color: #fff;
 					border-radius: 3px;
 
-					.googleText {
+					.facebookText {
 						padding-top: 12px;
 						width: 310px;
 						color: #fff;
@@ -160,10 +160,14 @@
 						text-decoration: none;
 						background: transparent;
 						border-color: transparent;
-						color: black;
+						color: rgb(250, 244, 244);
 						text-decoration: underline;
 						cursor: pointer;
 					}
+				}
+				.noUse{
+					color: rgb(250, 244, 244);	
+					font-size: 20px;
 				}
 			}
 		}

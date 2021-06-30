@@ -14,7 +14,8 @@
 			box-sizing: border-box;
 			margin: 50px auto;
 			padding: 20px;
-			background: white;
+			background: #ee514a;
+			border-radius: 15px;
 			.close{
 				float: right;
 				font-size: 25px;
@@ -74,7 +75,7 @@
 						font-size: 15px;
 						padding: 13px 30px;
 						cursor: pointer;
-						background-color: #ee514a;
+						background-color: #61BFAD;
 						color:white;
 						line-height: 1px;
 						margin-top:20px;
@@ -106,7 +107,7 @@
 								box-sizing: border-box;
 							}
 						}
-						.google{
+						.facebook{
 							background-color: #21538a;
 							border-color: #21538a;
 							height: 40px;
@@ -116,8 +117,7 @@
 							box-sizing: border-box;
 							color: #fff;
 							border-radius: 3px;
-							.goolgeText{
-								padding-top: 12px;
+							.facebookText{
 								width: 310px;
 								color: #fff;
 								font-size: 15px;
@@ -134,10 +134,13 @@
 							color:#bcbcbc;
 							font-size: 11px;
 							margin-bottom: 35px;
-							a{
-								color: black;
+							.loginButton{
+								text-decoration: none;
+								background: transparent;
+								border-color: transparent;
+								color: rgb(250, 244, 244);
 								text-decoration: underline;
-								cursor:pointer
+								cursor: pointer;
 							}
 						}
 					}

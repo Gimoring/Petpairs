@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducer';
 import { userActionTypes } from '../interface/iUserActType';
 import styles from '../styles/signUpModal.module.scss';
+import { InputSharp } from '@material-ui/icons';
 
 interface ChildProps {
 	handleShowModal: () => void;
@@ -25,6 +26,18 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 		password: '',
 	});
 
+	const isValidEmail = (str: string) => {
+		const regExp =
+			/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		return regExp.test(str);
+	};
+
+	const isValidPw = (str: string) => {
+    const regExp =
+      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/i;
+    return regExp.test(str);
+  };
+
 	const handleModal = useCallback(() => {
 		setIsOpen(!isOpen);
 		console.log('나와라제바알~~~');
@@ -35,6 +48,8 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 		const {
 			target: { name, value },
 		} = e;
+		console.log(e.target.name);
+		console.log(e.target.value);
 		setInput({
 			...input,
 			[name]: value,
@@ -43,7 +58,11 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 
 	const submitHandler = useCallback(
 		(e) => {
+			console.log('작동되니?');
 			e.preventDefault();
+			if((!isValidEmail(input.email)) || (!isValidPw(input.password))) {
+				setError('올바른 정보를 입력해주세요')
+			}else{
 			dispatch({
 				type: userActionTypes.SIGN_UP_REQUEST,
 				data: {
@@ -52,19 +71,20 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 					password: input.password,
 				},
 			});
+		}
 		},
 		[dispatch, input.name, input.email, input.password],
 	);
-
+	
 	return (
 		<>
 			<div className={styles.modal} onClick={props.handleShowModal}>
-				{/* <div onClick={e => {e.stopPropagation()}}> */}
+				<div onClick={e => {e.stopPropagation()}}>
 				<div className={styles.signupModal}>
 					<span className={styles.close} onClick={props.handleShowModal}>
 						&times;
 					</span>
-					<div className={styles.modalContents} onClick={props.handleShowModal}>
+					<div className={styles.modalContents}>
 						<Image
 							className={styles.signinIcon}
 							src={mainLogo}
@@ -109,12 +129,12 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 										카카오 계정으로 신규가입
 									</div>
 								</div>
-								<div className={styles.google}>
+								<div className={styles.facebook}>
 									{/* <Image
                         className={styles.googleLogo}
                         src="/Images/SignIn/facebook.png"
                       /> */}
-									<div className={styles.googleText}>
+									<div className={styles.facebookText}>
 										페이스북 계정으로 신규가입
 									</div>
 								</div>
@@ -123,9 +143,13 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 								<div className={styles.signupLine}>
 									새로운 친구들을 찾아볼까요?
 									<>
-									{isOpen && (<LoginModal handleModal={handleModal}/>
+									{isOpen && (
+									<LoginModal handleModal={handleModal}/>
 									)}
-									<button className={styles.loginButton} onClick={handleModal}>
+									<button 
+										className={styles.loginButton} 
+										onClick={handleModal}
+									>
 										로그인
 									</button>
 									</>
@@ -135,7 +159,7 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 					</div>
 				</div>
 			</div>
-			{/* </div> */}
+			</div>
 		</>
 	);
 };
