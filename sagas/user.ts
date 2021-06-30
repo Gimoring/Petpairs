@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
 	all,
+	call,
 	fork,
 	takeLatest,
 	takeEvery,
@@ -16,6 +17,7 @@ import {
 	IDeleteUserRequest,
 	IUpdatePetImageRequest,
 	updateProfileData,
+	updatePetImageData,
 } from '../interface/iUserActType';
 
 function* logIn(action: ILogInRequest) {
@@ -99,28 +101,26 @@ function* updateProfile(action: IUpdateRequest) {
 	}
 }
 
-interface IUpdatePetImage {
-	id: number;
-	formData: File[];
-}
+// interface IUpdatePetImage {
+// 	id: number;
+// 	formData: File[];
+// }
 
-function updatePetImageApi(data: IUpdatePetImage) {
-	return axios.post('url', data);
+function updatePetImageApi(data: updatePetImageData) {
+	return axios.post('http://localhost:4000/image', data, {
+		headers: { 'Content-Type': 'multipart/form-data' },
+	});
 }
 function* updatePetImage(action: IUpdatePetImageRequest) {
-	/* 
-  const token = yield select(access_token)
-  const headerParams = {
-    'Authorization': `JWT ${access_token}`,
-    'Content-Type': 'multipart/form-data',
-  }
-  */
+	const headerParams = {
+		'Content-Type': 'multipart/form-data',
+	};
+
 	try {
-		// const result = yield call(updatePetImageApi, action.data, {headers: headerParams})
-		yield delay(1000);
+		const { data } = yield call(updatePetImageApi, action.data);
 		yield put({
 			type: userActionTypes.UPDATE_PETIMAGE_SUCCESS,
-			data: action.data,
+			data: data,
 			// data: result.data,
 		});
 	} catch (err) {
