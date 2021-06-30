@@ -1,6 +1,6 @@
 // 1. 액션타입 지정해주기
 
-import { IPet, IUser } from './iUser';
+import { IImgFile, IPet, IUser } from './iUser';
 
 export enum userActionTypes {
 	LOG_IN_REQUEST = 'LOG_IN_REQUEST',
@@ -51,13 +51,13 @@ export interface updateProfileData {
 		petName?: null | string;
 		breed?: null | string;
 		age?: null | number;
-		fileName?: null | string[];
+		fileName?: null | IImgFile[];
 		introduce?: null | string;
 	};
 }
 
 export interface updatePetImageData {
-	id: number;
+	id?: number;
 	formData?: File[];
 }
 // 2. 액션 크리에이터의 인터페이스 만들어주기
@@ -147,7 +147,7 @@ export interface IUpdatePetImageRequest {
 
 export interface IUpdatePetImageSuccess {
 	type: userActionTypes.UPDATE_PETIMAGE_SUCCESS;
-	data: string[];
+	data: IImgFile[];
 }
 
 export interface IUpdatePetImageFailure {

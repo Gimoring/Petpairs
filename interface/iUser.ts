@@ -1,4 +1,8 @@
 // 펫 인터페이스
+export interface IImgFile {
+	id?: null | number;
+	file?: null | string;
+}
 
 export interface IPet {
 	id?: null | number;
@@ -7,7 +11,7 @@ export interface IPet {
 	species?: null | string;
 	age?: null | number;
 	matchedId?: null | number[]; //매칭된 상대 펫 ID
-	fileName?: null | string[];
+	fileName?: null | IImgFile[];
 	like?: any; // null | number[]; // 좋아요한 상대 펫 ID
 	introduce?: null | string;
 }
