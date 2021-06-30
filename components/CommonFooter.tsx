@@ -6,6 +6,7 @@ const CommonFooter = () => {
 		<div className={styles.footer}>
 			<div className={styles.about}>
 				<p>About us</p>
+				<hr/>
 			</div>
 			<ul className={styles.memList}>
 				<li className={styles.section}>
