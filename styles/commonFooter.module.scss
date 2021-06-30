@@ -10,9 +10,6 @@
 	.about {
 		padding-bottom: 0%;
 		margin: 0 auto;
-		p {
-		
-		}
 	}
 	.memList {
 		list-style: none;
@@ -20,33 +17,14 @@
 		padding-bottom: 3px;
 		display: flex;
 		justify-content: center;
-		.section {
-
-			p {
-
-			}
+		}
 			.contactList {
 				list-style: none;
 				padding-bottom: 3px;
 				padding-right: 35px;
 				padding-left: 35px;
 				justify-content: space-between;
-				.gihub {
-					background-color: #ffffff;
-					border-radius: 50%;
-					box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-					cursor: pointer;
-					transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-				}
-				.mail {
-
-				}
-				.num {
-
-				}
 			}
-		}
-	}
 }
 @media (max-width: 767px) {
 	.footer {
