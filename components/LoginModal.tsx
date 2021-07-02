@@ -7,6 +7,7 @@ import { RootState } from '../reducer';
 import { userActionTypes } from '../interface/iUserActType';
 import styles from '../styles/loginModal.module.scss';
 import SignupModal from './SignupModal';
+import axios from 'axios';
 
 interface ChildProps {
 	handleModal: () => void;
@@ -23,6 +24,18 @@ const LoginModal: React.FC<ChildProps> = (props) => {
 		email: '',
 		password: '',
 	});
+
+	const isValidEmail = (str: string) => {
+		const regExp =
+			/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		return regExp.test(str);
+	};
+
+	const isValidPw = (str: string) => {
+    const regExp =
+      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/i;
+    return regExp.test(str);
+  };
 
 	const handleShowModal = useCallback(() => {
 		setIsOpen(!isOpen);
@@ -45,6 +58,9 @@ const LoginModal: React.FC<ChildProps> = (props) => {
 		(e) => {
 			console.log('보낸다');
 			e.preventDefault();
+			if((!isValidEmail(input.email)) || (!isValidPw(input.password))){
+				setError('올바른 정보를 입력해주세요')
+			}else{
 			dispatch({
 				type: userActionTypes.LOG_IN_REQUEST,
 				data: {
@@ -52,6 +68,7 @@ const LoginModal: React.FC<ChildProps> = (props) => {
 					password: input.password,
 				},
 			});
+		}
 		},
 		[dispatch, input.email, input.password],
 	);
