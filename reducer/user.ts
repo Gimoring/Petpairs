@@ -100,8 +100,8 @@ const reducer = (
 				...state,
 				logInLoading: false,
 				logInDone: true,
-				me: dummyUser(action.data),
-				// me : action.data
+				// me: dummyUser(action.data),
+				me : action.data
 			};
 
 		case userActionTypes.LOG_IN_FAILURE:

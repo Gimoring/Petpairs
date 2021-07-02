@@ -57,6 +57,7 @@ function signupAPI(data: signupData) {
 
 function* signup(action: ISignUpRequest) {
 	try {
+		const { data }: AxiosResponse<any> = yield call(signupAPI, action.data);
 		yield delay(1000);
 		yield put({
 			type: userActionTypes.SIGN_UP_SUCCESS,
@@ -89,6 +90,7 @@ function* logOut() {
 		});
 	}
 }
+
 
 // interface IUpdateUser {
 // 	id: number;
