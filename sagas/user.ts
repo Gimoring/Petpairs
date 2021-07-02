@@ -34,19 +34,13 @@ function logInAPI(data: logInData) {
 function* logIn(action: ILogInRequest) {
 	try {
 		const response: AxiosResponse<any> = yield call(logInAPI, action.data);
-		// const token = response.headers.get['set-cookie'];
-		const accessToken = response.data;
-		axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken.token}`
-		document.cookie = `token=${accessToken.token}`
-		// response.setHeader('Set-Cookie', `token=${token}; path=/;`)
-		// response.status(200).json(user)
-		yield delay(1000);
+		const token = response.data.accessToken;
+		axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+		document.cookie = `token=${token}`
 		yield put({
 			type: userActionTypes.LOG_IN_SUCCESS,
 			data: response.data,
 		});
-		// if(token){ yield call()}		
-		// response.setHeader('Set-Cookie', `token=${token}; path=/;`)
 	} catch (err) {
 		console.error(err);
 		yield put({
@@ -78,12 +72,14 @@ function* signup(action: ISignUpRequest) {
 }
 
 function logOutAPI() {
-	return axios.post('/api/logout');
+	return axios.post('http://localhost:4000/user/logout');
 }
 
 function* logOut() {
+	
 	try {
-		// const result = yield call(logOutAPI);
+		const response: AxiosResponse<any> = yield call(logOutAPI);
+		delete axios.defaults.headers.common["Authorization"];
 		yield delay(1000);
 		yield put({
 			type: userActionTypes.LOG_OUT_SUCCESS,
