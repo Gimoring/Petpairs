@@ -14,7 +14,7 @@ const CommonHeader = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [showSignupModal, setSignupShowModal] = useState(false);
 	const [isLogin, setIsLogin] = useState(false);
-	const { me } = useSelector((state: RootState) => state.user);
+	const { me,loginDone } = useSelector((state: RootState) => state.user);
 
 	const handleModal = useCallback(() => {
 		setShowModal((state) => !state);
@@ -53,7 +53,7 @@ const CommonHeader = () => {
 				</Link>
 			</div>
 			<div className={styles.section2}>
-				{!isLogin ? (
+				{!loginDone ? (
 					<>
 						{showModal && <LoginModal handleModal={handleModal} />}
 						<button className={styles.button} onClick={handleModal}>
