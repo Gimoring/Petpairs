@@ -17,20 +17,29 @@ import {
 	IDeleteUserRequest,
 	IUpdatePetImageRequest,
 	updateProfileData,
+	logInData,
+	signupData,
 	updatePetImageData,
 	ILoadProfileRequest,
 	ILoadCardsRequest,
 	loadProfileData,
 } from '../interface/iUserActType';
-import { IPet, IUser } from '../interface/iUser';
+
+import { AxiosResponse } from 'axios';
+import { IImgFile, IPet, IUser } from '../interface/iUser';
+
+function logInAPI(data: logInData) {
+	return axios.post('http://localhost:4000/user/login', data);
+}
+
 
 function* logIn(action: ILogInRequest) {
 	try {
-		// const result = yield call(logInAPI, action.data);
+		const { data }: AxiosResponse<any> = yield call(logInAPI, action.data);
 		yield delay(1000);
 		yield put({
 			type: userActionTypes.LOG_IN_SUCCESS,
-			// data: result.data
+			data: data,
 		});
 	} catch (err) {
 		console.error(err);
@@ -40,6 +49,11 @@ function* logIn(action: ILogInRequest) {
 		});
 	}
 }
+
+function signupAPI(data: signupData) {
+	return axios.post('http://localhost:4000/user/signup', data);
+}
+
 
 function* signup(action: ISignUpRequest) {
 	try {
