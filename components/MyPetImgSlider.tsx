@@ -5,6 +5,7 @@ import React, {
 	ReactHTMLElement,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import { userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer';
 import styles from '../styles/myPetSlider.module.scss';
@@ -18,6 +19,7 @@ const MyPetImgSlider = () => {
 	const [current, setCurrent] = useState(0);
 	const [imgFileList, setImgFileList] = useState<any>([]);
 	const [imgPreviewUrls, setImgPreviewUrls] = useState<string[]>([]);
+	const router = useRouter();
 
 	useEffect(() => {
 		console.log(imgPreviewUrls.length);
@@ -85,20 +87,16 @@ const MyPetImgSlider = () => {
 			data: formData,
 		});
 
-		// 	if (updatePetImageDone === true) {
-		// 		window.alert('사진이 추가되었습니다!');
-		// 	}
-		// 	// dispatch()
-		// 	// 보낼때 imgFile들 담은 배열 (formData) 를 보낸다
-		// 	// 받을때 : fileName, 즉 파일의 이름들 담은 배열을 받는다
-		// 	// 받은걸 디스플레이 하는건 다음 로딩 시에도 뜨게 하기 위함
-		// 	// 코드:
-		// 	// 사진 추가시 프리뷰 뜨게 하기
-		// 	// 코드:
-		// } else {
-		// 	window.alert('사진을 추가해주세요!');
-		// }
+		if (updatePetImageDone === true) {
+			window.alert('사진이 추가되었습니다!');
+			router.replace(router.asPath);
+			setImgFileList([]);
+			setImgPreviewUrls([]);
+		} else {
+			window.alert('사진을 다시 추가해주세요!');
+		}
 	}, [imgFileList]);
+	// [imgFileList, dispatch]);
 
 	// const petImgs = [
 	// 	{
@@ -132,11 +130,6 @@ const MyPetImgSlider = () => {
 	// 		matchedId: [1],
 	// 	},
 	// ];
-	const petImgs = [
-		'https://images.pexels.com/photos/7853223/pexels-photo-7853223.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-		'https://images.pexels.com/photos/5428550/pexels-photo-5428550.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-		'https://images.pexels.com/photos/7098011/pexels-photo-7098011.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
-	];
 	let length =
 		imgPreviewUrls.length > 0
 			? imgPreviewUrls.length
@@ -186,7 +179,7 @@ const MyPetImgSlider = () => {
 									className={index === current ? 'active slide' : 'slide'}
 									key={index}
 								> */}
-
+					{console.log(imgPreviewUrls)}
 					{imgPreviewUrls && imgPreviewUrls.length !== 0 ? (
 						<>
 							{imgPreviewUrls.map(
@@ -292,12 +285,12 @@ const MyPetImgSlider = () => {
 					<button className={styles.deleteImg}>사진 삭제</button>
 				</div>
 			</form>
-			<div>
+			{/* <div>
 				<input type="file" name="image" onChange={handleChange} multiple />
 				<button type="button" onClick={handleSubmit}>
 					hh4h54
 				</button>
-			</div>
+			</div> */}
 		</>
 	);
 };

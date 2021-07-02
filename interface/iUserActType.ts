@@ -15,6 +15,14 @@ export enum userActionTypes {
 	POST_LIKE_SUCCESS = 'POST_LIKE_SUCCESS',
 	POST_LIKE_FAILURE = 'POST_LIKE_FAILURE',
 
+	LOAD_MYPROFILE_REQUEST = 'LOAD_MYPROFILE_REQUEST',
+	LOAD_MYPROFILE_SUCCESS = 'LOAD_MYPROFILE_SUCCESS',
+	LOAD_MYPROFILE_FAILURE = 'LOAD_MYPROFILE_FAILURE',
+
+	LOAD_CARDS_REQUEST = 'LOAD_CARDS_REQUEST',
+	LOAD_CARDS_SUCCESS = 'LOAD_CARDS_SUCCESS',
+	LOAD_CARDS_FAILURE = 'LOAD_CARDS_FAILURE',
+
 	UPDATE_PROFILE_REQUEST = 'UPDATE_PROFILE_REQUEST',
 	UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS',
 	UPDATE_PROFILE_FAILURE = 'UPDATE_PROFILE_FAILURE',
@@ -43,11 +51,15 @@ export interface logInData {
 	password: string;
 }
 
+export interface loadProfileData {
+	id: number;
+}
 export interface updateProfileData {
 	id: number;
 	name?: string;
 	email?: string;
 	pet?: {
+		petId?: null | number;
 		petName?: null | string;
 		breed?: null | string;
 		age?: null | number;
@@ -57,7 +69,7 @@ export interface updateProfileData {
 }
 
 export interface updatePetImageData {
-	id?: number;
+	petId?: number;
 	formData?: File[];
 }
 // 2. 액션 크리에이터의 인터페이스 만들어주기
@@ -125,6 +137,36 @@ export interface IPostLikeFailure {
 // 	error: string;
 // }
 
+export interface ILoadProfileRequest {
+	type: userActionTypes.LOAD_MYPROFILE_REQUEST;
+	data: loadProfileData;
+}
+
+export interface ILoadProfileSuccess {
+	type: userActionTypes.LOAD_MYPROFILE_SUCCESS;
+	data: IUser;
+}
+
+export interface ILoadProfileFailure {
+	type: userActionTypes.LOAD_MYPROFILE_FAILURE;
+	error: string;
+}
+
+export interface ILoadCardsRequest {
+	type: userActionTypes.LOAD_CARDS_REQUEST;
+	data: number;
+}
+
+export interface ILoadCardsSuccess {
+	type: userActionTypes.LOAD_CARDS_SUCCESS;
+	data: IPet[];
+}
+
+export interface ILoadCardsFailure {
+	type: userActionTypes.LOAD_CARDS_FAILURE;
+	error: string;
+}
+
 export interface IUpdateRequest {
 	type: userActionTypes.UPDATE_PROFILE_REQUEST;
 	data: updateProfileData;
@@ -191,6 +233,12 @@ export type IUserActions =
 	| ILogOutRequest
 	| ILogOutSuccess
 	| ILogOutFailure
+	| ILoadProfileRequest
+	| ILoadProfileSuccess
+	| ILoadProfileFailure
+	| ILoadCardsRequest
+	| ILoadCardsSuccess
+	| ILoadCardsFailure
 	| IUpdateRequest
 	| IUpdateSuccess
 	| IUpdateFailure

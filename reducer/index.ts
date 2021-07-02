@@ -6,7 +6,7 @@ import user from './user';
 // 	user: IUserReducerState;
 // }
 
-const rootReducer: Reducer<RootStateInterface, AnyAction> =
+const rootReducer: Reducer<any, AnyAction> =
 	combineReducers<RootStateInterface>({
 		user,
 	});
