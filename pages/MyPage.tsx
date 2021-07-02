@@ -1,4 +1,9 @@
-import { GetServerSideProps } from 'next';
+import {
+	GetServerSideProps,
+	GetServerSidePropsContext,
+	GetServerSidePropsResult,
+	InferGetServerSidePropsType,
+} from 'next';
 import React, { useCallback, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../styles/myPage.module.scss';
@@ -8,11 +13,18 @@ import { updateProfileData, userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer';
 import { dataSet } from '../reducer/user';
 import MyPetImgSlider from '../components/MyPetImgSlider';
-import DeleteUserModal from '../components/deleteUserModal';
+import DeleteUserModal from '../components/DeleteUserModal';
 import CommonHeader from '../components/CommonHeader';
 import CommonFooter from '../components/CommonFooter';
+import wrapper from '../store/configure';
+import nookies from 'nookies';
+import axios, { AxiosPromise } from 'axios';
+import { END } from 'redux-saga';
+import { Context, GetServerSidePropsCallback } from 'next-redux-wrapper';
 
-const MyPage = () => {
+const MyPage = ({
+	user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { me, updateProfileDone, updateProfileError } = useSelector(
 		(state: RootState) => state.user,
 	);
@@ -53,10 +65,17 @@ const MyPage = () => {
 		return regExp.test(str);
 	};
 
-	const changeInfoOn = useCallback(() => {
-		setChangeInfoBtnOn(true);
-		console.log(changeInfoBtnOn);
-	}, [changeInfoBtnOn, setChangeInfoBtnOn]);
+	// useEffect(() => {
+	// 	changeInfoOn;
+	// }, [changeInfoBtnOn]);
+	const changeInfoOn = useCallback(
+		(e) => {
+			e.preventDefault();
+			setChangeInfoBtnOn(true);
+			console.log(changeInfoBtnOn);
+		},
+		[changeInfoBtnOn, setChangeInfoBtnOn],
+	);
 
 	const onSubmitUpdatedInfo = useCallback(
 		(e) => {
@@ -116,6 +135,8 @@ const MyPage = () => {
 				setEditBreed(false);
 				setEditAge(false);
 				setEditIntroduce(false);
+
+				router.replace(router.asPath); // server-side props refresh
 			}
 
 			if (updateProfileError) {
@@ -160,17 +181,25 @@ const MyPage = () => {
 		<>
 			<CommonHeader />
 			<div className={styles.bodyContainer}>
-				{/* {console.log(user)} */}
+				{console.log(changeInfoBtnOn)}
 				<>
-					{!changeInfoBtnOn ? ( //  프로필 수정 누르지 않은 상태
-						<section className={styles.bodyWhole}>
-							{modalOn && <DeleteUserModal handleModal={handleModal} />}
+					<section className={styles.bodyWhole}>
+						{modalOn && <DeleteUserModal handleModal={handleModal} />}
 
-							<div className={styles.upperBodyContainer}>
-								<div className={styles.slider}>
-									<MyPetImgSlider />
-								</div>
+						<div className={styles.upperBodyContainer}>
+							<div className={styles.slider}>
+								<MyPetImgSlider />
 							</div>
+						</div>
+						{!changeInfoBtnOn ? ( //  프로필 수정 누르지 않은 상태
+							// <section className={styles.bodyWhole}>
+							// 	{modalOn && <DeleteUserModal handleModal={handleModal} />}
+
+							// 	<div className={styles.upperBodyContainer}>
+							// 		<div className={styles.slider}>
+							// 			<MyPetImgSlider />
+							// 		</div>
+							// 	</div>
 
 							<div className={styles.lowerBodyContainer}>
 								<div
@@ -221,7 +250,11 @@ const MyPage = () => {
 											)}
 										</div>
 									</div>
-									<button className={styles.editInfoBtn} onClick={changeInfoOn}>
+									<button
+										className={styles.editInfoBtn}
+										type="button"
+										onClick={changeInfoOn}
+									>
 										프로필 수정
 									</button>
 									<button
@@ -232,15 +265,15 @@ const MyPage = () => {
 									</button>
 								</div>
 							</div>
-						</section>
-					) : (
-						// 프로필 수정 누른 상태
-						<section className={styles.bodyWhole}>
-							<div className={styles.upperBodyContainer}>
-								<div className={styles.slider}>
-									<MyPetImgSlider />
-								</div>
-							</div>
+						) : (
+							// </section>
+							// 프로필 수정 누른 상태
+							// <section className={styles.bodyWhole}>
+							// 	<div className={styles.upperBodyContainer}>
+							// 		<div className={styles.slider}>
+							// 			<MyPetImgSlider />
+							// 		</div>
+							// 	</div>
 
 							<div className={styles.lowerBodyContainer}>
 								<div className={styles.editUserPetInfo}>
@@ -469,14 +502,112 @@ const MyPage = () => {
 									</button>
 								</div>
 							</div>
-						</section>
-					)}
+							// </section>
+						)}
+					</section>
 				</>
 			</div>
 			<CommonFooter />
 		</>
 	);
 };
+
+// export const getServerSideProps = wrapper.getServerSideProps(
+//  ({ store, req, res, ...etc }) => {
+// 		const cookie = req ? req.headers.cookie : '';
+// 		if (cookie) {
+// 			axios.defaults.headers.common.Authorization = `Bearer ${cookie}`;
+// 			// store.dispatch(ApplicationSlice.actions.updateConfiguration());
+// 			store.dispatch({ type: userActionTypes.LOAD_MYPROFILE_REQUEST });
+// 			store.dispatch({ type: userActionTypes.LOAD_CARDS_REQUEST });
+// 		}
+// 		store.dispatch(END);
+// 		store.sagaTask.toPromise();
+// 	},
+// );
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+
+// export const getServerSideProps: GetServerSideProps =
+// 	wrapper.getServerSideProps(async (ctx) => {
+// 		// get the cookies
+// 		const cookieString = ctx.req ? ctx.req.headers.cookie : '';
+
+// 		// set the cookies
+// 		ctx.res.setHeader('set-Cookie', 'foo=bar; HttpOnly');
+// 		return {
+// 			props: {},
+// 		};
+// 	});
+
+export const getServerSideProps = wrapper.getServerSideProps(
+	(store) =>
+		async ({ req }): Promise<any> => {
+			const cookie = req?.headers.cookie; // req가 있다면 cookie에 요청에 담겨진 cookie를 할당한다.
+			axios.defaults.headers.Cookie = ''; // 요청이 들어올 때마다 초기화 시켜주는 것이다. 여기는 클라이언트 서버에서 실행되므로 이전 요청이 남아있을 수 있기 때문이다
+			console.log('cookieReq: ', cookie);
+			// if (req && cookie)
+			// if (cookie?.userId && cookie.token)
+			if (req && cookie) {
+				axios.defaults.headers.Cookie = cookie;
+			}
+			store.dispatch({
+				type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+				cookie,
+			});
+			store.dispatch(END);
+			await store.sagaTask.toPromise();
+			const user = store.getState();
+
+			return {
+				props: { user },
+			};
+		},
+);
+
+// export const getServerSideProps =
+// 	wrapper.getServerSideProps(async (context): Promise<any> => {
+// 		const cookies = nookies.get(context);
+// 		if (cookies.userId && cookies.token) {
+// 			context.store.dispatch(
+// 				{ type: userActionTypes.LOAD_MYPROFILE_REQUEST },
+// 				cookies.userId,
+// 			);
+// 			context.store.dispatch(
+// 				{ type: userActionTypes.LOAD_CARDS_REQUEST },
+// 				cookies.userId,
+// 				cookies.token,
+// 			);
+// 			context.store.dispatch(END);
+// 			await context.store.sagaTask?.toPromise();
+// 		} else {
+// 			return {
+// 				props: { ...cookies },
+// 			};
+// 		}
+// 	});
+// 	return {
+// 		redirect: {
+// 			permanent: false,
+// 			destination: '/user/signin',
+// 		},
+// 	};
+// }
+
+// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(async (context) => {
+// const cookie = context.req ? context.req.headers.cookie : '';
+//   if (cookie) {
+//     axios.defaults.headers.common.Authorization = `Bearer ${cookie}`;
+//     context.store.dispatch({ type: userActionTypes.LOAD_MYPROFILE_REQUEST });
+//     context.store.dispatch({ type: userActionTypes.LOAD_CARDS_REQUEST});
+//   }
+// }
+// context.store.dispatch(END);
+// await context.store.sagaTask.toPromise();
+// return {
+//   props: {
+//     me
+//   }
+// }
 
 // export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
 

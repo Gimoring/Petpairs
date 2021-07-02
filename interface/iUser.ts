@@ -5,7 +5,7 @@ export interface IImgFile {
 }
 
 export interface IPet {
-	id?: null | number;
+	petId?: null | number;
 	petName?: null | string;
 	breed?: null | string;
 	species?: null | string;
@@ -36,6 +36,12 @@ export interface IUserState {
 	signUpLoading: boolean;
 	signUpDone: boolean;
 	signUpError: null | string;
+	loadProfileLoading: boolean;
+	loadProfileDone: boolean;
+	loadProfileError: null | string;
+	loadCardsLoading: boolean;
+	loadCardsDone: boolean;
+	loadCardsError: null | string;
 	updateProfileLoading: boolean;
 	updateProfileDone: boolean;
 	updateProfileError: null | string;
@@ -50,6 +56,7 @@ export interface IUserState {
 	deleteUserError: null | string;
 	me: null | IUser;
 	users: null | IUser[];
+	pets: null | IPet[];
 }
 
 //

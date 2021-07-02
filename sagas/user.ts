@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import {
 	all,
 	call,
@@ -18,7 +18,11 @@ import {
 	IUpdatePetImageRequest,
 	updateProfileData,
 	updatePetImageData,
+	ILoadProfileRequest,
+	ILoadCardsRequest,
+	loadProfileData,
 } from '../interface/iUserActType';
+import { IPet, IUser } from '../interface/iUser';
 
 function* logIn(action: ILogInRequest) {
 	try {
@@ -83,10 +87,68 @@ function* logOut() {
 //     headers: { access_token },
 //   })
 // }
+
+// interface ILoadProfile {
+// 	data?: number;
+// }
+function loadProfileAPI(data: loadProfileData) {
+	return axios.get('url');
+}
+function* loadProfile(action: ILoadProfileRequest) {
+	try {
+		// const token = yield call()
+		const { data }: AxiosResponse<any> = yield call(
+			loadProfileAPI,
+			action.data,
+		);
+		yield put({
+			type: userActionTypes.LOAD_MYPROFILE_SUCCESS,
+			data: data, // result.data
+		});
+	} catch (err) {
+		console.error(err);
+		yield put({
+			type: userActionTypes.LOAD_MYPROFILE_FAILURE,
+			error: err.response.data,
+		});
+	}
+}
+
+interface ILoadCards {
+	data: number;
+}
+function loadCardsAPI(data: number) {
+	return axios.get('url');
+}
+function* loadCards(action: ILoadCardsRequest) {
+	try {
+		const { data }: AxiosResponse<any[]> = yield call(
+			loadCardsAPI,
+			action.data,
+		);
+		yield put({
+			type: userActionTypes.LOAD_CARDS_SUCCESS,
+			data: data, //result.data
+		});
+	} catch (err) {
+		console.error(err);
+		yield put({
+			type: userActionTypes.LOAD_CARDS_FAILURE,
+			error: err.response.data,
+		});
+	}
+}
+
+function updateUserAPI(data: updateProfileData) {
+	return axios.post('http://localhost:4000/user/userOrPetEdit', data);
+}
+
 function* updateProfile(action: IUpdateRequest) {
 	try {
-		// const result = yield call(updateUserAPI, action.data);
-		yield delay(1000);
+		const { data }: AxiosResponse<any[]> = yield call(
+			updateUserAPI,
+			action.data,
+		);
 		yield put({
 			type: userActionTypes.UPDATE_PROFILE_SUCCESS,
 			// data: result.data.user,
@@ -102,20 +164,23 @@ function* updateProfile(action: IUpdateRequest) {
 }
 
 // interface IUpdatePetImage {
-// 	id: number;
+// 	petId: number;
 // 	formData: File[];
 // }
 
 function updatePetImageApi(data: updatePetImageData) {
-	return axios.post('http://localhost:4000/image', data, {
+	return axios.post('http://localhost:4000/pet/updatePetPhotoFile', data, {
 		headers: { 'Content-Type': 'multipart/form-data' },
 	});
 }
 function* updatePetImage(action: IUpdatePetImageRequest) {
-	const headerParams = {
-		'Content-Type': 'multipart/form-data',
-	};
-
+	/* 
+  const token = yield select(access_token)
+  const headerParams = {
+    'Authorization': `JWT ${access_token}`,
+    'Content-Type': 'multipart/form-data',
+  }
+  */
 	try {
 		const { data } = yield call(updatePetImageApi, action.data);
 		yield put({
@@ -134,7 +199,6 @@ function* updatePetImage(action: IUpdatePetImageRequest) {
 
 interface IPostLike {
 	id: number;
-	petId: number;
 }
 
 // data will be  id : number
@@ -200,6 +264,14 @@ function* watchLogOut() {
 	yield takeLatest(userActionTypes.LOG_OUT_REQUEST, logOut);
 }
 
+function* watchLoadProfileRequest() {
+	yield takeLatest(userActionTypes.LOAD_MYPROFILE_REQUEST, loadProfile);
+}
+
+function* watchLoadCardsRequest() {
+	yield takeLatest(userActionTypes.LOAD_CARDS_REQUEST, loadCards);
+}
+
 function* watchProfileUpdate() {
 	yield takeEvery(userActionTypes.UPDATE_PROFILE_REQUEST, updateProfile);
 }
@@ -225,5 +297,7 @@ export default function* userSaga(): Generator {
 		fork(watchSignUp),
 		fork(watchPostLike),
 		fork(watchDeleteUser),
+		fork(watchLoadProfileRequest),
+		fork(watchLoadCardsRequest),
 	]);
 }

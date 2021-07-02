@@ -11,6 +11,12 @@ export const initialState: IUserState = {
 	signUpLoading: false,
 	signUpDone: false,
 	signUpError: null,
+	loadProfileLoading: false,
+	loadProfileDone: true,
+	loadProfileError: null,
+	loadCardsLoading: false,
+	loadCardsDone: true,
+	loadCardsError: null,
 	updateProfileLoading: false,
 	updateProfileDone: false,
 	updateProfileError: null,
@@ -25,6 +31,7 @@ export const initialState: IUserState = {
 	deleteUserError: null,
 	me: null,
 	users: null,
+	pets: null,
 };
 
 const dummyUser = (data: any): IUser => ({
@@ -32,7 +39,7 @@ const dummyUser = (data: any): IUser => ({
 	id: 4,
 	email: 'Hello@world.com',
 	pet: {
-		id: 1,
+		// id: 1,
 		petName: '강아지가된성민구',
 		age: 84,
 		breed: '시츄',
@@ -155,6 +162,48 @@ const reducer = (
 				deleteUserLoading: false,
 				deleteUserDone: true,
 				deleteUserError: action.error,
+			};
+
+		case userActionTypes.LOAD_MYPROFILE_REQUEST:
+			return {
+				...state,
+				loadProfileLoading: true,
+				loadProfileDone: false,
+				loadProfileError: null,
+			};
+		case userActionTypes.LOAD_MYPROFILE_SUCCESS:
+			return {
+				...state,
+				loadProfileLoading: false,
+				loadProfileDone: true,
+				me: action.data,
+			};
+		case userActionTypes.LOAD_MYPROFILE_FAILURE:
+			return {
+				...state,
+				loadProfileDone: false,
+				loadProfileError: action.error,
+			};
+
+		case userActionTypes.LOAD_CARDS_REQUEST:
+			return {
+				...state,
+				loadCardsLoading: true,
+				loadCardsDone: false,
+				loadCardsError: null,
+			};
+		case userActionTypes.LOAD_CARDS_SUCCESS:
+			return {
+				...state,
+				loadCardsLoading: false,
+				loadCardsDone: true,
+				pets: action.data,
+			};
+		case userActionTypes.LOAD_CARDS_FAILURE:
+			return {
+				...state,
+				loadCardsDone: false,
+				loadCardsError: action.error,
 			};
 
 		case userActionTypes.UPDATE_PROFILE_REQUEST:
