@@ -8,17 +8,18 @@ import { userActionTypes } from '../interface/iUserActType';
 import styles from '../styles/loginModal.module.scss';
 import SignupModal from './SignupModal';
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
+import router from 'next/router';
 
 interface ChildProps {
 	handleModal: () => void;
 }
 
-const LoginModal: React.FC<ChildProps> = (props) => {
+const LoginModal: React.FC<ChildProps> | any = (props:any,req: NextApiRequest, res: NextApiResponse) => {
 	const dispatch = useDispatch();
 	const { me, logInDone, logInLoading } = useSelector(
 		(state: RootState) => state.user,
 	);
-	const [error, setError] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [input, setInput] = useState({
 		email: '',
@@ -59,7 +60,7 @@ const LoginModal: React.FC<ChildProps> = (props) => {
 			console.log('보낸다');
 			e.preventDefault();
 			if((!isValidEmail(input.email)) || (!isValidPw(input.password))){
-				setError('올바른 정보를 입력해주세요')
+				window.alert('올바른 정보를 입력해주세요')
 			}else{
 			dispatch({
 				type: userActionTypes.LOG_IN_REQUEST,
@@ -68,9 +69,14 @@ const LoginModal: React.FC<ChildProps> = (props) => {
 					password: input.password,
 				},
 			});
+			if(logInDone) {
+				router.replace('/MainPage');
+			}else{
+				window.alert('정확한 이메일과 비밀번호를 기재해주세요')
+			}
 		}
 		},
-		[dispatch, input.email, input.password],
+		[dispatch, input.email, input.password,logInDone],
 	);
 
 	return (
