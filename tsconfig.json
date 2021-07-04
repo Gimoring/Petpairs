@@ -20,6 +20,6 @@
 		"**/*.tsx",
 		"reducer/index.js",
 		"sagas/user.ts"
-	],
+,  "components/FacebookLoader.jsx"	],
 	"exclude": ["node_modules"]
 }
