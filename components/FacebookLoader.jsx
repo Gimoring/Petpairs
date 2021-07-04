@@ -8,17 +8,12 @@ import styles from "../styles/button.module.scss";
 export default class Facebook extends Component {
   state ={
     isLoggedIn: false,
-    ismodal:true,
     userID: '',
     name: '',
     email: '',
     picture: '',
     cookie:false,
     accessToken:''
-  }
-
-  showModal = () => {
-    this.setState({ismodal:false})
   }
   
   responseFacebook = response => {
@@ -38,7 +33,7 @@ export default class Facebook extends Component {
     document.cookie = `token=${token}`
     console.log(document.cookie);
   }
-  // componentClicked = () => console.log('clicked');
+  componentClicked = () => console.log('clicked');
 
   render() {
     let fbContent;
@@ -54,24 +49,20 @@ export default class Facebook extends Component {
       
     }
     return(
-      <>
-      {this.showModal ?(
       <div className= {styles.facebook}>
-      <FacebookLogin
-      appId="248399230008338"
-      autoLoad={true}
-      fields="name,email,picture"
-      // onClick={this.componentClicked}
-      cookie={true}
-      callback={this.responseFacebook} 
-      render={renderProps=>(
-        <div className={styles.facebook}>
-        <button className={styles.facebookText}onClick={renderProps.onClick}>Facebook으로 로그인</button>
-        </div>)
-      }
-      />
-      </div>
-    ):null}
-    </>
-    )}
+        <FacebookLogin
+          appId="248399230008338"
+          autoLoad={true}
+          fields="name,email,picture"
+          onClick={this.componentClicked}
+          cookie={true}
+          callback={this.responseFacebook} 
+          render={renderProps=>(
+            <div className={styles.facebook}>
+              <button className={styles.facebookText}onClick={renderProps.onClick}>Facebook으로 로그인</button>
+            </div>)}
+        />
+    </div>
+  )
+}
 }
