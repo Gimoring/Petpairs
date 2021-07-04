@@ -16,6 +16,11 @@ const LandingPage = () => {
 	const { me } = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
 
+	useEffect(() => {
+		dispatch({
+			type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+		});
+	}, []);
 	return (
 		<div className="container">
 			<CommonHeader />
