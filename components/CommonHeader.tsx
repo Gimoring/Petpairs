@@ -1,4 +1,4 @@
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -14,8 +14,8 @@ const CommonHeader = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [showSignupModal, setSignupShowModal] = useState(false);
 	const [isLogin, setIsLogin] = useState(false);
-	const { me,loginDone } = useSelector((state: RootState) => state.user);
-
+	const { me, logInDone } = useSelector((state: RootState) => state.user);
+	const router = useRouter();
 	const handleModal = useCallback(() => {
 		setShowModal((state) => !state);
 		console.log('눌렀다아아아아앙');
@@ -32,11 +32,15 @@ const CommonHeader = () => {
 	// }, []);
 
 	const Logout = useCallback(() => {
-		Router.replace('/LandingPage');
+		router.push('/LandingPage');
 	}, []);
 
 	const MyPage = useCallback(() => {
-		Router.replace('/MyPage');
+		router.push('/MyPage');
+	}, []);
+
+	const MainPage = useCallback(() => {
+		router.push('/MainPage');
 	}, []);
 
 	return (
@@ -53,7 +57,7 @@ const CommonHeader = () => {
 				</Link>
 			</div>
 			<div className={styles.section2}>
-				{!loginDone ? (
+				{!me || !MyPage ? (
 					<>
 						{showModal && <LoginModal handleModal={handleModal} />}
 						<button className={styles.button} onClick={handleModal}>
@@ -68,10 +72,23 @@ const CommonHeader = () => {
 					</>
 				) : (
 					<>
-						<button className={styles.button} onClick={MyPage}>
-							마이페이지
-						</button>
-						<button className={styles.button} onClick={Logout}>
+						<Link href="/MainPage">
+							<a
+								className={styles.button}
+								type="button"
+								onClick={() => router.push('/MyPage')}
+							>
+								메인페이지
+							</a>
+						</Link>
+						<Link href="/MyPage">
+							<a className={styles.button}>마이페이지</a>
+						</Link>
+
+						<button
+							className={styles.button}
+							onClick={() => console.log('do nth')}
+						>
 							로그아웃
 						</button>
 					</>
