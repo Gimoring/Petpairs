@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TinderCard from 'react-tinder-card';
 import { userActionTypes } from '../interface/iUserActType';
@@ -38,16 +38,17 @@ const db = [
 ];
 
 const alreadyRemoved = [];
-let petState = db;
+// let petState = db;
 const PetCards = () => {
-	const [pets, setPets] = useState(db);
+	// const [petState, setPetState] = useState();
+	const [pets, setPets] = useState([]);
 	const dispatch = useDispatch();
 	const userReducer = useSelector((state) => state.user);
-	const myId = userReducer.me.id;
-
+	const myId = userReducer.me?.id;
+	console.log(userReducer);
 	const childRefs = useMemo(
 		() =>
-			Array(db.length)
+			Array(pets && pets.length)
 				.fill(0)
 				.map((i) => React.createRef()),
 		[],
@@ -85,7 +86,10 @@ const PetCards = () => {
 
 	const outOfFrame = (name) => {
 		console.log(name + ' left the screen!');
-		petState = petState.filter((pet) => pet.petName !== name);
+		// useSelector 펫들 가지고와서
+		// 펫들 필터링해주고
+		// setPets
+		let petState = pets.filter((pet) => pet.petName !== name); // <-- petState 바꿔줘야함.
 		setPets(petState);
 	};
 
@@ -95,35 +99,44 @@ const PetCards = () => {
 		);
 		if (cardsLeft.length) {
 			const toBeRemoved = cardsLeft[cardsLeft.length - 1].petName; // 카드오브젝트 하나 지울거 찾기
-			const index = db.map((pet) => pet.petName).indexOf(toBeRemoved); // Find the index of which to make the reference to
+			const index = pets.map((pet) => pet.petName).indexOf(toBeRemoved); // Find the index of which to make the reference to
 			alreadyRemoved.push(toBeRemoved); // Make sure the next card gets removed next time if this card do not have time to exit the screen
 			childRefs[index].current.swipe(dir); // Swipe the card!
 		}
 		console.log(`workd? ${dir}`);
 	};
 
+	useEffect(() => {
+		dispatch({
+			type: userActionTypes.LOAD_CARDS_REQUEST,
+		});
+		console.log(userReducer.pets);
+		setPets(userReducer.pets);
+	}, []);
+
 	return (
 		<>
-			{pets.map((pet, index) => (
-				<TinderCard
-					ref={childRefs[index]}
-					className={styles.swipe}
-					key={pet.petName}
-					preventSwipe={['up', 'down']}
-					onSwipe={(dir) => swiped(dir, pet.petName, pet.id)}
-					onCardLeftScreen={() => outOfFrame(pet.petName)}
-				>
-					<div
-						className={styles.card}
-						style={{ backgroundImage: `url(${pet.fileName})` }}
+			{pets &&
+				pets.map((pet, index) => (
+					<TinderCard
+						ref={childRefs[index]}
+						className={styles.swipe}
+						key={pet.petName}
+						preventSwipe={['up', 'down']}
+						onSwipe={(dir) => swiped(dir, pet.petName, pet.id)}
+						onCardLeftScreen={() => outOfFrame(pet.petName)}
 					>
-						<h2>
-							{pet.petName} {pet.age}세
-						</h2>
-						<p>소개글입니다 나는 동물입니다</p>
-					</div>
-				</TinderCard>
-			))}
+						<div
+							className={styles.card}
+							style={{ backgroundImage: `url(${pet.fileName})` }}
+						>
+							<h2>
+								{pet.petName} {pet.age}세
+							</h2>
+							<p>소개글입니다 나는 동물입니다</p>
+						</div>
+					</TinderCard>
+				))}
 			<SwipeButtons onSwipe={swipe} />
 		</>
 	);

@@ -26,6 +26,7 @@ export const initialState: IUserState = {
 	postLikeLoading: false,
 	postLikeDone: false,
 	postLikeError: null,
+	matchDone: false,
 	deleteUserLoading: false,
 	deleteUserDone: false,
 	deleteUserError: null,
@@ -101,7 +102,7 @@ const reducer = (
 				logInLoading: false,
 				logInDone: true,
 				// me: dummyUser(action.data),
-				me : action.data
+				me: action.data,
 			};
 
 		case userActionTypes.LOG_IN_FAILURE:
@@ -116,6 +117,7 @@ const reducer = (
 				...state,
 				postLikeLoading: true,
 				postLikeDone: false,
+				matchDone: false,
 				postLikeError: null,
 			};
 		case userActionTypes.POST_LIKE_SUCCESS:
@@ -123,6 +125,7 @@ const reducer = (
 				...state,
 				postLikeLoading: false,
 				postLikeDone: true,
+				matchDone: false,
 				me: {
 					...state.me,
 					pet: {
@@ -132,7 +135,20 @@ const reducer = (
 				},
 				// me : action.data
 			};
-
+		case userActionTypes.MATCH_SUCCESS:
+			return {
+				...state,
+				postLikeLoading: false,
+				postLikeDone: true,
+				matchDone: true,
+				me: {
+					...state.me,
+					pet: {
+						...state.me?.pet,
+						matchedId: [...state.me?.pet?.matchedId, action.data],
+					},
+				},
+			};
 		case userActionTypes.POST_LIKE_FAILURE:
 			return {
 				...state,
@@ -174,9 +190,23 @@ const reducer = (
 		case userActionTypes.LOAD_MYPROFILE_SUCCESS:
 			return {
 				...state,
+				logInDone: true,
 				loadProfileLoading: false,
 				loadProfileDone: true,
-				me: action.data,
+				me: {
+					...state.me,
+					email: action?.data?.user?.email,
+					name: action?.data?.user?.userName,
+					pet: {
+						...state.me?.pet,
+						petName: action.data?.pet?.petName,
+						breed: action.data?.pet?.breed,
+						species: action.data?.pet?.species,
+						age: action.data?.pet?.age,
+						introduce: action.data?.pet?.introduce,
+						fileName: action.data?.fileName,
+					},
+				},
 			};
 		case userActionTypes.LOAD_MYPROFILE_FAILURE:
 			return {
@@ -219,7 +249,22 @@ const reducer = (
 				...state,
 				updateProfileLoading: false,
 				updateProfileDone: true,
-				me: action.data,
+				me: {
+					...state.me,
+					email: action.data?.user?.email,
+					name: action.data?.user?.name,
+					pet: {
+						...state.me?.pet,
+
+						petName: action.data?.pet?.petName,
+						breed: action.data?.pet?.breed,
+						species: action.data?.pet?.species,
+						age: action.data?.pet?.age,
+						introduce: action.data?.pet?.introduce,
+
+						// action.data.pet?.pet?.dataValues
+					},
+				},
 			};
 
 		case userActionTypes.UPDATE_PROFILE_FAILURE:
@@ -241,13 +286,13 @@ const reducer = (
 				...state,
 				updatePetImageLoading: false,
 				updatePetImageDone: true,
-				me: {
-					...state.me,
-					pet: {
-						...state.me?.pet,
-						fileName: state.me?.pet?.fileName?.concat(action.data),
-					},
-				},
+				// me: {
+				// 	...state.me,
+				// 	pet: {
+				// 		...state.me?.pet,
+				// 		fileName: action.data.data,
+				// 	},
+				// },
 			};
 		case userActionTypes.UPDATE_PETIMAGE_FAILURE:
 			return {

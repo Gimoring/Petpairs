@@ -15,29 +15,36 @@
 		box-sizing: border-box;
 		margin: 50px auto;
 		padding: 20px;
-		background: #fff; //로그인 배경이다
+		background: #ee514a; //로그인 배경이다
+		border-radius: 15px;
 
 		// .close {
 		// 	float: right;
 		// 	font-size: 25px;
 		// }
+		.modalClose {
+			float: right;
+			font-size: 25px;
+			cursor: pointer;
+		}
 
 		.delUserModalContents {
 			margin: 0 auto;
-			width: 90%;
+			width: 100%;
 			height: 100%;
 			position: relative;
 			padding: 0 20px 32px;
 			box-sizing: border-box;
 			display: flex;
-			// justify-content: center;
+			justify-content: center;
 			flex-direction: column;
 			.logoImage {
-				display: flex;
-				width: 100px;
-				height: 100px;
+				// display: flex;
+				// width: 100px;
+				// height: 100px;
 				margin: 0 auto;
 				// flex-grow: 1;
+				// align-content: center;
 			}
 
 			.alertMessage {
@@ -59,8 +66,8 @@
 
 			.alertNote {
 				display: flex;
-				margin-top: 15px;
-				border-radius: 2px;
+				margin-top: 30px;
+				// border-radius: 2px;
 				width: 100%;
 				height: 40px;
 				// border: 1px solid #e5e5e5;
@@ -76,17 +83,22 @@
 				align-items: center;
 				justify-content: flex-end;
 				flex-grow: 1;
+
 				// justify-items: center;
 
 				.submitDelBtn {
 					font-size: 12px;
 					color: #8d8d8d;
 					line-height: 3;
+					border-radius: 3px;
+					cursor: pointer;
 				}
 				.cancelDelBtn {
 					font-size: 12px;
 					color: #8d8d8d;
 					line-height: 3;
+					border-radius: 3px;
+					cursor: pointer;
 				}
 			}
 		}

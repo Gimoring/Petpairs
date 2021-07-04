@@ -2,7 +2,7 @@ import PetCards from '../components/PetCards';
 import styles from '../styles/main.module.scss';
 import MainHeader from '../components/MainHeader';
 import SwipeButtons from '../components/SwipeButtons';
-import Image from 'next/image';
+// import Image from 'next/image';
 import Link from 'next/link';
 import cat2 from '../images/cat2.jpeg';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +19,10 @@ const MainPage = () => {
 	console.log(me);
 	useEffect(() => {
 		dispatch({
-			type: userActionTypes.LOG_IN_REQUEST,
+			type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+		});
+		dispatch({
+			type: userActionTypes.LOAD_CARDS_REQUEST,
 		});
 	}, []);
 	return (
@@ -29,13 +32,13 @@ const MainPage = () => {
 				<div className={styles.chatDivision}>
 					<div className={styles.profileDiv}>
 						<div className={styles.profilePicDiv}>
-							<Image
+							{/* <Image
 								className={styles.profilePicture}
 								src={cat2}
 								alt="profilePic"
 								width={40}
 								height={40}
-							/>
+							/> */}
 						</div>
 
 						<Link href="/">
@@ -53,18 +56,26 @@ const MainPage = () => {
 
 export default MainPage;
 
-export const getServerSideProps = wrapper.getServerSideProps(
-	(store) =>
-		async ({ req }): Promise<any> => {
-			const cookie = req?.headers.cookie; // req가 있다면 cookie에 요청에 담겨진 cookie를 할당한다.
-			axios.defaults.headers.Cookie = ''; // 요청이 들어올 때마다 초기화 시켜주는 것이다. 여기는 클라이언트 서버에서 실행되므로 이전 요청이 남아있을 수 있기 때문이다
-			if (req && cookie) {
-				axios.defaults.headers.Cookie = cookie;
-			}
-			store.dispatch({
-				type: userActionTypes.LOAD_CARDS_REQUEST,
-			});
-			store.dispatch(END);
-			await store.sagaTask.toPromise();
-		},
-);
+// export const getServerSideProps = wrapper.getServerSideProps(
+// 	(store) =>
+// 		async (context): Promise<any | null> => {
+// 			console.log('hello ServerSideProps');
+// 			const cookie = context.req ? context.req.headers.cookie : '';
+// 			axios.defaults.headers.cookie = ''; //초기화 <--- 비어주는거
+// 			if (context.req && cookie) {
+// 				console.log(
+// 					'헤더에 쿠키 박아보리기~ 짜릿짜릿해-------------------------------------------------------------------------',
+// 				);
+// 				axios.defaults.headers.Cookie = cookie;
+// 			}
+// 			store.dispatch({
+// 				type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+// 			});
+
+// 			store.dispatch({
+// 				type: userActionTypes.LOAD_CARDS_REQUEST,
+// 			});
+// 			store.dispatch(END);
+// 			await store.sagaTask.toPromise();
+// 		},
+// );

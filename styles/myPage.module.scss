@@ -1,21 +1,22 @@
 .bodyContainer {
-	display: flex;
+	// display: flex;
 
-	height: 75vh;
-	width: 100vw;
+	// height: 100vh;
+	// width: 100vw;
 	// align-items: flex-start;
-	justify-self: flex-end;
-	align-items: center;
+	// justify-self: flex-end;
+	// align-items: center;
+	// justify-content: center;
+
 	.bodyWhole {
 		background-color: rgb(250, 244, 244);
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
-		border: 2rem, solid, blue;
 		width: 100vw;
-		height: 75vh;
+		height: 100vh;
 		align-items: center;
-		justify-items: flex-end;
+		justify-items: center;
 
 		// align-items: center;
 		.upperBodyContainer {
@@ -27,10 +28,10 @@
 			border: 2rem, solid, blue;
 			align-content: center;
 			background-color: rgb(250, 244, 244);
-			.slider {
-				display: flex;
-				border: 1px, solid, green;
-			}
+			// .slider {
+			// 	display: flex;
+
+			// }
 		}
 		.lowerBodyContainer {
 			display: flex;
@@ -46,17 +47,19 @@
 				display: flex;
 				// position: relative;
 				flex-direction: column;
-				border: 2rem, solid, blue;
+				border: 0.3rem solid #ee514a;
+				border-radius: 1.4rem;
+				padding: 0 1rem 1rem;
 				width: 25vw;
-				border: 1rem, solid, white;
-				// overflow-y: scroll;
+				overflow-y: scroll;
+				// width: 50vw;
 
 				.userInfoEdit,
 				.userInfo {
 					display: flex;
 					flex-direction: column;
-					border: 3rem, solid, white;
-					width: 500px;
+					// border: 3rem, solid, white;
+					// width: 500px;
 				}
 				.petInfo {
 					display: flex;
@@ -66,8 +69,14 @@
 					border: 3rem, solid, black;
 					// max-width: 200px;
 					.introduce {
-						border: 1px solid tan;
+						// border: 1px solid tan;
 						width: 400px;
+						margin-top: 20px;
+
+						border-top-style: solid;
+						border-bottom-style: solid;
+						border-width: 0.5px;
+						line-height: 3rem;
 					}
 				}
 				.petInfoEdit {
@@ -101,9 +110,14 @@
 							align-self: center;
 						}
 					}
-					.editInfoBtn {
-						display: flex;
-					}
+					// .editInfoBtn {
+					// 	display: flex;
+					// 	width: 50%;
+					// }
+					// .deleteUserBtn {
+					// 	display: flex;
+					// 	width: 50%;
+					// }
 				}
 			}
 			.editIntroduce {

@@ -10,7 +10,7 @@ export interface IPet {
 	breed?: null | string;
 	species?: null | string;
 	age?: null | number;
-	matchedId?: null | number[]; //매칭된 상대 펫 ID
+	matchedId?: any; //매칭된 상대 펫 ID
 	fileName?: null | IImgFile[];
 	like?: any; // null | number[]; // 좋아요한 상대 펫 ID
 	introduce?: null | string;
@@ -18,9 +18,9 @@ export interface IPet {
 
 // 유저 인터페이스
 export interface IUser {
-	id?: number;
-	name?: string;
-	email?: string;
+	id?: number | null;
+	name?: string | null;
+	email?: string | null;
 	pet?: null | IPet;
 }
 
@@ -51,6 +51,9 @@ export interface IUserState {
 	postLikeLoading: boolean;
 	postLikeDone: boolean;
 	postLikeError: null | string;
+	// matchRequest: boolean;
+	matchDone: boolean;
+	// matchError: null | string;
 	deleteUserLoading: boolean;
 	deleteUserDone: boolean;
 	deleteUserError: null | string;

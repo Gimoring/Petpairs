@@ -10,9 +10,10 @@ import { userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer';
 import styles from '../styles/myPetSlider.module.scss';
 import Axios from 'axios';
+import axios from 'axios';
 
 const MyPetImgSlider = () => {
-	const { me, updatePetImageDone } = useSelector(
+	const { me, updatePetImageDone, updatePetImageError } = useSelector(
 		(state: RootState) => state.user,
 	);
 	const dispatch = useDispatch();
@@ -66,7 +67,21 @@ const MyPetImgSlider = () => {
 		},
 		[imgFileList, setImgFileList, imgPreviewUrls, setImgPreviewUrls],
 	);
-
+	// const test = useCallback(() => {
+	// 	const formData = new FormData();
+	// 	for (var i = 0; i < imgFileList[0].length; i++) {
+	// 		// 배열로 보내짐
+	// 		formData.append('image', imgFileList[0][i]); //
+	// 		console.log(imgFileList[0][i]);
+	// 	}
+	// 	axios
+	// 		.post('http://localhost:4000/pet/updatePetPhotoFile', formData, {
+	// 			headers: { 'Content-Type': 'multipart/form-data' },
+	// 		})
+	// 		.then((res) => {
+	// 			console.log(res);
+	// 		});
+	// }, [imgFileList]);
 	const handleSubmit = useCallback(() => {
 		// if (imgFileList) {
 		const formData = new FormData();
@@ -86,15 +101,15 @@ const MyPetImgSlider = () => {
 			type: userActionTypes.UPDATE_PETIMAGE_REQUEST,
 			data: formData,
 		});
-
-		if (updatePetImageDone === true) {
-			window.alert('사진이 추가되었습니다!');
-			router.replace(router.asPath);
-			setImgFileList([]);
-			setImgPreviewUrls([]);
-		} else {
+		if (updatePetImageError) {
 			window.alert('사진을 다시 추가해주세요!');
 		}
+
+		window.alert('사진이 추가되었습니다!');
+		// router.replace(router.asPath);
+		// router.push('/MyPage');
+		setImgFileList([]);
+		setImgPreviewUrls([]);
 	}, [imgFileList]);
 	// [imgFileList, dispatch]);
 
@@ -159,10 +174,10 @@ const MyPetImgSlider = () => {
 		[length, current],
 	);
 
-	if (me?.pet?.fileName && imgFileList.length === 0) {
-		console.log(imgFileList);
-		return <div>Loading...</div>;
-	}
+	// if (me?.pet?.fileName && imgFileList.length === 0) {
+	// 	console.log(imgFileList);
+	// 	return <div>Loading...</div>;
+	// }
 	return (
 		<>
 			<form
@@ -225,12 +240,13 @@ const MyPetImgSlider = () => {
 					) : (
 						// <div>Loading...</div>
 						<div>
+							{console.log(me?.pet?.petPhotos?.fileName)}
+
 							{me?.pet?.fileName &&
 								me?.pet?.fileName.map(
 									(petImg: any, index: React.Key | null | undefined) => {
 										return (
 											<>
-												{/* {console.log(me?.pet?.fileName)} */}
 												<div
 													className={
 														index === current ? 'active slide' : 'slide'
@@ -241,7 +257,7 @@ const MyPetImgSlider = () => {
 														<div
 															className={styles.card}
 															style={{
-																backgroundImage: `url(${petImg.fileName})`,
+																backgroundImage: `url(http://localhost:4000/pet/${petImg.fileName})`,
 															}}
 														>
 															<div className={styles.arrows}>

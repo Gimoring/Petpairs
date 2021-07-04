@@ -15,6 +15,10 @@ export enum userActionTypes {
 	POST_LIKE_SUCCESS = 'POST_LIKE_SUCCESS',
 	POST_LIKE_FAILURE = 'POST_LIKE_FAILURE',
 
+	// MATCH_REQUEST = 'MATCH_REQUEST',
+	MATCH_SUCCESS = 'MATCH_SUCCESS',
+	// MATCH_FAILURE = 'MATCH_FAILURE',
+
 	LOAD_MYPROFILE_REQUEST = 'LOAD_MYPROFILE_REQUEST',
 	LOAD_MYPROFILE_SUCCESS = 'LOAD_MYPROFILE_SUCCESS',
 	LOAD_MYPROFILE_FAILURE = 'LOAD_MYPROFILE_FAILURE',
@@ -41,23 +45,46 @@ export enum userActionTypes {
 }
 
 export interface signupData {
-	name: string;
-	email: string;
+	name: string | null;
+	email: string | null;
 	password: string;
 }
 
 export interface logInData {
-	email: string;
+	email: string | null;
 	password: string;
 }
 
 export interface loadProfileData {
 	id: number;
 }
+
+export interface loadProfileSuccess {
+	user?: {
+		id?: number;
+		userName?: string | null;
+		email?: any;
+		password?: null | string;
+	};
+	pet?: null | IPet;
+	// {
+	// 	id?: null | number;
+	// 	petName?: null | string;
+	// 	breed?: null | string;
+	// 	species?: null | string;
+	// 	age?: null | number;
+	// 	introduce?: null | string;
+	// };
+	fileName?: null | IImgFile[];
+}
+
+// export interface loadCardsSuccess {
+// 	data: IPet[];
+// }
 export interface updateProfileData {
-	id: number;
-	name?: string;
-	email?: string;
+	id?: number;
+	name?: string | null;
+	email?: string | null;
 	pet?: {
 		petId?: null | number;
 		petName?: null | string;
@@ -68,11 +95,25 @@ export interface updateProfileData {
 	};
 }
 
+export interface updateProfileSuccess {
+	user?: {
+		name?: string | null;
+		email?: string | null;
+	};
+	pet?: IPet;
+}
+// export interface updateProfileSuccess {
+// 	email?: string;
+// 	name?: string;
+// }
 export interface updatePetImageData {
 	petId?: number;
 	formData?: File[];
 }
 // 2. 액션 크리에이터의 인터페이스 만들어주기
+export interface updatePetImageSuccess {
+	data: IImgFile[];
+}
 
 export interface ISignUpRequest {
 	type: userActionTypes.SIGN_UP_REQUEST;
@@ -114,7 +155,7 @@ export interface IPostLikeRequest {
 
 export interface IPostLikeSuccess {
 	type: userActionTypes.POST_LIKE_SUCCESS;
-	data: number;
+	data: number | string;
 }
 
 export interface IPostLikeFailure {
@@ -122,6 +163,19 @@ export interface IPostLikeFailure {
 	error: string;
 }
 
+// export interface IMatchRequest {
+// 	type: userActionTypes.MATCH_REQUEST;
+// 	data: number;
+// }
+export interface IMatchSuccess {
+	type: userActionTypes.MATCH_SUCCESS;
+	data: number;
+}
+
+// export interface IMatchFailure {
+// 	type: userActionTypes.MATCH_FAILURE;
+// 	error: string;
+// }
 // export interface ILoadProfileRequest {
 // 	type: userActionTypes.LOAD_PROFILE_REQUEST;
 // 	data: IUser['id'];
@@ -144,7 +198,8 @@ export interface ILoadProfileRequest {
 
 export interface ILoadProfileSuccess {
 	type: userActionTypes.LOAD_MYPROFILE_SUCCESS;
-	data: IUser;
+	// data: IUser;
+	data: loadProfileSuccess;
 }
 
 export interface ILoadProfileFailure {
@@ -159,7 +214,7 @@ export interface ILoadCardsRequest {
 
 export interface ILoadCardsSuccess {
 	type: userActionTypes.LOAD_CARDS_SUCCESS;
-	data: IPet[];
+	data: any;
 }
 
 export interface ILoadCardsFailure {
@@ -174,7 +229,7 @@ export interface IUpdateRequest {
 
 export interface IUpdateSuccess {
 	type: userActionTypes.UPDATE_PROFILE_SUCCESS;
-	data: IUser;
+	data: updateProfileSuccess;
 }
 
 export interface IUpdateFailure {
@@ -189,7 +244,7 @@ export interface IUpdatePetImageRequest {
 
 export interface IUpdatePetImageSuccess {
 	type: userActionTypes.UPDATE_PETIMAGE_SUCCESS;
-	data: IImgFile[];
+	data: updatePetImageSuccess;
 }
 
 export interface IUpdatePetImageFailure {
@@ -209,7 +264,6 @@ export interface ILogOutFailure {
 export interface IDeleteUserRequest {
 	type: userActionTypes.DELETE_USER_REQUEST;
 	data: number;
-	// data: IUser['id'];
 }
 
 export interface IDeleteUserSuccess {
@@ -239,6 +293,7 @@ export type IUserActions =
 	| ILoadCardsRequest
 	| ILoadCardsSuccess
 	| ILoadCardsFailure
+	| IMatchSuccess
 	| IUpdateRequest
 	| IUpdateSuccess
 	| IUpdateFailure

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducer';
 import Image from 'next/image';
-import mainLogo from '../images/unknown.png';
+// import mainLogo from '../images/unknown.png';
 import styles from '../styles/deleteUserModal.module.scss';
 import { userActionTypes } from '../interface/iUserActType';
 
@@ -34,16 +34,15 @@ const DeleteUserModal: React.FC<ChildProps> = (props) => {
 			if (me) {
 				dispatch({
 					type: userActionTypes.DELETE_USER_REQUEST,
-					data: me?.id,
+					id: me?.id,
 				});
-				if (deleteUserDone === true) {
-					window.alert('정상적으로 탈퇴되었습니다');
-					router.push('/LandingPage');
-				}
-				if (deleteUserError !== null) {
-					window.alert('오류로 인해 탈퇴처리가 안됬습니다');
-					router.reload();
-				}
+
+				window.alert('정상적으로 탈퇴되었습니다');
+				router.push('/');
+			}
+			if (deleteUserError !== null) {
+				window.alert('오류로 인해 탈퇴처리가 안됬습니다');
+				router.reload();
 			}
 		},
 		[dispatch, deleteUserDone, deleteUserError],
@@ -57,17 +56,20 @@ const DeleteUserModal: React.FC<ChildProps> = (props) => {
 					e.stopPropagation();
 				}}
 			>
+				<span className={styles.modalClose} onClick={props.handleModal}>
+					&times;
+				</span>
 				<div className={styles.delUserModalContents}>
 					<div className={styles.logoImage}>
-						<Image
+						{/* <Image
 							src={mainLogo}
 							alt="logoIMG"
-							width={50}
-							height={50}
+							width={80}
+							height={80}
 							objectFit="none"
-						/>
+						/> */}
 					</div>
-					<p className={styles.alertNote} style={{ color: 'orange' }}>
+					<p className={styles.alertNote} style={{ color: '#61BFAD' }}>
 						탈퇴 시 회원님의 모든 정보는 영구적으로 삭제됨을 알려드립니다!{' '}
 					</p>
 					<p className={styles.alertMessage}>탈퇴 하시겠습니까?</p>
