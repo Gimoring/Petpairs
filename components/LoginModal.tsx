@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactElement, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import mainLogo from '../images/unknown.png';
@@ -7,19 +7,24 @@ import { RootState } from '../reducer';
 import { userActionTypes } from '../interface/iUserActType';
 import styles from '../styles/loginModal.module.scss';
 import SignupModal from './SignupModal';
-import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
-import router from 'next/router';
+import { useRouter } from 'next/router';
+import Facebook from '../components/FacebookLoader'
 
 interface ChildProps {
 	handleModal: () => void;
 }
 
-const LoginModal: React.FC<ChildProps> | any = (props:any,req: NextApiRequest, res: NextApiResponse) => {
+const LoginModal: React.FC<ChildProps> | any = (
+	props: any,
+	req: NextApiRequest,
+	res: NextApiResponse,
+) => {
 	const dispatch = useDispatch();
-	const { me, logInDone, logInLoading } = useSelector(
+	const { me, logInDone, logInLoading, logInError } = useSelector(
 		(state: RootState) => state.user,
 	);
+	const router = useRouter();
 	const [isOpen, setIsOpen] = useState(false);
 	const [input, setInput] = useState({
 		email: '',
@@ -33,10 +38,10 @@ const LoginModal: React.FC<ChildProps> | any = (props:any,req: NextApiRequest, r
 	};
 
 	const isValidPw = (str: string) => {
-    const regExp =
-      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/i;
-    return regExp.test(str);
-  };
+		const regExp =
+			/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/i;
+		return regExp.test(str);
+	};
 
 	const handleShowModal = useCallback(() => {
 		setIsOpen(!isOpen);
@@ -59,24 +64,34 @@ const LoginModal: React.FC<ChildProps> | any = (props:any,req: NextApiRequest, r
 		(e) => {
 			console.log('보낸다');
 			e.preventDefault();
-			if((!isValidEmail(input.email)) || (!isValidPw(input.password))){
-				window.alert('올바른 정보를 입력해주세요')
-			}else{
-			dispatch({
-				type: userActionTypes.LOG_IN_REQUEST,
-				data: {
-					email: input.email,
-					password: input.password,
-				},
-			});
-			if(logInDone) {
-				router.replace('/MainPage');
-			}else{
-				window.alert('정확한 이메일과 비밀번호를 기재해주세요')
+			if (!isValidEmail(input.email) || !isValidPw(input.password)) {
+				window.alert('올바른 정보를 입력해주세요');
+			} else {
+				dispatch({
+					type: userActionTypes.LOG_IN_REQUEST,
+					data: {
+						email: input.email,
+						password: input.password,
+					},
+				});
+				console.log('cookie', document.cookie);
+				router.reload();
+				if (document.cookie) {
+					console.log('if cookie', document.cookie);
+					console.log('me', me?.email);
+					router.push('MyPage');
+					console.log('email', me?.email);
+				}
+				// if (logInDone || me) {
+				// 	console.log('왜 안돼');
+				// 	router.push({ pathname: '/MyPage' });
+				// } else if (logInError) {
+				// 	console.log('되자 좀');
+				// 	window.alert('정확한 이메일과 비밀번호를 기재해주세요');
+				// }
 			}
-		}
 		},
-		[dispatch, input.email, input.password,logInDone],
+		[dispatch, input.email, input.password],
 	);
 
 	return (
@@ -121,24 +136,7 @@ const LoginModal: React.FC<ChildProps> | any = (props:any,req: NextApiRequest, r
 									로그인{' '}
 								</button>
 								<div className={styles.socialBox}>
-									<div className={styles.kakao}>
-										{/* <image
-                        className={styles.kakaoLogo}
-                        src="/Images/SignIn/kakao.png"
-                      /> */}
-										<div className={styles.kakaoText}>
-											카카오 계정으로 로그인
-										</div>
-									</div>
-									<div className={styles.facebook}>
-										{/* <Image
-                        className={styles.googleLogo}
-                        src="/Images/SignIn/facebook.png"
-                      /> */}
-										<div className={styles.facebookText}>
-											페이스북 계정으로 로그인
-										</div>
-									</div>
+										<Facebook/>
 								</div>
 								<div className={styles.loginEnd}>
 									<div className={styles.loginLine}>
