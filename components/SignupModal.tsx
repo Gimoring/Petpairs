@@ -119,26 +119,6 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 								{' '}
 								회원가입{' '}
 							</button>
-							<div className={styles.socialBox}>
-								<div className={styles.kakao}>
-									{/* <image
-                        className={styles.kakaoLogo}
-                        src="/Images/SignIn/kakao.png"
-                      /> */}
-									<div className={styles.kakaoText}>
-										카카오 계정으로 신규가입
-									</div>
-								</div>
-								<div className={styles.facebook}>
-									{/* <Image
-                        className={styles.googleLogo}
-                        src="/Images/SignIn/facebook.png"
-                      /> */}
-									<div className={styles.facebookText}>
-										페이스북 계정으로 신규가입
-									</div>
-								</div>
-							</div>
 							<div className={styles.signupEnd}>
 								<div className={styles.signupLine}>
 									새로운 친구들을 찾아볼까요?
