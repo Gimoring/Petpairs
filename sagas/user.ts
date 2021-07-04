@@ -30,13 +30,12 @@ function logInAPI(data: logInData) {
 	return axios.post('http://localhost:4000/user/login', data);
 }
 
-
 function* logIn(action: ILogInRequest) {
 	try {
 		const response: AxiosResponse<any> = yield call(logInAPI, action.data);
 		const token = response.data.accessToken;
-		axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-		document.cookie = `token=${token}`
+		axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+		// document.cookie = `token=${token}`;
 		yield put({
 			type: userActionTypes.LOG_IN_SUCCESS,
 			data: response.data,
@@ -53,7 +52,6 @@ function* logIn(action: ILogInRequest) {
 function signupAPI(data: signupData) {
 	return axios.post('http://localhost:4000/user/signup', data);
 }
-
 
 function* signup(action: ISignUpRequest) {
 	try {
@@ -76,10 +74,9 @@ function logOutAPI() {
 }
 
 function* logOut() {
-	
 	try {
 		const response: AxiosResponse<any> = yield call(logOutAPI);
-		delete axios.defaults.headers.common["Authorization"];
+		delete axios.defaults.headers.common['Authorization'];
 		yield delay(1000);
 		yield put({
 			type: userActionTypes.LOG_OUT_SUCCESS,
@@ -92,7 +89,6 @@ function* logOut() {
 		});
 	}
 }
-
 
 // interface IUpdateUser {
 // 	id: number;
@@ -110,18 +106,16 @@ function* logOut() {
 // 	data?: number;
 // }
 function loadProfileAPI(data: loadProfileData) {
-	return axios.get('url');
+	return axios.get('http://localhost:4000/user/userInfo');
 }
 function* loadProfile(action: ILoadProfileRequest) {
 	try {
 		// const token = yield call()
-		const { data }: AxiosResponse<any> = yield call(
-			loadProfileAPI,
-			action.data,
-		);
+		const data: AxiosResponse<any> = yield call(loadProfileAPI, action.data);
+		console.log('asdasfaw5234500ar0a897809', data.data.data);
 		yield put({
 			type: userActionTypes.LOAD_MYPROFILE_SUCCESS,
-			data: data, // result.data
+			data: data.data.data, // result.data
 		});
 	} catch (err) {
 		console.error(err);
@@ -136,17 +130,15 @@ interface ILoadCards {
 	data: number;
 }
 function loadCardsAPI(data: number) {
-	return axios.get('url');
+	return axios.get('http://localhost:4000/pet/otherPetPhotoView');
 }
 function* loadCards(action: ILoadCardsRequest) {
 	try {
-		const { data }: AxiosResponse<any[]> = yield call(
-			loadCardsAPI,
-			action.data,
-		);
+		const data: AxiosResponse<any> = yield call(loadCardsAPI, action.data);
+		console.log('LOADCARDS DATAAAAAAAAAAAA', data);
 		yield put({
 			type: userActionTypes.LOAD_CARDS_SUCCESS,
-			data: data, //result.data
+			data: data.data.data, //result.data
 		});
 	} catch (err) {
 		console.error(err);
@@ -163,14 +155,11 @@ function updateUserAPI(data: updateProfileData) {
 
 function* updateProfile(action: IUpdateRequest) {
 	try {
-		const { data }: AxiosResponse<any[]> = yield call(
-			updateUserAPI,
-			action.data,
-		);
+		const result: AxiosResponse<any[]> = yield call(updateUserAPI, action.data);
 		yield put({
 			type: userActionTypes.UPDATE_PROFILE_SUCCESS,
 			// data: result.data.user,
-			data: action.data,
+			data: result.data,
 		});
 	} catch (err) {
 		console.error(err);
@@ -201,11 +190,14 @@ function* updatePetImage(action: IUpdatePetImageRequest) {
   */
 	try {
 		const { data } = yield call(updatePetImageApi, action.data);
+		console.log(data);
 		yield put({
 			type: userActionTypes.UPDATE_PETIMAGE_SUCCESS,
 			data: data,
 			// data: result.data,
+			// console.log(data);
 		});
+		console.log(data);
 	} catch (err) {
 		console.error(err);
 		yield put({
@@ -215,26 +207,33 @@ function* updatePetImage(action: IUpdatePetImageRequest) {
 	}
 }
 
-interface IPostLike {
-	id: number;
-}
+// interface IPostLike {
+// 	id: number;
+// }
 
 // data will be  id : number
 
-function postLikeApi(data: IPostLike) {
-	return axios.post('url', data);
+function postLikeApi(data: number | string) {
+	return axios.post('http://localhost:4000/pet/petLike', data);
 }
 
 function* postLike(action: IPostLikeRequest) {
 	//action: IPostLikeRequest
 	try {
-		// const result = yield call(postLIkeApi, action.data)
-		yield delay(1000);
+		const { data }: AxiosResponse<any[]> = yield call(postLikeApi, action.data);
+		console.log('POSTLIKE DATAAAAAAAAAA', data);
 		yield put({
 			type: userActionTypes.POST_LIKE_SUCCESS,
-			data: action.data,
+			data: data,
 			//data: result.data
 		});
+		if (data) {
+			// data === 'success messsage'
+			yield put({
+				type: userActionTypes.MATCH_SUCCESS,
+				data: data,
+			});
+		}
 	} catch (err) {
 		console.error(err);
 		yield put({
@@ -248,17 +247,16 @@ interface IDeleteUser {
 	id: number;
 }
 
-function deleteUserApi(data: IDeleteUser) {
-	return axios.post('url', data);
+function deleteUserApi(data: number) {
+	return axios.post('http://localhost:4000/user/userDelete', data);
 }
 
 function* deleteUser(action: IDeleteUserRequest) {
 	try {
-		// const result = yield call(deleteUserApi, action.data)
-		yield delay(1000);
+		const { data } = yield call(deleteUserApi, action.data);
 		yield put({
 			type: userActionTypes.DELETE_USER_SUCCESS,
-			data: action.data,
+			data: data,
 			// data: result.data
 		});
 	} catch (err) {

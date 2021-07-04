@@ -4,16 +4,21 @@ import {
 	GetServerSidePropsResult,
 	InferGetServerSidePropsType,
 } from 'next';
-import React, { useCallback, useState, useEffect } from 'react';
+import React, {
+	useCallback,
+	useState,
+	useEffect,
+	useLayoutEffect,
+} from 'react';
 import { useRouter } from 'next/router';
 import styles from '../styles/myPage.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { IUser } from '../interface/iUser';
+import { IUser, IUserState } from '../interface/iUser';
 import { updateProfileData, userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer';
-import { dataSet } from '../reducer/user';
+import user, { dataSet } from '../reducer/user';
 import MyPetImgSlider from '../components/MyPetImgSlider';
-import DeleteUserModal from '../components/deleteUserModal';
+import DeleteUserModal from '../components/DeleteUserModal';
 import CommonHeader from '../components/CommonHeader';
 import CommonFooter from '../components/CommonFooter';
 import wrapper from '../store/configure';
@@ -21,12 +26,10 @@ import axios, { AxiosPromise } from 'axios';
 import { END } from 'redux-saga';
 import { Context, GetServerSidePropsCallback } from 'next-redux-wrapper';
 
-const MyPage = ({
-	user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { me, updateProfileDone, updateProfileError } = useSelector(
-		(state: RootState) => state.user,
-	);
+// InferGetServerSidePropsType<typeof getServerSideProps>)
+
+const MyPage = () => {
+	const { me } = useSelector((state: RootState) => state.user);
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const [modalOn, setModalOn] = useState(false);
@@ -84,8 +87,8 @@ const MyPage = ({
 			console.log(changeUserInfoOn);
 
 			if (
-				(!me?.name && !inputs.name) ||
-				(!me?.email && !inputs.email) ||
+				(!me?.user.userName && !inputs.name) ||
+				(!me?.user.email && !inputs.email) ||
 				(!me?.pet?.petName && !inputs.petName) ||
 				(!me?.pet?.species && !inputs.species) ||
 				(!me?.pet?.breed && !inputs.breed) ||
@@ -109,10 +112,11 @@ const MyPage = ({
 				dispatch({
 					type: userActionTypes.UPDATE_PROFILE_REQUEST,
 					data: {
-						id: me?.id,
+						id: me?.user.id,
 						name: inputs.name,
 						email: inputs.email,
 						pet: {
+							petId: me?.pet?.petId,
 							petName: inputs.petName,
 							species: inputs.species,
 							breed: inputs.breed,
@@ -122,8 +126,8 @@ const MyPage = ({
 						},
 					},
 				});
-				console.log(changeUserInfoOn);
-				console.log(updateProfileDone);
+				// console.log(changeUserInfoOn);
+				// console.log(updateProfileDone);
 
 				window.alert('프로필이 수정 되었습니다!');
 				console.log(me);
@@ -138,12 +142,12 @@ const MyPage = ({
 				router.replace(router.asPath); // server-side props refresh
 			}
 
-			if (updateProfileError) {
-				window.alert('에러 발생!');
-			}
+			// if (updateProfileError) {
+			// 	window.alert('에러 발생!');
+			// }
 		},
 		[
-			updateProfileDone,
+			// updateProfileDone,
 			inputs.name,
 			inputs.email,
 			inputs.petName,
@@ -175,12 +179,25 @@ const MyPage = ({
 	// if (!me) {
 	//   return <div>Loading...</div>
 	// }
-
+	useLayoutEffect(() => {
+		function loadProfile() {
+			const promise = axios.get('http://localhost:4000/user/userInfo');
+			const data = promise.then((res) => res.data);
+			return data;
+		}
+		loadProfile().then((data) => console.log(data));
+		dispatch({
+			type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+		});
+		// dispatch({
+		// 	type: userActionTypes.LOAD_CARDS_REQUEST,
+		// });
+	}, [dispatch]);
 	return (
 		<>
 			<CommonHeader />
+
 			<div className={styles.bodyContainer}>
-				{console.log(changeInfoBtnOn)}
 				<>
 					<section className={styles.bodyWhole}>
 						{modalOn && <DeleteUserModal handleModal={handleModal} />}
@@ -201,12 +218,17 @@ const MyPage = ({
 							// 	</div>
 
 							<div className={styles.lowerBodyContainer}>
+								{console.log(me)}
+								{console.log(me?.user)}
 								<div
 									className={styles.userPetInfo}
 									// style={{ paddingRight: '50px' }}
 								>
-									<div className={styles.userInfo}>
-										<div>{me?.name}</div>
+									<div
+										className={styles.userInfo}
+										style={{ border: '2rem, solid, black' }}
+									>
+										<div>{me?.userName}</div>
 										<div>{me?.email}</div>
 									</div>
 									<div className={styles.petInfo}>
@@ -292,7 +314,7 @@ const MyPage = ({
 											<input
 												id={styles.name}
 												name="name"
-												placeholder={`이름: ${me?.name}`}
+												placeholder={`이름: ${me?.userName}`}
 												value={inputs.name}
 												onChange={onEditInfo}
 											/>
@@ -538,30 +560,29 @@ const MyPage = ({
 // 		};
 // 	});
 
-export const getServerSideProps = wrapper.getServerSideProps(
-	(store) =>
-		async ({ req }): Promise<any> => {
-			const cookie = req?.headers.cookie; // req가 있다면 cookie에 요청에 담겨진 cookie를 할당한다.
-			axios.defaults.headers.Cookie = ''; // 요청이 들어올 때마다 초기화 시켜주는 것이다. 여기는 클라이언트 서버에서 실행되므로 이전 요청이 남아있을 수 있기 때문이다
-			console.log('cookieReq: ', cookie);
-			// if (req && cookie)
-			// if (cookie?.userId && cookie.token)
-			if (req && cookie) {
-				axios.defaults.headers.Cookie = cookie;
-			}
-			store.dispatch({
-				type: userActionTypes.LOAD_MYPROFILE_REQUEST,
-				cookie,
-			});
-			store.dispatch(END);
-			await store.sagaTask.toPromise();
-			const user = store.getState();
-
-			return {
-				props: { user },
-			};
-		},
-);
+// export const getServerSideProps = wrapper.getServerSideProps(
+// 	(store) =>
+// 		async (context): Promise<any | null> => {
+// 			console.log('hello ServerSideProps');
+// 			const cookie = context.req ? context.req.headers.cookie : '';
+// 			axios.defaults.headers.Cookie = ''; //초기화 <--- 비어주는거
+// 			console.log(
+// 				'헤더에 쿠키 박아보렸나?~ 짜릿짜릿해-------------------------------------------------------------------------',
+// 				context.req.headers,
+// 			);
+// 			if (context.req && cookie) {
+// 				console.log(
+// 					'헤더에 쿠키 박아보리기~ 짜릿짜릿해-------------------------------------------------------------------------',
+// 				);
+// 				axios.defaults.headers.Cookie = cookie;
+// 			}
+// 			await store.dispatch({
+// 				type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+// 			});
+// 			store.dispatch(END);
+// 			await store.sagaTask?.toPromise();
+// 		},
+// );
 
 // export const getServerSideProps =
 // 	wrapper.getServerSideProps(async (context): Promise<any> => {

@@ -1,6 +1,6 @@
 .petImgSlider {
 	position: relative;
-	height: 40%;
+	height: 40vh;
 	width: 50vw;
 	display: flex;
 	flex-direction: column;
@@ -13,7 +13,7 @@
 		z-index: 1000;
 		display: flex;
 		width: 25vw;
-		height: 30vh;
+		height: 40vh;
 		// border: 3rem, solid, black;
 		border-radius: 7px;
 		background-size: cover;
