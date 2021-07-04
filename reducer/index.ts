@@ -10,5 +10,5 @@ const rootReducer: Reducer<RootStateInterface, AnyAction> =
 	combineReducers<RootStateInterface>({
 		user,
 	});
-export type RootState = ReturnType<typeof rootReducer>; //컴포넌트에 useSelector 타입
 export default rootReducer;
+export type RootState = ReturnType<typeof rootReducer>; //컴포넌트에 useSelector 타입
