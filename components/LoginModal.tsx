@@ -9,7 +9,6 @@ import styles from '../styles/loginModal.module.scss';
 import SignupModal from './SignupModal';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { useRouter } from 'next/router';
-import Facebook from '../components/FacebookLoader'
 
 interface ChildProps {
 	handleModal: () => void;
@@ -135,9 +134,6 @@ const LoginModal: React.FC<ChildProps> | any = (
 									{' '}
 									로그인{' '}
 								</button>
-								<div className={styles.socialBox}>
-										<Facebook/>
-								</div>
 								<div className={styles.loginEnd}>
 									<div className={styles.loginLine}>
 										회원이 아니신가요?
