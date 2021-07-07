@@ -101,6 +101,7 @@ const MyPetImgSlider = () => {
 			type: userActionTypes.UPDATE_PETIMAGE_REQUEST,
 			data: formData,
 		});
+		console.log(formData);
 		if (updatePetImageError) {
 			window.alert('사진을 다시 추가해주세요!');
 		}
@@ -108,6 +109,9 @@ const MyPetImgSlider = () => {
 		window.alert('사진이 추가되었습니다!');
 		// router.replace(router.asPath);
 		// router.push('/MyPage');
+
+		console.log(me?.pet?.fileName?.length);
+		router.reload();
 		setImgFileList([]);
 		setImgPreviewUrls([]);
 	}, [imgFileList]);
@@ -240,7 +244,7 @@ const MyPetImgSlider = () => {
 					) : (
 						// <div>Loading...</div>
 						<div>
-							{console.log(me?.pet?.petPhotos?.fileName)}
+							{console.log(me?.pet?.fileName)}
 
 							{me?.pet?.fileName &&
 								me?.pet?.fileName.map(

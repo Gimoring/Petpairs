@@ -1,7 +1,7 @@
 // 펫 인터페이스
 export interface IImgFile {
-	id?: null | number;
-	file?: null | string;
+	petId?: null | number;
+	fileName?: null | string;
 }
 
 export interface IPet {
@@ -15,6 +15,12 @@ export interface IPet {
 	like?: any; // null | number[]; // 좋아요한 상대 펫 ID
 	introduce?: null | string;
 }
+
+// export interface IPetPhotos {
+// 	id?: null | number;
+// 	petId?: null | number;
+// 	fileName?: null | IImgFile[];
+// }
 
 // 유저 인터페이스
 export interface IUser {
@@ -51,6 +57,9 @@ export interface IUserState {
 	postLikeLoading: boolean;
 	postLikeDone: boolean;
 	postLikeError: null | string;
+	postMatchLoading: boolean;
+	postMatchDone: boolean;
+	postMatchError: null | string;
 	// matchRequest: boolean;
 	matchDone: boolean;
 	// matchError: null | string;
@@ -60,6 +69,7 @@ export interface IUserState {
 	me: null | IUser;
 	users: null | IUser[];
 	pets: null | IPet[];
+	matchedPet: any;
 }
 
 //
