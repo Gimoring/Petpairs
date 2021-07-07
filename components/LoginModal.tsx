@@ -1,12 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { ChangeEvent, ReactElement, useCallback, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import mainLogo from '../images/unknown.png';
+// import mainLogo from '../images/unknown.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducer';
 import { userActionTypes } from '../interface/iUserActType';
 import styles from '../styles/loginModal.module.scss';
 import SignupModal from './SignupModal';
+import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { useRouter } from 'next/router';
 
@@ -74,13 +75,14 @@ const LoginModal: React.FC<ChildProps> | any = (
 					},
 				});
 				console.log('cookie', document.cookie);
-				router.reload();
 				if (document.cookie) {
 					console.log('if cookie', document.cookie);
 					console.log('me', me?.email);
+					router.reload();
 					router.push('MyPage');
 					console.log('email', me?.email);
 				}
+				router.reload();
 				// if (logInDone || me) {
 				// 	console.log('왜 안돼');
 				// 	router.push({ pathname: '/MyPage' });
@@ -90,7 +92,7 @@ const LoginModal: React.FC<ChildProps> | any = (
 				// }
 			}
 		},
-		[dispatch, input.email, input.password],
+		[dispatch, input.email, input.password, logInDone],
 	);
 
 	return (
@@ -107,13 +109,13 @@ const LoginModal: React.FC<ChildProps> | any = (
 						</span>
 						<div className={styles.modalContents}>
 							<div className={styles.image}>
-								<Image
+								{/* <Image
 									src={mainLogo}
 									alt="signinIcon"
 									width={80}
 									height={80}
 									objectFit="none"
-								/>
+								/> */}
 							</div>
 							<input
 								name="email"
@@ -149,7 +151,7 @@ const LoginModal: React.FC<ChildProps> | any = (
 											</button>
 										</>
 									</div>
-									<Link href='/MainPage' passHref>
+									<Link href="/MainPage" passHref>
 										<div className={styles.noUse}>☑️회원 가입 없이 체험☑️</div>
 									</Link>
 								</div>

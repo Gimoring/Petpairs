@@ -87,8 +87,8 @@ const MyPage = () => {
 			console.log(changeUserInfoOn);
 
 			if (
-				(!me?.user.userName && !inputs.name) ||
-				(!me?.user.email && !inputs.email) ||
+				(!me?.name && !inputs.name) ||
+				(!me?.email && !inputs.email) ||
 				(!me?.pet?.petName && !inputs.petName) ||
 				(!me?.pet?.species && !inputs.species) ||
 				(!me?.pet?.breed && !inputs.breed) ||
@@ -112,7 +112,7 @@ const MyPage = () => {
 				dispatch({
 					type: userActionTypes.UPDATE_PROFILE_REQUEST,
 					data: {
-						id: me?.user.id,
+						id: me?.id,
 						name: inputs.name,
 						email: inputs.email,
 						pet: {
@@ -131,6 +131,7 @@ const MyPage = () => {
 
 				window.alert('프로필이 수정 되었습니다!');
 				console.log(me);
+				router.reload();
 				setChangeInfoBtnOn(false);
 				setChangeUserInfoOn(false);
 				setEditPetName(false);
@@ -138,8 +139,8 @@ const MyPage = () => {
 				setEditBreed(false);
 				setEditAge(false);
 				setEditIntroduce(false);
-
-				router.replace(router.asPath); // server-side props refresh
+				// router.reload();
+				// router.replace(router.asPath); // server-side props refresh
 			}
 
 			// if (updateProfileError) {
@@ -181,7 +182,7 @@ const MyPage = () => {
 	// }
 	useLayoutEffect(() => {
 		function loadProfile() {
-			const promise = axios.get('http://localhost:4000/user/userInfo');
+			const promise = axios.get('http://localhost4000/user/userInfo');
 			const data = promise.then((res) => res.data);
 			return data;
 		}
@@ -228,7 +229,7 @@ const MyPage = () => {
 										className={styles.userInfo}
 										style={{ border: '2rem, solid, black' }}
 									>
-										<div>{me?.userName}</div>
+										<div>{me?.userName || me?.name}</div>
 										<div>{me?.email}</div>
 									</div>
 									<div className={styles.petInfo}>
@@ -314,7 +315,7 @@ const MyPage = () => {
 											<input
 												id={styles.name}
 												name="name"
-												placeholder={`이름: ${me?.userName}`}
+												placeholder={`이름: ${me?.userName || me?.name}`}
 												value={inputs.name}
 												onChange={onEditInfo}
 											/>
