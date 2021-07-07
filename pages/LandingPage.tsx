@@ -20,7 +20,7 @@ const LandingPage = () => {
 		dispatch({
 			type: userActionTypes.LOAD_MYPROFILE_REQUEST,
 		});
-	}, []);
+	}, [dispatch]);
 	return (
 		<div className="container">
 			<CommonHeader />
