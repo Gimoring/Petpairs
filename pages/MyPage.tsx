@@ -18,7 +18,7 @@ import { updateProfileData, userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer';
 import user, { dataSet } from '../reducer/user';
 import MyPetImgSlider from '../components/MyPetImgSlider';
-import DeleteUserModal from '../components/DeleteUserModal';
+import DeleteUserModal from '../components/deleteUserModal';
 import CommonHeader from '../components/CommonHeader';
 import CommonFooter from '../components/CommonFooter';
 import wrapper from '../store/configure';
@@ -180,20 +180,48 @@ const MyPage = () => {
 	// if (!me) {
 	//   return <div>Loading...</div>
 	// }
-	useLayoutEffect(() => {
-		function loadProfile() {
-			const promise = axios.get('http://localhost4000/user/userInfo');
-			const data = promise.then((res) => res.data);
-			return data;
+
+	useEffect(() => {
+		// function loadProfile() {
+		// 	const promise = axios.get('http://localhost4000/user/userInfo');
+		// 	const data = promise.then((res) => res.data);
+		// 	return data;
+		// }
+		// loadProfile().then((data) => console.log(data));
+		// if (!me) {
+		// 	router.push('/');
+		// 	return;
+		// }
+		if (!me.pet) {
+			dispatch({
+				type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+			});
+			console.log(me.pet); //<-- undefined
 		}
-		loadProfile().then((data) => console.log(data));
 		dispatch({
 			type: userActionTypes.LOAD_MYPROFILE_REQUEST,
 		});
+		console.log('me?', me);
+		// router.reload();
+		if (!me.pet) {
+			dispatch({
+				type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+			});
+		}
+		// dispatch({
+		// 	type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+		// });
 		// dispatch({
 		// 	type: userActionTypes.LOAD_CARDS_REQUEST,
 		// });
-	}, [dispatch]);
+	}, []);
+
+	// useLayoutEffect(() => {
+	// 	dispatch({
+	// 		type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+	// 	});
+	// }, [dispatch]);
+
 	return (
 		<>
 			<CommonHeader />
@@ -561,29 +589,29 @@ const MyPage = () => {
 // 		};
 // 	});
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-// 	(store) =>
-// 		async (context): Promise<any | null> => {
-// 			console.log('hello ServerSideProps');
-// 			const cookie = context.req ? context.req.headers.cookie : '';
-// 			axios.defaults.headers.Cookie = ''; //초기화 <--- 비어주는거
-// 			console.log(
-// 				'헤더에 쿠키 박아보렸나?~ 짜릿짜릿해-------------------------------------------------------------------------',
-// 				context.req.headers,
-// 			);
-// 			if (context.req && cookie) {
-// 				console.log(
-// 					'헤더에 쿠키 박아보리기~ 짜릿짜릿해-------------------------------------------------------------------------',
-// 				);
-// 				axios.defaults.headers.Cookie = cookie;
-// 			}
-// 			await store.dispatch({
-// 				type: userActionTypes.LOAD_MYPROFILE_REQUEST,
-// 			});
-// 			store.dispatch(END);
-// 			await store.sagaTask?.toPromise();
-// 		},
-// );
+export const getServerSideProps = wrapper.getServerSideProps(
+	(store) =>
+		async (context): Promise<any | null> => {
+			console.log('hello ServerSideProps');
+			const cookie = context.req ? context.req.headers.cookie : '';
+			axios.defaults.headers.Cookie = ''; //초기화 <--- 비어주는거
+			console.log(
+				'헤더에 쿠키 박아보렸나?~ 짜릿짜릿해-------------------------------------------------------------------------',
+				context.req.headers,
+			);
+			if (context.req && cookie) {
+				console.log(
+					'헤더에 쿠키 박아보리기~ 짜릿짜릿해-------------------------------------------------------------------------',
+				);
+				axios.defaults.headers.Cookie = cookie;
+			}
+			await store.dispatch({
+				type: userActionTypes.LOAD_MYPROFILE_REQUEST,
+			});
+			store.dispatch(END);
+			await store.sagaTask?.toPromise();
+		},
+);
 
 // export const getServerSideProps =
 // 	wrapper.getServerSideProps(async (context): Promise<any> => {

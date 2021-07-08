@@ -44,7 +44,7 @@ function* logIn(action: ILogInRequest) {
 		// document.cookie = `token=${token}`;
 		yield put({
 			type: userActionTypes.LOG_IN_SUCCESS,
-			data: response.data,
+			data: response.data.data,
 		});
 	} catch (err) {
 		console.error(err);
@@ -162,6 +162,8 @@ function updateUserAPI(data: updateProfileData) {
 function* updateProfile(action: IUpdateRequest) {
 	try {
 		const result: AxiosResponse<any[]> = yield call(updateUserAPI, action.data);
+		console.log(result);
+		console.log(result.data);
 		yield put({
 			type: userActionTypes.UPDATE_PROFILE_SUCCESS,
 			// data: result.data.user,
@@ -233,21 +235,24 @@ function* postLike(action: IPostLikeRequest) {
 	try {
 		const { data }: AxiosResponse<any> = yield call(postLikeApi, action.data);
 		console.log('POSTLIKE DATAAAAAAAAAA', data);
-		console.log(data.data);
+		console.log('미ㅏㅁ어리ㅏㅁ어리마어리ㅏㅁㅇㄹ', data.data);
 		yield put({
 			type: userActionTypes.POST_LIKE_SUCCESS,
 			data: data,
 			//data: result.data
 		});
+		console.log('like 보냈고 성공상태');
 		if (data.data.matchedPet) {
 			// data === 'success messsage'
 			yield put({
 				type: userActionTypes.MATCH_SUCCESS,
 				data: data.data,
 			});
+			console.log('like 보냈고 성공하고 매치됬을 때');
 		}
 	} catch (err) {
 		console.error(err);
+		console.log('like 보내고 실패상태');
 		yield put({
 			type: userActionTypes.POST_LIKE_FAILURE,
 			error: err.response.data,

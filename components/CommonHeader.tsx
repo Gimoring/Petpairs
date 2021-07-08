@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 // import Image from 'next/image';
 import React, { useCallback, useState } from 'react';
-// import mainLogo from '../images/unknown.png';
+import mainLogo from '../images/unknown.jpg';
 import styles from '../styles/commonHeader.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../reducer';

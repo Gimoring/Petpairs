@@ -80,7 +80,7 @@ const PetCards = () => {
 
 	const outOfFrame = (name) => {
 		console.log(name + ' left the screen!');
-		petState = petState.filter((pet) => pet.petName !== name);
+		petState = pets.filter((pet) => pet.petName !== name);
 		setPets(petState);
 	};
 
@@ -128,7 +128,7 @@ const PetCards = () => {
 					</div>
 				</TinderCard>
 			))}
-			<SwipeButtons onSwipe={swipe} />
+			{/* <SwipeButtons onSwipe={swipe} /> */}
 		</>
 	);
 };

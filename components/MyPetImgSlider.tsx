@@ -111,9 +111,9 @@ const MyPetImgSlider = () => {
 		// router.push('/MyPage');
 
 		console.log(me?.pet?.fileName?.length);
-		router.reload();
 		setImgFileList([]);
 		setImgPreviewUrls([]);
+		router.replace('/MyPage');
 	}, [imgFileList]);
 	// [imgFileList, dispatch]);
 
