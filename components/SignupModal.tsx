@@ -73,10 +73,7 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 					},
 				});
 			}
-
 			router.push('/LandingPage');
-
-			console.log(signUpDone);
 		},
 		[dispatch, input.name, input.email, input.password],
 	);
@@ -94,6 +91,7 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 							&times;
 						</span>
 						<div className={styles.modalContents}>
+
 							<Image
 								className={styles.signinIcon}
 								src={mainLogo}

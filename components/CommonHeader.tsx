@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
-import Image from 'next/image';
+// import Image from 'next/image';
 import React, { useCallback, useState } from 'react';
 import mainLogo from '../images/unknown.jpg';
 import styles from '../styles/commonHeader.module.scss';
@@ -51,7 +51,7 @@ const CommonHeader = () => {
 	return (
 		<div className={styles.header}>
 			<div className={styles.section1}>
-				<Link href="/LandingPage" passHref>
+				{/* <Link href="/LandingPage" passHref>
 					<Image
 						className={styles.image}
 						src={mainLogo}
@@ -59,7 +59,7 @@ const CommonHeader = () => {
 						width={100}
 						height={85}
 					/>
-				</Link>
+				</Link> */}
 			</div>
 			<div className={styles.section2}>
 				{!me || !MyPage ? (

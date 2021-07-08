@@ -8,19 +8,18 @@ import { userActionTypes } from '../interface/iUserActType';
 import { RootState } from '../reducer/index';
 import styles from '../styles/landingSection1.module.scss';
 
-
 const Section1 = () => {
 	const { me } = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
 
-	const MainPage = useCallback(()=>{
+	const MainPage = useCallback(() => {
 		Router.replace('/MainPage');
-	},[]);
+	}, []);
 
 	return (
 		<div className={styles.section1}>
 			<div className={styles.section}>
-				<Image className={styles.imageCatDog} src={CatDog} width={450} height={300}/>
+				{/* <Image className={styles.imageCatDog} src={CatDog} width={450} height={300}/> */}
 			</div>
 			<div className={styles.sectionText}>
 				<h1>

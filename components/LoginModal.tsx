@@ -83,6 +83,7 @@ const LoginModal: React.FC<ChildProps> | any = (
 					console.log('email', me?.email);
 				}
 				router.replace('/LandingPage');
+
 				// if (logInDone || me) {
 				// 	console.log('왜 안돼');
 				// 	router.push({ pathname: '/MyPage' });
@@ -109,13 +110,13 @@ const LoginModal: React.FC<ChildProps> | any = (
 						</span>
 						<div className={styles.modalContents}>
 							<div className={styles.image}>
-								<Image
+								{/* <Image
 									src={mainLogo}
 									alt="signinIcon"
 									width={80}
 									height={80}
 									objectFit="none"
-								/>
+								/> */}
 							</div>
 							<input
 								name="email"
