@@ -1,13 +1,14 @@
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-// import mainLogo from '../images/unknown.png';
+import mainLogo from '../images/unknown.jpg';
 import LoginModal from './LoginModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducer';
 import { userActionTypes } from '../interface/iUserActType';
 import styles from '../styles/signUpModal.module.scss';
 import { InputSharp } from '@material-ui/icons';
+import { useRouter } from 'next/router';
 
 interface ChildProps {
 	handleShowModal: () => void;
@@ -15,6 +16,7 @@ interface ChildProps {
 
 const SignupModal: React.FC<ChildProps> = (props) => {
 	const dispatch = useDispatch();
+	const router = useRouter();
 	const { me, signUpDone, signUpLoading } = useSelector(
 		(state: RootState) => state.user,
 	);
@@ -71,6 +73,7 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 					},
 				});
 			}
+			router.push('/LandingPage');
 		},
 		[dispatch, input.name, input.email, input.password],
 	);
@@ -88,14 +91,15 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 							&times;
 						</span>
 						<div className={styles.modalContents}>
-							{/* <Image
+
+							<Image
 								className={styles.signinIcon}
 								src={mainLogo}
 								alt="headerIMG"
 								width={80}
 								height={80}
 								objectFit="none"
-							/> */}
+							/>
 							<input
 								name="name"
 								className={styles.signupName}

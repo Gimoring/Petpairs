@@ -1,7 +1,7 @@
 import React, { ChangeEvent, ReactElement, useCallback, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-// import mainLogo from '../images/unknown.png';
+import mainLogo from '../images/unknown.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducer';
 import { userActionTypes } from '../interface/iUserActType';
@@ -82,7 +82,8 @@ const LoginModal: React.FC<ChildProps> | any = (
 					router.push('MyPage');
 					console.log('email', me?.email);
 				}
-				router.reload();
+				router.replace('/LandingPage');
+
 				// if (logInDone || me) {
 				// 	console.log('왜 안돼');
 				// 	router.push({ pathname: '/MyPage' });

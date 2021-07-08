@@ -1,10 +1,9 @@
-import { StylesProvider } from '@material-ui/core';
 import React, { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducer';
 import Image from 'next/image';
-// import mainLogo from '../images/unknown.png';
+import mainLogo from '../images/unknown.jpg';
 import styles from '../styles/deleteUserModal.module.scss';
 import { userActionTypes } from '../interface/iUserActType';
 
@@ -56,20 +55,17 @@ const DeleteUserModal: React.FC<ChildProps> = (props) => {
 					e.stopPropagation();
 				}}
 			>
-				<span className={styles.modalClose} onClick={props.handleModal}>
-					&times;
-				</span>
 				<div className={styles.delUserModalContents}>
 					<div className={styles.logoImage}>
-						{/* <Image
+						<Image
 							src={mainLogo}
 							alt="logoIMG"
 							width={80}
 							height={80}
 							objectFit="none"
-						/> */}
+						/>
 					</div>
-					<p className={styles.alertNote} style={{ color: '#61BFAD' }}>
+					<p className={styles.alertNote} style={{ color: 'turquoise' }}>
 						탈퇴 시 회원님의 모든 정보는 영구적으로 삭제됨을 알려드립니다!{' '}
 					</p>
 					<p className={styles.alertMessage}>탈퇴 하시겠습니까?</p>
