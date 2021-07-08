@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import Router from 'next/router';
 import Image from 'next/image';
-import CatDog from '../images/catdog.png';
-import { StylesProvider } from '@material-ui/styles';
+import CatDog from '../images/catdog.jpg';
 import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActionTypes } from '../interface/iUserActType';

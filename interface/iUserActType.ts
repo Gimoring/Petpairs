@@ -19,6 +19,10 @@ export enum userActionTypes {
 	MATCH_SUCCESS = 'MATCH_SUCCESS',
 	// MATCH_FAILURE = 'MATCH_FAILURE',
 
+	POST_MATCH_REQUEST = 'POST_MATCH_REQUEST',
+	POST_MATCH_SUCCESS = 'POST_MATCH_SUCCESS',
+	POST_MATCH_FAILURE = 'POST_MATCH_FAILURE',
+
 	LOAD_MYPROFILE_REQUEST = 'LOAD_MYPROFILE_REQUEST',
 	LOAD_MYPROFILE_SUCCESS = 'LOAD_MYPROFILE_SUCCESS',
 	LOAD_MYPROFILE_FAILURE = 'LOAD_MYPROFILE_FAILURE',
@@ -78,6 +82,14 @@ export interface loadProfileSuccess {
 	fileName?: null | IImgFile[];
 }
 
+export interface postMatchSuccessData {
+	id?: number;
+	matchedPet?: {
+		petId?: null | number;
+		petName?: null | string;
+		fileName?: null | IImgFile[];
+	};
+}
 // export interface loadCardsSuccess {
 // 	data: IPet[];
 // }
@@ -172,6 +184,20 @@ export interface IMatchSuccess {
 	data: number;
 }
 
+export interface IPostMatchRequest {
+	type: userActionTypes.POST_MATCH_REQUEST;
+	data: number;
+}
+
+export interface IPostMatchSuccess {
+	type: userActionTypes.POST_MATCH_SUCCESS;
+	data: postMatchSuccessData;
+}
+
+export interface IPostMatchFailure {
+	type: userActionTypes.POST_MATCH_FAILURE;
+	error: string;
+}
 // export interface IMatchFailure {
 // 	type: userActionTypes.MATCH_FAILURE;
 // 	error: string;
@@ -294,6 +320,9 @@ export type IUserActions =
 	| ILoadCardsSuccess
 	| ILoadCardsFailure
 	| IMatchSuccess
+	| IPostMatchRequest
+	| IPostMatchSuccess
+	| IPostMatchFailure
 	| IUpdateRequest
 	| IUpdateSuccess
 	| IUpdateFailure

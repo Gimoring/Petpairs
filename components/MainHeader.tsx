@@ -3,7 +3,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import ChatIcon from '@material-ui/icons/Chat';
 import { IconButton } from '@material-ui/core';
 import Image from 'next/image';
-import mainLogo from '../images/unknown.png';
+import mainLogo from '../images/unknown.jpg';
 import styles from '../styles/mainHeader.module.scss';
 const MainHeader = () => {
 	return (

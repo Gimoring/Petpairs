@@ -3,12 +3,13 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import React, { useCallback, useState } from 'react';
-import mainLogo from '../images/unknown.png';
+import mainLogo from '../images/unknown.jpg';
 import styles from '../styles/commonHeader.module.scss';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../reducer';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
+import { userActionTypes } from '../interface/iUserActType';
 
 const CommonHeader = () => {
 	const [showModal, setShowModal] = useState(false);
@@ -16,6 +17,8 @@ const CommonHeader = () => {
 	const [isLogin, setIsLogin] = useState(false);
 	const { me, logInDone } = useSelector((state: RootState) => state.user);
 	const router = useRouter();
+	const dispatch = useDispatch();
+
 	const handleModal = useCallback(() => {
 		setShowModal((state) => !state);
 		console.log('눌렀다아아아아앙');
@@ -32,6 +35,8 @@ const CommonHeader = () => {
 	// }, []);
 
 	const Logout = useCallback(() => {
+		dispatch({ type: userActionTypes.LOG_OUT_REQUEST });
+		router.reload();
 		router.push('/LandingPage');
 	}, []);
 
@@ -85,10 +90,7 @@ const CommonHeader = () => {
 							<a className={styles.button}>마이페이지</a>
 						</Link>
 
-						<button
-							className={styles.button}
-							onClick={() => console.log('do nth')}
-						>
+						<button className={styles.button} onClick={Logout}>
 							로그아웃
 						</button>
 					</>
@@ -99,3 +101,6 @@ const CommonHeader = () => {
 };
 
 export default CommonHeader;
+function dispatch(arg0: { type: any }) {
+	throw new Error('Function not implemented.');
+}

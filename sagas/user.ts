@@ -23,22 +23,28 @@ import {
 	ILoadProfileRequest,
 	ILoadCardsRequest,
 	loadProfileData,
+	IPostMatchRequest,
 } from '../interface/iUserActType';
 import { IImgFile, IPet, IUser } from '../interface/iUser';
 
 function logInAPI(data: logInData) {
-	return axios.post('http://localhost:4000/user/login', data);
+	return axios.post('http://localhost:4000/user/login', data, {
+		headers: { 'Content-Type': 'application/json' },
+	});
 }
 
 function* logIn(action: ILogInRequest) {
 	try {
 		const response: AxiosResponse<any> = yield call(logInAPI, action.data);
+		console.log('RES', response);
+		console.log('RES data', response.data);
 		const token = response.data.accessToken;
 		axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
 		// document.cookie = `token=${token}`;
 		yield put({
 			type: userActionTypes.LOG_IN_SUCCESS,
-			data: response.data,
+			data: response.data.data,
 		});
 	} catch (err) {
 		console.error(err);
@@ -70,7 +76,7 @@ function* signup(action: ISignUpRequest) {
 }
 
 function logOutAPI() {
-	return axios.post('http://localhost:4000/user/logout');
+	return axios.get('http://localhost:4000/user/logout');
 }
 
 function* logOut() {
@@ -135,7 +141,7 @@ function loadCardsAPI(data: number) {
 function* loadCards(action: ILoadCardsRequest) {
 	try {
 		const data: AxiosResponse<any> = yield call(loadCardsAPI, action.data);
-		console.log('LOADCARDS DATAAAAAAAAAAAA', data);
+		console.log('LOADCARDS DATAAAAAAAAAAAA', data.data.data);
 		yield put({
 			type: userActionTypes.LOAD_CARDS_SUCCESS,
 			data: data.data.data, //result.data
@@ -156,11 +162,14 @@ function updateUserAPI(data: updateProfileData) {
 function* updateProfile(action: IUpdateRequest) {
 	try {
 		const result: AxiosResponse<any[]> = yield call(updateUserAPI, action.data);
+		console.log(result);
+		console.log(result.data);
 		yield put({
 			type: userActionTypes.UPDATE_PROFILE_SUCCESS,
 			// data: result.data.user,
 			data: result.data,
 		});
+		console.log(result.data);
 	} catch (err) {
 		console.error(err);
 		yield put({
@@ -213,29 +222,37 @@ function* updatePetImage(action: IUpdatePetImageRequest) {
 
 // data will be  id : number
 
-function postLikeApi(data: number | string) {
-	return axios.post('http://localhost:4000/pet/petLike', data);
+function postLikeApi(data: any) {
+	return axios.post('http://localhost:4000/pet/petLike', data, {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 }
 
 function* postLike(action: IPostLikeRequest) {
 	//action: IPostLikeRequest
 	try {
-		const { data }: AxiosResponse<any[]> = yield call(postLikeApi, action.data);
+		const { data }: AxiosResponse<any> = yield call(postLikeApi, action.data);
 		console.log('POSTLIKE DATAAAAAAAAAA', data);
+		console.log('미ㅏㅁ어리ㅏㅁ어리마어리ㅏㅁㅇㄹ', data.data);
 		yield put({
 			type: userActionTypes.POST_LIKE_SUCCESS,
 			data: data,
 			//data: result.data
 		});
-		if (data) {
+		console.log('like 보냈고 성공상태');
+		if (data.data.matchedPet) {
 			// data === 'success messsage'
 			yield put({
 				type: userActionTypes.MATCH_SUCCESS,
-				data: data,
+				data: data.data,
 			});
+			console.log('like 보냈고 성공하고 매치됬을 때');
 		}
 	} catch (err) {
 		console.error(err);
+		console.log('like 보내고 실패상태');
 		yield put({
 			type: userActionTypes.POST_LIKE_FAILURE,
 			error: err.response.data,
@@ -268,6 +285,25 @@ function* deleteUser(action: IDeleteUserRequest) {
 	}
 }
 
+function postMatchApi(data: number) {
+	return axios.post('http://localhost:4000/user/', data);
+}
+
+function* postMatch(action: IPostMatchRequest) {
+	try {
+		const { data } = yield call(postMatchApi, action.data);
+		yield put({
+			type: userActionTypes.POST_MATCH_SUCCESS,
+			data: data,
+		});
+	} catch (err) {
+		console.error(err);
+		yield put({
+			type: userActionTypes.POST_MATCH_FAILURE,
+			error: err.response.data,
+		});
+	}
+}
 function* watchSignUp() {
 	yield takeLatest(userActionTypes.SIGN_UP_REQUEST, signup);
 }
@@ -297,9 +333,12 @@ function* watchPetImageUpdate() {
 }
 
 function* watchPostLike() {
-	yield takeLatest(userActionTypes.POST_LIKE_REQUEST, postLike);
+	yield takeEvery(userActionTypes.POST_LIKE_REQUEST, postLike);
 }
 
+function* watchPostSuccess() {
+	yield takeLatest(userActionTypes.POST_MATCH_REQUEST, postMatch);
+}
 function* watchDeleteUser() {
 	yield takeEvery(userActionTypes.DELETE_USER_REQUEST, deleteUser);
 }
