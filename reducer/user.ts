@@ -27,10 +27,14 @@ export const initialState: IUserState = {
 	postLikeDone: false,
 	postLikeError: null,
 	matchDone: false,
+	postMatchLoading: false,
+	postMatchDone: false,
+	postMatchError: null,
 	deleteUserLoading: false,
 	deleteUserDone: false,
 	deleteUserError: null,
 	me: null,
+	matchedPet: null,
 	users: null,
 	pets: null,
 };
@@ -135,6 +139,7 @@ const reducer = (
 				},
 				// me : action.data
 			};
+
 		case userActionTypes.MATCH_SUCCESS:
 			return {
 				...state,
@@ -149,6 +154,7 @@ const reducer = (
 					},
 				},
 			};
+
 		case userActionTypes.POST_LIKE_FAILURE:
 			return {
 				...state,
@@ -249,6 +255,7 @@ const reducer = (
 				...state,
 				updateProfileLoading: false,
 				updateProfileDone: true,
+				// me: action.data,
 				me: {
 					...state.me,
 					email: action.data?.user?.email,
@@ -345,6 +352,34 @@ const reducer = (
 				signUpError: action.error,
 			};
 
+		case userActionTypes.POST_MATCH_REQUEST:
+			return {
+				...state,
+				postMatchLoading: true,
+				postMatchDone: false,
+				postMatchError: null,
+			};
+
+		case userActionTypes.POST_MATCH_SUCCESS:
+			return {
+				...state,
+				postMatchLoading: false,
+				postMatchDone: true,
+				matchedPet: {
+					...state.matchedPet,
+					petId: action.data.matchedPet?.petId,
+					petName: action.data.matchedPet?.petName,
+					fileName: action.data.matchedPet?.fileName,
+				},
+			};
+
+		case userActionTypes.POST_MATCH_FAILURE:
+			return {
+				...state,
+				postMatchLoading: false,
+				postMatchDone: true,
+				postMatchError: action.error,
+			};
 		default:
 			return state;
 	}
