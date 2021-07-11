@@ -28,9 +28,13 @@ import {
 import { IImgFile, IPet, IUser } from '../interface/iUser';
 
 function logInAPI(data: logInData) {
-	return axios.post('http://localhost:4000/user/login', data, {
-		headers: { 'Content-Type': 'application/json' },
-	});
+	return axios.post(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/login',
+		data,
+		{
+			headers: { 'Content-Type': 'application/json' },
+		},
+	);
 }
 
 function* logIn(action: ILogInRequest) {
@@ -56,7 +60,10 @@ function* logIn(action: ILogInRequest) {
 }
 
 function signupAPI(data: signupData) {
-	return axios.post('http://localhost:4000/user/signup', data);
+	return axios.post(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/signup',
+		data,
+	);
 }
 
 function* signup(action: ISignUpRequest) {
@@ -76,7 +83,9 @@ function* signup(action: ISignUpRequest) {
 }
 
 function logOutAPI() {
-	return axios.get('http://localhost:4000/user/logout');
+	return axios.get(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/logout',
+	);
 }
 
 function* logOut() {
@@ -112,7 +121,9 @@ function* logOut() {
 // 	data?: number;
 // }
 function loadProfileAPI(data: loadProfileData) {
-	return axios.get('http://localhost:4000/user/userInfo');
+	return axios.get(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/userInfo',
+	);
 }
 function* loadProfile(action: ILoadProfileRequest) {
 	try {
@@ -136,7 +147,9 @@ interface ILoadCards {
 	data: number;
 }
 function loadCardsAPI(data: number) {
-	return axios.get('http://localhost:4000/pet/otherPetPhotoView');
+	return axios.get(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/otherPetPhotoView',
+	);
 }
 function* loadCards(action: ILoadCardsRequest) {
 	try {
@@ -156,7 +169,10 @@ function* loadCards(action: ILoadCardsRequest) {
 }
 
 function updateUserAPI(data: updateProfileData) {
-	return axios.post('http://localhost:4000/user/userOrPetEdit', data);
+	return axios.post(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/userOrPetEdit',
+		data,
+	);
 }
 
 function* updateProfile(action: IUpdateRequest) {
@@ -185,9 +201,13 @@ function* updateProfile(action: IUpdateRequest) {
 // }
 
 function updatePetImageApi(data: updatePetImageData) {
-	return axios.post('http://localhost:4000/pet/updatePetPhotoFile', data, {
-		headers: { 'Content-Type': 'multipart/form-data' },
-	});
+	return axios.post(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/updatePetPhotoFile',
+		data,
+		{
+			headers: { 'Content-Type': 'multipart/form-data' },
+		},
+	);
 }
 function* updatePetImage(action: IUpdatePetImageRequest) {
 	/* 
@@ -223,11 +243,15 @@ function* updatePetImage(action: IUpdatePetImageRequest) {
 // data will be  id : number
 
 function postLikeApi(data: any) {
-	return axios.post('http://localhost:4000/pet/petLike', data, {
-		headers: {
-			'Content-Type': 'application/json',
+	return axios.post(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/petLike',
+		data,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+			},
 		},
-	});
+	);
 }
 
 function* postLike(action: IPostLikeRequest) {
@@ -265,7 +289,10 @@ interface IDeleteUser {
 }
 
 function deleteUserApi(data: number) {
-	return axios.post('http://localhost:4000/user/userDelete', data);
+	return axios.post(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/userDelete',
+		data,
+	);
 }
 
 function* deleteUser(action: IDeleteUserRequest) {
@@ -286,7 +313,10 @@ function* deleteUser(action: IDeleteUserRequest) {
 }
 
 function postMatchApi(data: number) {
-	return axios.post('http://localhost:4000/user/', data);
+	return axios.post(
+		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/',
+		data,
+	);
 }
 
 function* postMatch(action: IPostMatchRequest) {

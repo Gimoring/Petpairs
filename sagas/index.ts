@@ -2,7 +2,8 @@ import { all, fork } from '@redux-saga/core/effects';
 import userSaga from './user';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.baseURL =
+	'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/';
 axios.defaults.withCredentials = true;
 
 export default function* rootSaga() {
