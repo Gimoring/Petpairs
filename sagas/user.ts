@@ -29,7 +29,7 @@ import { IImgFile, IPet, IUser } from '../interface/iUser';
 
 function logInAPI(data: logInData) {
 	return axios.post(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/login',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/login',
 		data,
 		{
 			headers: { 'Content-Type': 'application/json' },
@@ -61,7 +61,7 @@ function* logIn(action: ILogInRequest) {
 
 function signupAPI(data: signupData) {
 	return axios.post(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/signup',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/signup',
 		data,
 	);
 }
@@ -84,7 +84,7 @@ function* signup(action: ISignUpRequest) {
 
 function logOutAPI() {
 	return axios.get(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/logout',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/logout',
 	);
 }
 
@@ -122,7 +122,7 @@ function* logOut() {
 // }
 function loadProfileAPI(data: loadProfileData) {
 	return axios.get(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/userInfo',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/userInfo',
 	);
 }
 function* loadProfile(action: ILoadProfileRequest) {
@@ -148,7 +148,7 @@ interface ILoadCards {
 }
 function loadCardsAPI(data: number) {
 	return axios.get(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/otherPetPhotoView',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/otherPetPhotoView',
 	);
 }
 function* loadCards(action: ILoadCardsRequest) {
@@ -170,7 +170,7 @@ function* loadCards(action: ILoadCardsRequest) {
 
 function updateUserAPI(data: updateProfileData) {
 	return axios.post(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/userOrPetEdit',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/userOrPetEdit',
 		data,
 	);
 }
@@ -202,7 +202,7 @@ function* updateProfile(action: IUpdateRequest) {
 
 function updatePetImageApi(data: updatePetImageData) {
 	return axios.post(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/updatePetPhotoFile',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/updatePetPhotoFile',
 		data,
 		{
 			headers: { 'Content-Type': 'multipart/form-data' },
@@ -244,7 +244,7 @@ function* updatePetImage(action: IUpdatePetImageRequest) {
 
 function postLikeApi(data: any) {
 	return axios.post(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/petLike',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/petLike',
 		data,
 		{
 			headers: {
@@ -290,7 +290,7 @@ interface IDeleteUser {
 
 function deleteUserApi(data: number) {
 	return axios.post(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/userDelete',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/userDelete',
 		data,
 	);
 }
@@ -314,7 +314,7 @@ function* deleteUser(action: IDeleteUserRequest) {
 
 function postMatchApi(data: number) {
 	return axios.post(
-		'http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/',
+		'https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/user/',
 		data,
 	);
 }

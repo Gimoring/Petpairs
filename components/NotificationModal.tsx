@@ -68,7 +68,7 @@ const NotificationModal = () => {
 													<div
 														className={styles.matchedCard}
 														style={{
-															backgroundImage: `url(http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/${matchedPetImg.fileName})`,
+															backgroundImage: `url(https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/${matchedPetImg.fileName})`,
 														}}
 													>
 														<div className={styles.directionArrows}>
