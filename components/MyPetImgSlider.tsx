@@ -261,7 +261,7 @@ const MyPetImgSlider = () => {
 														<div
 															className={styles.card}
 															style={{
-																backgroundImage: `url(http://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/${petImg.fileName})`,
+																backgroundImage: `url(https://ec2-52-79-98-228.ap-northeast-2.compute.amazonaws.com/pet/${petImg.fileName})`,
 															}}
 														>
 															<div className={styles.arrows}>
