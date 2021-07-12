@@ -91,7 +91,6 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 							&times;
 						</span>
 						<div className={styles.modalContents}>
-
 							<Image
 								className={styles.signinIcon}
 								src={mainLogo}
