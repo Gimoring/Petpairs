@@ -73,7 +73,7 @@ const SignupModal: React.FC<ChildProps> = (props) => {
 					},
 				});
 			}
-			router.push('/');
+			router.push('/LandingPage');
 		},
 		[dispatch, input.name, input.email, input.password],
 	);
